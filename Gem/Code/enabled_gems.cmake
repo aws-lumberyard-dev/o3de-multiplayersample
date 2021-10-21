@@ -41,8 +41,7 @@ set(ENABLED_GEMS
     HttpRequestor
     Atom_AtomBridge
     AWSCore
-    AWSClientAuth
-    AWSMetrics
+    AWSGameLift
     Presence
     LocalUser
     SaveData

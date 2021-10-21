@@ -12,6 +12,7 @@
 #include <Components/PerfTest/NetworkRandomImpulseComponent.h>
 #include <Components/PerfTest/NetworkTestSpawnerComponent.h>
 #include <Source/AutoGen/AutoComponentTypes.h>
+#include <Source/Components/GameLiftComponent.h>
 
 #include "MultiplayerSampleSystemComponent.h"
 

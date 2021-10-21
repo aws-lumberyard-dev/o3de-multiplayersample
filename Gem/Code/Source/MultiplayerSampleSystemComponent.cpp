@@ -15,11 +15,13 @@
 #include <Source/AutoGen/AutoComponentTypes.h>
 #include <Source/Weapons/WeaponTypes.h>
 #include <Source/Components/NetworkStressTestComponent.h>
+#include <Source/Components/GameLiftComponent.h>
 #include <Source/Components/NetworkAiComponent.h>
 
 #include <Multiplayer/IMultiplayer.h>
 #include <Multiplayer/Components/NetBindComponent.h>
 #include <Multiplayer/ConnectionData/IConnectionData.h>
+
 
 namespace MultiplayerSample
 {
@@ -82,10 +84,12 @@ namespace MultiplayerSample
 
         //! Register our gems multiplayer components to assign NetComponentIds
         RegisterMultiplayerComponents();
+        m_gameliftComponent = AZStd::make_unique<GameLiftComponent>();
     }
 
     void MultiplayerSampleSystemComponent::Deactivate()
     {
+        m_gameliftComponent.reset();
         AZ::TickBus::Handler::BusDisconnect();
     }
 

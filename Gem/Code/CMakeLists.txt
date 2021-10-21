@@ -30,6 +30,8 @@ ly_add_target(
             Gem::StartingPointInput
             Gem::DebugDraw
         PRIVATE
+            Gem::AWSCore.Static
+            Gem::AWSGameLift.Client.Static
             Gem::LmbrCentral.Static
             Gem::Multiplayer.Static
             Gem::PhysX.Static
@@ -56,7 +58,53 @@ ly_add_target(
             Include
     BUILD_DEPENDENCIES
         PRIVATE
+            Gem::AWSGameLift.Client.Static
             Gem::MultiplayerSample.Static
+            Gem::Atom_AtomBridge.Static
+)
+
+ly_add_target(
+    NAME MultiplayerSample.Server.Static STATIC
+    NAMESPACE Gem
+    FILES_CMAKE
+        multiplayersample_server_files.cmake
+        ${pal_dir}/multiplayersample_${PAL_PLATFORM_NAME_LOWERCASE}_files.cmake
+    INCLUDE_DIRECTORIES
+        PRIVATE
+            Source
+            .
+        PUBLIC
+            Include
+    BUILD_DEPENDENCIES
+        PUBLIC
+            AZ::AzGameFramework
+            AZ::AzNetworking
+            Gem::Multiplayer
+            Gem::EMotionFXStaticLib
+            Gem::PhysX
+            Gem::StartingPointInput
+        PRIVATE
+            Gem::AWSGameLift.Server.Static
+            Gem::LmbrCentral.Static
+            Gem::Multiplayer.Static
+            Gem::PhysX.Static
+)
+
+ly_add_target(
+    NAME MultiplayerSample.Server ${PAL_TRAIT_MONOLITHIC_DRIVEN_MODULE_TYPE}
+    NAMESPACE Gem
+    FILES_CMAKE
+        multiplayersample_server_shared_files.cmake
+        ../../multiplayersample_asset_files.cmake
+    INCLUDE_DIRECTORIES
+        PRIVATE
+            Source
+            .
+        PUBLIC
+            Include
+    BUILD_DEPENDENCIES
+        PRIVATE
+            Gem::MultiplayerSample.Server.Static
             Gem::Atom_AtomBridge.Static
 )
 
@@ -64,7 +112,7 @@ ly_add_target(
 ly_create_alias(NAME MultiplayerSample.Builders NAMESPACE Gem TARGETS Gem::MultiplayerSample)
 ly_create_alias(NAME MultiplayerSample.Tools    NAMESPACE Gem TARGETS Gem::MultiplayerSample)
 ly_create_alias(NAME MultiplayerSample.Clients  NAMESPACE Gem TARGETS Gem::MultiplayerSample)
-ly_create_alias(NAME MultiplayerSample.Servers  NAMESPACE Gem TARGETS Gem::MultiplayerSample)
+ly_create_alias(NAME MultiplayerSample.Servers  NAMESPACE Gem TARGETS Gem::MultiplayerSample.Server)
 
 ################################################################################
 # Gem dependencies

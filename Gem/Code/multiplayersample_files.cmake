@@ -20,6 +20,8 @@ set(FILES
     Source/AutoGen/NetworkRandomImpulseComponent.AutoComponent.xml
     Source/Components/ExampleFilteredEntityComponent.h
     Source/Components/ExampleFilteredEntityComponent.cpp
+    Source/Components/GameLiftComponent.cpp
+    Source/Components/GameLiftComponent.h
     Source/Components/NetworkAiComponent.cpp
     Source/Components/NetworkAiComponent.h
     Source/Components/NetworkAnimationComponent.cpp
