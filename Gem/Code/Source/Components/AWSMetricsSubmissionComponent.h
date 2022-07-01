@@ -16,12 +16,12 @@ using namespace Multiplayer;
 
 namespace MultiplayerSample
 {
-    static constexpr char AWSMetricsSubmissionComponentName[] = "AWSMetricsSubmissionComponent";
-    static constexpr char ClientJoinMetricsEvent[] = "client_join";
-    static constexpr char ClientLeaveMetricsEvent[] = "client_leave";
-    static constexpr char ClientCountMetricsEvent[] = "client_connection_count";
-    static constexpr char MetricsEventNameAttributeKey[] = "event_name";
-    static constexpr char MetricsEventSource[] = "MultiplayerSample";
+    static constexpr AZStd::string_view AWSMetricsSubmissionComponentName = "AWSMetricsSubmissionComponent";
+    static constexpr AZStd::string_view ClientJoinMetricsEvent = "client_join";
+    static constexpr AZStd::string_view ClientLeaveMetricsEvent = "client_leave";
+    static constexpr AZStd::string_view ClientCountMetricsEvent = "client_connection_count";
+    static constexpr AZStd::string_view MetricsEventNameAttributeKey = "event_name";
+    static constexpr AZStd::string_view MetricsEventSource = "MultiplayerSample";
 
     //! Component for submitting metrics to the AWS backend
     class AWSMetricsSubmissionComponent
@@ -63,6 +63,6 @@ namespace MultiplayerSample
         //! This value only applies to metrics which are required to be submitted periodically, like client connection counts.
         float m_AWSMetricsSubmissionIntervalInSec=60.0;
 
-        float m_interval = 0;
+        float m_interval = 0.0;
     };
 }

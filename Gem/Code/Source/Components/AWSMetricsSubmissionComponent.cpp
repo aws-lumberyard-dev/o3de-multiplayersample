@@ -30,7 +30,7 @@ namespace MultiplayerSample
 
             if (const auto editContext = serializationContext->GetEditContext())
             {
-                editContext->Class<AWSMetricsSubmissionComponent>(AWSMetricsSubmissionComponentName,
+                editContext->Class<AWSMetricsSubmissionComponent>(AWSMetricsSubmissionComponentName.data(),
                     "Handles metrics submission via the AWSMetrics Gem")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::Category, "MultiplayerSample")
@@ -93,7 +93,7 @@ namespace MultiplayerSample
                 AWSMetrics::AWSMetricsRequestBus::BroadcastResult(result, &AWSMetrics::AWSMetricsRequests::SubmitMetrics, clientJointMetricsAttributes, 0, MetricsEventSource, true);
                 if (!result)
                 {
-                    AZ_TracePrintf(AWSMetricsSubmissionComponentName, "Failed to submit the %s metrics", ClientJoinMetricsEvent);
+                    AZ_TracePrintf(AWSMetricsSubmissionComponentName.data(), "Failed to submit metrics: %s", ClientJoinMetricsEvent.data());
                 }
             });
         AZ::Interface<IMultiplayer>::Get()->AddConnectionAcquiredHandler(m_connectHandler);
@@ -108,7 +108,7 @@ namespace MultiplayerSample
                 AWSMetrics::AWSMetricsRequestBus::BroadcastResult(result, &AWSMetrics::AWSMetricsRequests::SubmitMetrics, clientLeaveMetricsAttributes, 0, MetricsEventSource, true);
                 if (!result)
                 {
-                    AZ_TracePrintf(AWSMetricsSubmissionComponentName, "Failed to submit the %s metrics", ClientLeaveMetricsEvent);
+                    AZ_TracePrintf(AWSMetricsSubmissionComponentName.data(), "Failed to submit metrics : % s", ClientLeaveMetricsEvent.data());
                 }
 
             });
@@ -144,7 +144,7 @@ namespace MultiplayerSample
         AWSMetrics::AWSMetricsRequestBus::BroadcastResult(result, &AWSMetrics::AWSMetricsRequests::SubmitMetrics, clientConnectCountMetricsAttributes, 0, MetricsEventSource, false);
         if (!result)
         {
-            AZ_TracePrintf(AWSMetricsSubmissionComponentName, "Failed to submit the %s metrics", ClientCountMetricsEvent);
+            AZ_TracePrintf(AWSMetricsSubmissionComponentName.data(), "Failed to submit metrics: %s", ClientCountMetricsEvent.data());
         }
     }
 
@@ -154,6 +154,6 @@ namespace MultiplayerSample
 
     void AWSMetricsSubmissionComponent::OnSendMetricsFailure([[maybe_unused]] int requestId, [[maybe_unused]] const AZStd::string& errorMessage)
     {
-        AZ_TracePrintf(AWSMetricsSubmissionComponentName, "Failed to sent metrics: %s", errorMessage.c_str());
+        AZ_TracePrintf(AWSMetricsSubmissionComponentName.data(), "Failed to send metrics: %s", errorMessage.c_str());
     }
 }
