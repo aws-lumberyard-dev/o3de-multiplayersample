@@ -10,15 +10,24 @@
 
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
+#include <AWSMetricsBus.h>
 
 using namespace Multiplayer;
 
 namespace MultiplayerSample
 {
+    static constexpr char AWSMetricsSubmissionComponentName[] = "AWSMetricsSubmissionComponent";
+    static constexpr char ClientJoinMetricsEvent[] = "client_join";
+    static constexpr char ClientLeaveMetricsEvent[] = "client_leave";
+    static constexpr char ClientCountMetricsEvent[] = "client_connection_count";
+    static constexpr char MetricsEventNameAttributeKey[] = "event_name";
+    static constexpr char MetricsEventSource[] = "MultiplayerSample";
+
     //! Component for submitting metrics to the AWS backend
     class AWSMetricsSubmissionComponent
         : public AZ::Component
         , public AZ::TickBus::Handler
+        , public AWSMetrics::AWSMetricsNotificationBus::Handler
     {
     public:
         AZ_COMPONENT(AWSMetricsSubmissionComponent, "{F16A5A09-C351-4862-8CCA-3E8419123538}", Component);
@@ -31,7 +40,15 @@ namespace MultiplayerSample
         void Activate() override;
         void Deactivate() override;
 
+        ////////////////////////////////////////////////////////////////////////
+        // TickBus implementation
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
+        ////////////////////////////////////////////////////////////////////////
+
+        ////////////////////////////////////////////////////////////////////////
+        // AWSMetricsNotificationBus implementation
+        void OnSendMetricsSuccess(int requestId) override;
+        void OnSendMetricsFailure(int requestId, const AZStd::string& errorMessage) override;
 
     private:
         //! Connect handlers to the player connection events for submitting client_join and client_leave metrics
@@ -42,9 +59,9 @@ namespace MultiplayerSample
         ConnectionAcquiredEvent::Handler m_connectHandler;
         EndpointDisonnectedEvent::Handler m_disconnectHandler;
 
-        //! Time interval for submitting metrics regularly.
-        //! Default to 1 minute to reduce AWS costs and it's configurable via the Editor.
-        float m_AWSMetricsSubmissionIntervalInSecHint=60.0;
+        //! Time interval for submitting metrics.
+        //! This value only applies to metrics which are required to be submitted periodically, like client connection counts.
+        float m_AWSMetricsSubmissionIntervalInSec=60.0;
 
         float m_interval = 0;
     };

@@ -27,6 +27,11 @@
                 "$type": "EditorPendingCompositionComponent",
                 "Id": 13533444088377782884
             },
+            "Component_[1391568711779136097]": {
+                "$type": "LocalViewBookmarkComponent",
+                "Id": 1391568711779136097,
+                "LocalBookmarkFileName": "SampleBase_308035330350.setreg"
+            },
             "Component_[14619812868403384733]": {
                 "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
                 "Id": 14619812868403384733,
@@ -38,11 +43,6 @@
                 "m_template": {
                     "$type": "MultiplayerSample::ExampleFilteredEntityComponent"
                 }
-            },
-            "Component_[2030071479686411024]": {
-                "$type": "LocalViewBookmarkComponent",
-                "Id": 2030071479686411024,
-                "LocalBookmarkFileName": "SampleBase_109645868073.setreg"
             },
             "Component_[3902259769182016681]": {
                 "$type": "EditorLockComponent",
@@ -82,16 +82,16 @@
             "Id": "Entity_[14030996048227]",
             "Name": "StressTestEntity",
             "Components": {
-                "Component_[11071255408563586395]": {
-                    "$type": "EditorEntitySortComponent",
-                    "Id": 11071255408563586395
-                },
-                "Component_[12666222616595027521]": {
+                "Component_[10336352974327950274]": {
                     "$type": "GenericComponentWrapper",
-                    "Id": 12666222616595027521,
+                    "Id": 10336352974327950274,
                     "m_template": {
                         "$type": "AWSMetricsSubmissionComponent"
                     }
+                },
+                "Component_[11071255408563586395]": {
+                    "$type": "EditorEntitySortComponent",
+                    "Id": 11071255408563586395
                 },
                 "Component_[1271454470034210481]": {
                     "$type": "SelectionComponent",
