@@ -6,9 +6,10 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 """
 
 from aws_cdk import (
-    core,
     aws_athena as athena
 )
+import aws_cdk as core
+from constructs import Construct
 
 from . import aws_metrics_constants
 from .aws_utils import resource_name_sanitizer
@@ -19,7 +20,7 @@ class BatchAnalytics:
     Query the metrics stored in the S3 data lake via Amazon Athena
     """
     def __init__(self,
-                 stack: core.Construct,
+                 stack: Construct,
                  application_name: str,
                  analytics_bucket_name: str,
                  events_database_name: str,

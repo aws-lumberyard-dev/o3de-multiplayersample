@@ -6,9 +6,10 @@ SPDX-License-Identifier: Apache-2.0 OR MIT
 """
 
 from aws_cdk import (
-    core,
     aws_cloudwatch as cloudwatch
 )
+import aws_cdk as core
+from constructs import Construct
 
 from . import aws_metrics_constants
 from .layout_widget_construct import LayoutWidget
@@ -21,7 +22,7 @@ class Dashboard:
     """
     def __init__(
             self,
-            stack: core.Construct,
+            stack: Construct,
             input_stream_name: str,
             analytics_processing_lambda_name: str,
             application_name: str,
@@ -83,7 +84,7 @@ class Dashboard:
                 namespace="AWS/Kinesis",
                 period=core.Duration.minutes(aws_metrics_constants.DASHBOARD_METRICS_TIME_PERIOD),
                 statistic="Sum",
-                dimensions={
+                dimensions_map={
                     "StreamName": input_stream_name
                 }
             )
@@ -96,7 +97,7 @@ class Dashboard:
                     namespace="AWS/Firehose",
                     period=core.Duration.minutes(aws_metrics_constants.DASHBOARD_METRICS_TIME_PERIOD),
                     statistic="Sum",
-                    dimensions={
+                    dimensions_map={
                         "DeliveryStreamName": delivery_stream_name
                     }
                 )
@@ -165,7 +166,7 @@ class Dashboard:
             namespace='AWS/Lambda',
             period=core.Duration.minutes(aws_metrics_constants.DASHBOARD_METRICS_TIME_PERIOD),
             statistic='Sum',
-            dimensions={
+            dimensions_map={
                 'FunctionName': function_name
             }
         )
@@ -184,7 +185,7 @@ class Dashboard:
                     namespace='AWS/Lambda',
                     period=core.Duration.minutes(aws_metrics_constants.DASHBOARD_METRICS_TIME_PERIOD),
                     statistic='Sum',
-                    dimensions={
+                    dimensions_map={
                         'FunctionName': function_name
                     }
                 ),
