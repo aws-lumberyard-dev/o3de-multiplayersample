@@ -138,7 +138,7 @@ namespace MultiplayerSample
 
         AZStd::vector<AWSMetrics::MetricsAttribute> clientConnectCountMetricsAttributes;
         clientConnectCountMetricsAttributes.emplace_back(AWSMetrics::MetricsAttribute(MetricsEventNameAttributeKey, ClientCountMetricsEvent));
-        clientConnectCountMetricsAttributes.emplace_back(AWSMetrics::MetricsAttribute(ClientCountMetricsEvent, (int) stats.m_clientConnectionCount));
+        clientConnectCountMetricsAttributes.emplace_back(AWSMetrics::MetricsAttribute(ClientCountMetricsEvent, aznumeric_cast<int>(stats.m_clientConnectionCount)));
 
         bool result = false;
         AWSMetrics::AWSMetricsRequestBus::BroadcastResult(result, &AWSMetrics::AWSMetricsRequests::SubmitMetrics, clientConnectCountMetricsAttributes, 0, MetricsEventSource, false);
@@ -146,10 +146,6 @@ namespace MultiplayerSample
         {
             AZ_TracePrintf(AWSMetricsSubmissionComponentName.data(), "Failed to submit metrics: %s", ClientCountMetricsEvent.data());
         }
-    }
-
-    void AWSMetricsSubmissionComponent::OnSendMetricsSuccess([[maybe_unused]] int requestId)
-    {
     }
 
     void AWSMetricsSubmissionComponent::OnSendMetricsFailure([[maybe_unused]] int requestId, [[maybe_unused]] const AZStd::string& errorMessage)

@@ -47,7 +47,6 @@ namespace MultiplayerSample
 
         ////////////////////////////////////////////////////////////////////////
         // AWSMetricsNotificationBus implementation
-        void OnSendMetricsSuccess(int requestId) override;
         void OnSendMetricsFailure(int requestId, const AZStd::string& errorMessage) override;
 
     private:
