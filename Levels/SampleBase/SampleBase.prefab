@@ -27,6 +27,11 @@
                 "$type": "EditorPendingCompositionComponent",
                 "Id": 13533444088377782884
             },
+            "Component_[1391568711779136097]": {
+                "$type": "LocalViewBookmarkComponent",
+                "Id": 1391568711779136097,
+                "LocalBookmarkFileName": "SampleBase_308035330350.setreg"
+            },
             "Component_[14619812868403384733]": {
                 "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
                 "Id": 14619812868403384733,
@@ -77,6 +82,13 @@
             "Id": "Entity_[14030996048227]",
             "Name": "StressTestEntity",
             "Components": {
+                "Component_[10336352974327950274]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 10336352974327950274,
+                    "m_template": {
+                        "$type": "AWSMetricsSubmissionComponent"
+                    }
+                },
                 "Component_[11071255408563586395]": {
                     "$type": "EditorEntitySortComponent",
                     "Id": 11071255408563586395
@@ -286,6 +298,13 @@
                             0.0,
                             -0.5
                         ],
+                        "MaterialSlots": {
+                            "Slots": [
+                                {
+                                    "Name": "Entire object"
+                                }
+                            ]
+                        },
                         "MaterialSelection": {
                             "MaterialIds": [
                                 {}
