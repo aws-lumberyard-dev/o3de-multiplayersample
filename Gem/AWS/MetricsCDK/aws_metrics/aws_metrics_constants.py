@@ -21,27 +21,35 @@ KINESIS_APPLICATION_CODE = "-- ** Continuous Filter **\n"\
                    "CREATE OR REPLACE PUMP \"CLIENT_LEAVE_PUMP\" AS\n"\
                    "INSERT INTO \"DESTINATION_STREAM\" (METRIC_NAME, METRIC_TIMESTAMP, METRIC_UNIT_VALUE_INT, METRIC_UNIT, OUTPUT_TYPE)\n"\
                    "SELECT STREAM 'ClientLeave', UNIX_TIMESTAMP(FLOOR(\"event_timestamp\" TO MINUTE)), COUNT(\"event_id\"), 'Count', 'metrics'\n"\
-                   "FROM \"AnalyticsApp_001\"\n"\
-                   "WHERE \"AnalyticsApp_001\".\"event_name\" = 'client_leave'\n"\
+                   "FROM\n"\
+                   "    \"AnalyticsApp_001\"\n"\
+                   "WHERE\n"\
+                   "    \"AnalyticsApp_001\".\"event_name\" = 'client_leave'\n"\
                    "GROUP BY\n"\
-                   "FLOOR(\"event_timestamp\" TO MINUTE),\n"\
-                   "STEP(\"AnalyticsApp_001\".ROWTIME BY INTERVAL '1' MINUTE);\n"\
+                   "    FLOOR(\"event_timestamp\" TO MINUTE),\n"\
+                   "    STEP(\"AnalyticsApp_001\".ROWTIME BY INTERVAL '1' MINUTE);\n"\
+                   "\n"\
                    "CREATE OR REPLACE PUMP \"CLIENT_JOIN_PUMP\" AS\n"\
                    "INSERT INTO \"DESTINATION_STREAM\" (METRIC_NAME, METRIC_TIMESTAMP, METRIC_UNIT_VALUE_INT, METRIC_UNIT, OUTPUT_TYPE)\n"\
                    "SELECT STREAM 'ClientJoin', UNIX_TIMESTAMP(FLOOR(\"event_timestamp\" TO MINUTE)), COUNT(\"event_id\"), 'Count', 'metrics'\n"\
-                   "FROM \"AnalyticsApp_001\"\n"\
-                   "WHERE \"AnalyticsApp_001\".\"event_name\" = 'client_join'\n"\
+                   "FROM\n"\
+                   "    \"AnalyticsApp_001\"\n"\
+                   "WHERE\n"\
+                   "    \"AnalyticsApp_001\".\"event_name\" = 'client_join'\n"\
                    "GROUP BY\n"\
-                   "FLOOR(\"event_timestamp\" TO MINUTE),\n"\
-                   "STEP(\"AnalyticsApp_001\".ROWTIME BY INTERVAL '1' MINUTE);\n"\
+                   "    FLOOR(\"event_timestamp\" TO MINUTE),\n"\
+                   "    STEP(\"AnalyticsApp_001\".ROWTIME BY INTERVAL '1' MINUTE);\n"\
+                   "\n"\
                    "CREATE OR REPLACE PUMP \"CLIENT_CONNECTION_COUNT_PUMP\" AS\n"\
                    "INSERT INTO \"DESTINATION_STREAM\" (METRIC_NAME, METRIC_TIMESTAMP, METRIC_UNIT_VALUE_INT, METRIC_UNIT, OUTPUT_TYPE)\n"\
                    "SELECT STREAM 'ClientConnectionCount', UNIX_TIMESTAMP(FLOOR(\"event_timestamp\" TO MINUTE)), MAX(\"client_connection_count\"), 'Count', 'metrics'\n"\
-                   "FROM \"AnalyticsApp_001\"\n"\
-                   "WHERE \"AnalyticsApp_001\".\"event_name\" = 'client_connection_count'\n"\
+                   "FROM\n"\
+                   "    \"AnalyticsApp_001\"\n"\
+                   "WHERE\n"\
+                   "    \"AnalyticsApp_001\".\"event_name\" = 'client_connection_count'\n"\
                    "GROUP BY\n"\
-                   "FLOOR(\"event_timestamp\" TO MINUTE),\n"\
-                   "STEP(\"AnalyticsApp_001\".ROWTIME BY INTERVAL '1' MINUTE);\n"\
+                   "    FLOOR(\"event_timestamp\" TO MINUTE),\n"\
+                   "    STEP(\"AnalyticsApp_001\".ROWTIME BY INTERVAL '1' MINUTE);\n"\
 
 
 # Constants for the analytics processing and events processing lambda.
