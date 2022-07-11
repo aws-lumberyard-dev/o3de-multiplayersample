@@ -47,6 +47,7 @@ If you have a Git credential helper configured, you should not be prompted for y
 
 ### Step 2. Register the engine and project
 
+#### Option #1
 ```shell
 # register the engine (only need to do this once)
 > c:/path/to/o3de/scripts/o3de register --this-engine
@@ -54,6 +55,13 @@ If you have a Git credential helper configured, you should not be prompted for y
 # register the project
 > c:/path/to/o3de/scripts/o3de register -p c:/path/to/o3de-multiplayersample
 ```
+
+#### Option #2
+If you already built the O3DE engine, use the O3DE project manager to open existing project.
+Find o3de.exe under c:/path/to/o3de/build/bin/profile/o3de.exe
+
+Click the drop down of new project button (blue), open existing... and navigate to the path to o3de multiplayer project.
+You can directly build the project and skip Step 3.
 
 ### Step 3. Configure and build
 
