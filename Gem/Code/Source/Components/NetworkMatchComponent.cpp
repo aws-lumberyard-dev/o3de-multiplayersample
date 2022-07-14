@@ -9,6 +9,11 @@
 
 namespace MultiplayerSample
 {
+    NetworkMatchComponentController::NetworkMatchComponentController(NetworkMatchComponent& parent)
+        : NetworkMatchComponentControllerBase(parent)
+    {
+    }
+
     void NetworkMatchComponentController::OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
     {
         SetRoundTime(GetRoundDuration());
