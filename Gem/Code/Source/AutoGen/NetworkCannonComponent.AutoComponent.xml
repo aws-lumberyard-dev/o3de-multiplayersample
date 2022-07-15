@@ -18,9 +18,8 @@
         IsPublic="true"
         IsReliable="true"
         GenerateEventBindings="false"
-        Description="The cannon cannon made a hit; tell clients so they can play particle fx">
+        Description="The cannon made a hit; tell clients so they can play particle fx">
     </RemoteProcedure>
-
 
     <ArchetypeProperty Type="AZ::Vector3" Name="Velocity"  Init="AZ::Vector3(1.0f, 0.0f, 0.0f)" ExposeToEditor="true" Description="Cannon ball movement velocity."/>
     <ArchetypeProperty Type="float" Name="SelfDestructTime"  Init="10.0f" ExposeToEditor="true" Description="Timeout so the cannon ball doesn't travel forever into space."/>
