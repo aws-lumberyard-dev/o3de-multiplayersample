@@ -13,12 +13,12 @@
 
 namespace MultiplayerSample
 {
-    class UiCanvasDemoPlacardComponent
+    class DemoPlacardComponent
         : public AZ::Component
         , UiCanvasAssetRefNotificationBus::Handler
     {
     public:
-        AZ_COMPONENT(MultiplayerSample::UiCanvasDemoPlacardComponent, "{8ED1F410-04CA-4180-BF2F-D24A1BB4BF7D}");
+        AZ_COMPONENT(MultiplayerSample::DemoPlacardComponent, "{8ED1F410-04CA-4180-BF2F-D24A1BB4BF7D}");
 
         /*
         * Reflects component data into the reflection contexts, including the serialization, edit, and behavior contexts.

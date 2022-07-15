@@ -166,15 +166,6 @@
                     "$type": "EditorScriptCanvasComponent",
                     "Id": 17331375054040607466
                 },
-                "Component_[17461824293227247700]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 17461824293227247700,
-                    "m_template": {
-                        "$type": "MultiplayerSample::UiCanvasDemoPlacardComponent",
-                        "Text": "Non-Networked Static Collider",
-                        "TextboxUiId": 3
-                    }
-                },
                 "Component_[3637526016639674263]": {
                     "$type": "EditorInspectorComponent",
                     "Id": 3637526016639674263
@@ -221,6 +212,16 @@
                 "Component_[8328462562183634271]": {
                     "$type": "EditorPendingCompositionComponent",
                     "Id": 8328462562183634271
+                },
+                "Component_[15982237023251069200]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 15982237023251069200,
+                    "m_template": {
+                        "$type": "MultiplayerSample::DemoPlacardComponent",
+                        "Id": 0,
+                        "Text": "Non-Networked Static Collider",
+                        "TextboxUiId": 3
+                    }
                 }
             }
         },
@@ -304,15 +305,6 @@
                         "IsAutoLoad": true
                     }
                 },
-                "Component_[17461824293227247700]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 17461824293227247700,
-                    "m_template": {
-                        "$type": "MultiplayerSample::UiCanvasDemoPlacardComponent",
-                        "Text": "Prefab of Nested Network Entities",
-                        "TextboxUiId": 3
-                    }
-                },
                 "Component_[3637526016639674263]": {
                     "$type": "EditorInspectorComponent",
                     "Id": 3637526016639674263
@@ -359,6 +351,16 @@
                 "Component_[8328462562183634271]": {
                     "$type": "EditorPendingCompositionComponent",
                     "Id": 8328462562183634271
+                },
+                "Component_[13330934562855543074]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 13330934562855543074,
+                    "m_template": {
+                        "$type": "MultiplayerSample::DemoPlacardComponent",
+                        "Id": 0,
+                        "Text": "Prefab of Nested Network Entities",
+                        "TextboxUiId": 3
+                    }
                 }
             }
         },
@@ -613,15 +615,6 @@
                         "IsAutoLoad": true
                     }
                 },
-                "Component_[17461824293227247700]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 17461824293227247700,
-                    "m_template": {
-                        "$type": "MultiplayerSample::UiCanvasDemoPlacardComponent",
-                        "Text": "Network Ball with Non-Net ParticleFx",
-                        "TextboxUiId": 3
-                    }
-                },
                 "Component_[3637526016639674263]": {
                     "$type": "EditorInspectorComponent",
                     "Id": 3637526016639674263
@@ -668,6 +661,16 @@
                 "Component_[8328462562183634271]": {
                     "$type": "EditorPendingCompositionComponent",
                     "Id": 8328462562183634271
+                },
+                "Component_[14649782571954442265]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 14649782571954442265,
+                    "m_template": {
+                        "$type": "MultiplayerSample::DemoPlacardComponent",
+                        "Id": 0,
+                        "Text": "Network Ball with Non-Net ParticleFx",
+                        "TextboxUiId": 3
+                    }
                 }
             }
         },
@@ -976,15 +979,6 @@
                         "IsAutoLoad": true
                     }
                 },
-                "Component_[17461824293227247700]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 17461824293227247700,
-                    "m_template": {
-                        "$type": "MultiplayerSample::UiCanvasDemoPlacardComponent",
-                        "Text": "Player Spawner",
-                        "TextboxUiId": 3
-                    }
-                },
                 "Component_[3637526016639674263]": {
                     "$type": "EditorInspectorComponent",
                     "Id": 3637526016639674263
@@ -1031,6 +1025,16 @@
                 "Component_[8328462562183634271]": {
                     "$type": "EditorPendingCompositionComponent",
                     "Id": 8328462562183634271
+                },
+                "Component_[1872262816768040153]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 1872262816768040153,
+                    "m_template": {
+                        "$type": "MultiplayerSample::DemoPlacardComponent",
+                        "Id": 0,
+                        "Text": "Player Spawner",
+                        "TextboxUiId": 3
+                    }
                 }
             }
         },
