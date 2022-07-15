@@ -58,6 +58,10 @@ set(FILES
     Source/Components/NetworkStressTestComponent.h
     Source/Components/NetworkPlayerMovementComponent.cpp
     Source/Components/NetworkPlayerMovementComponent.h
+    Source/Components/UI/HUDComponent.cpp
+    Source/Components/UI/HUDComponent.h
+    Source/Components/UI/UiCanvasDemoPlacardComponent.cpp
+    Source/Components/UI/UiCanvasDemoPlacardComponent.h
     Source/Spawners/IPlayerSpawner.h
     Source/Spawners/RoundRobinSpawner.h
     Source/Spawners/RoundRobinSpawner.cpp
