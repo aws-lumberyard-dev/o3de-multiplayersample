@@ -49,7 +49,7 @@ namespace MultiplayerSample
             {
                 editContext->Class<UiCanvasDemoPlacardComponent>("UiCanvasDemoPlacardComponent", "Helper component for setting up UI canvases placards on meshes in and around the world. This component can dynamically change the placard text so that we can reuse one UiCanvas for multiple placards.")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                        ->Attribute(AZ::Edit::Attributes::Category, "ComponentCategory")
+                        ->Attribute(AZ::Edit::Attributes::Category, "Multiplayer Sample UI")
                         ->Attribute(AZ::Edit::Attributes::Icon, "Icons/Components/Component_Placeholder.svg")
                         ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("Game"))
 

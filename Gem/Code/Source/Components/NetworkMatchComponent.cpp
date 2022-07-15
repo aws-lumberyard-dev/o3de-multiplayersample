@@ -18,11 +18,12 @@ namespace MultiplayerSample
     {
         SetRoundTime(GetRoundDuration());
         SetRoundNumber(1);
+        AZ::TickBus::Handler::BusConnect();
     }
 
     void NetworkMatchComponentController::OnDeactivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
     {
-        ;
+        AZ::TickBus::Handler::BusDisconnect();
     }
 
     void NetworkMatchComponentController::EndMatch()

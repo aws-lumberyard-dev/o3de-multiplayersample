@@ -11,6 +11,7 @@
 #include <Components/PerfTest/NetworkPrefabSpawnerComponent.h>
 #include <Components/PerfTest/NetworkRandomImpulseComponent.h>
 #include <Components/PerfTest/NetworkTestSpawnerComponent.h>
+#include <Components/UI/HUDComponent.h>
 #include <Components/UI/UiCanvasDemoPlacardComponent.h>
 #include <Source/AutoGen/AutoComponentTypes.h>
 
@@ -32,6 +33,7 @@ namespace MultiplayerSample
             m_descriptors.insert(m_descriptors.end(), {
                 MultiplayerSampleSystemComponent::CreateDescriptor(),
                 ExampleFilteredEntityComponent::CreateDescriptor(),
+                HUDComponent::CreateDescriptor(),
                 NetworkPrefabSpawnerComponent::CreateDescriptor(),
                 UiCanvasDemoPlacardComponent::CreateDescriptor()
             });
