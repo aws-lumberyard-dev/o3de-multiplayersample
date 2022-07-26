@@ -12,7 +12,7 @@
                        Namespace="Multiplayer" Include="Multiplayer/Components/NetworkTransformComponent.h" />
 
     <RemoteProcedure
-        Name="SendTeleportLocation" 
+        Name="Teleport" 
         InvokeFrom="Server" 
         HandleOn="Authority" 
         IsPublic="true" 

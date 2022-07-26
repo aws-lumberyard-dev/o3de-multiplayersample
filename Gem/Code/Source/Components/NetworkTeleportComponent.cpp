@@ -30,15 +30,6 @@ namespace MultiplayerSample
         }
     }
 
-    void NetworkTeleportComponent::OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
-    {
-        AZ_TracePrintf("Teleporter", "Client is activating...\n");
-    }
-
-    void NetworkTeleportComponent::OnDeactivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
-    {
-    }
-
     // Controller
 
     NetworkTeleportComponentController::NetworkTeleportComponentController(NetworkTeleportComponent& parent)
@@ -54,19 +45,14 @@ namespace MultiplayerSample
 
     void NetworkTeleportComponentController::OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
     {
-        AZ_TracePrintf("Teleporter", "Controller is activating...\n");
         auto* physicsSystem = AZ::Interface<AzPhysics::SystemInterface>::Get();
-        const AZ::EntityId self = GetEntity()->GetId();
         if (physicsSystem)
         {
-            auto [sceneHandle, bodyHandle] = physicsSystem->FindAttachedBodyHandleFromEntityId(self);
+            const AZ::EntityId selfId = GetEntity()->GetId();
+            auto [sceneHandle, bodyHandle] = physicsSystem->FindAttachedBodyHandleFromEntityId(selfId);
             AzPhysics::SimulatedBodyEvents::RegisterOnTriggerEnterHandler(
                 sceneHandle, bodyHandle, m_enterTrigger);
         }
-    }
-
-    void NetworkTeleportComponentController::OnDeactivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
-    {
     }
 
     void NetworkTeleportComponentController::OnTriggerEnter(
@@ -119,7 +105,7 @@ namespace MultiplayerSample
                 entity->FindComponent<MultiplayerSample::NetworkTeleportCompatibleComponent>();
             if (teleportable)
             {
-                teleportable->SendTeleportLocation(vector);
+                teleportable->Teleport(vector);
             }
             else
             {

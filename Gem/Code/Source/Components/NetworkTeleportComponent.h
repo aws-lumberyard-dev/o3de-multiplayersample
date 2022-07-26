@@ -27,8 +27,8 @@ namespace MultiplayerSample
         static void Reflect(AZ::ReflectContext* reflection);
 
         void OnInit() override {};
-        void OnActivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
-        void OnDeactivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
+        void OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating) override {};
+        void OnDeactivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating) override {};
     };
 
     class NetworkTeleportComponentController
@@ -38,7 +38,7 @@ namespace MultiplayerSample
         NetworkTeleportComponentController(NetworkTeleportComponent& parent);
 
         void OnActivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
-        void OnDeactivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
+        void OnDeactivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating) override {};
 
     private:
         AzPhysics::SimulatedBodyEvents::OnTriggerEnter::Handler m_enterTrigger;

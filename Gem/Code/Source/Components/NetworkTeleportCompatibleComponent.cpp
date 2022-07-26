@@ -18,14 +18,6 @@ namespace MultiplayerSample
         NetworkTeleportCompatibleComponentBase::Reflect(context);
     }
 
-    void NetworkTeleportCompatibleComponent::OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
-    {
-    }
-
-    void NetworkTeleportCompatibleComponent::OnDeactivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
-    {
-    }
-
     // Controller
 
     NetworkTeleportCompatibleComponentController::NetworkTeleportCompatibleComponentController(NetworkTeleportCompatibleComponent& parent)
@@ -33,17 +25,7 @@ namespace MultiplayerSample
     {
     }
 
-    void NetworkTeleportCompatibleComponentController::OnActivate(
-        [[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
-    {
-    }
-
-    void NetworkTeleportCompatibleComponentController::OnDeactivate(
-        [[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
-    {
-    }
-
-    void  NetworkTeleportCompatibleComponentController::HandleSendTeleportLocation(
+    void  NetworkTeleportCompatibleComponentController::HandleTeleport(
         [[maybe_unused]] AzNetworking::IConnection* invokingConnection, [[maybe_unused]] const AZ::Vector3& teleportedLocation)
     {
         AZ::Entity* self = GetEntity();
