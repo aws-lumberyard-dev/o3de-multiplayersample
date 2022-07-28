@@ -138,30 +138,6 @@
                     "$type": "EditorDisabledCompositionComponent",
                     "Id": 15400803850908131451
                 },
-                "Component_[16297437667241749172]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 16297437667241749172,
-                    "m_template": {
-                        "$type": "UiCanvasOnMeshComponent",
-                        "AttachmentImageAssetOverride": {
-                            "assetId": {
-                                "guid": "{6A3D30FC-1583-5964-81F9-F1DF6BEEB247}"
-                            },
-                            "assetHint": "levels/samplebase/placard_level_nonnet.attimage"
-                        }
-                    }
-                },
-                "Component_[16820956745044132717]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 16820956745044132717,
-                    "m_template": {
-                        "$type": "UiCanvasAssetRefComponent",
-                        "CanvasAssetRef": {
-                            "AssetPath": "uicanvases/worldspaceplacard.uicanvas"
-                        },
-                        "IsAutoLoad": true
-                    }
-                },
                 "Component_[17331375054040607466]": {
                     "$type": "EditorScriptCanvasComponent",
                     "Id": 17331375054040607466
@@ -213,16 +189,6 @@
                 "Component_[8328462562183634271]": {
                     "$type": "EditorPendingCompositionComponent",
                     "Id": 8328462562183634271
-                },
-                "Component_[15982237023251069200]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 15982237023251069200,
-                    "m_template": {
-                        "$type": "MultiplayerSample::DemoPlacardComponent",
-                        "Id": 0,
-                        "Text": "Non-Networked Static Collider",
-                        "TextboxUiId": 3
-                    }
                 }
             }
         },
@@ -282,30 +248,6 @@
                     "$type": "EditorDisabledCompositionComponent",
                     "Id": 15400803850908131451
                 },
-                "Component_[16297437667241749172]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 16297437667241749172,
-                    "m_template": {
-                        "$type": "UiCanvasOnMeshComponent",
-                        "AttachmentImageAssetOverride": {
-                            "assetId": {
-                                "guid": "{0EEFDB03-CC93-5EEA-8086-EE73FCA6F91A}"
-                            },
-                            "assetHint": "levels/samplebase/placard_level_nestedprefab.attimage"
-                        }
-                    }
-                },
-                "Component_[16820956745044132717]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 16820956745044132717,
-                    "m_template": {
-                        "$type": "UiCanvasAssetRefComponent",
-                        "CanvasAssetRef": {
-                            "AssetPath": "uicanvases/worldspaceplacard.uicanvas"
-                        },
-                        "IsAutoLoad": true
-                    }
-                },
                 "Component_[3637526016639674263]": {
                     "$type": "EditorInspectorComponent",
                     "Id": 3637526016639674263
@@ -353,16 +295,6 @@
                 "Component_[8328462562183634271]": {
                     "$type": "EditorPendingCompositionComponent",
                     "Id": 8328462562183634271
-                },
-                "Component_[13330934562855543074]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 13330934562855543074,
-                    "m_template": {
-                        "$type": "MultiplayerSample::DemoPlacardComponent",
-                        "Id": 0,
-                        "Text": "Prefab of Nested Network Entities",
-                        "TextboxUiId": 3
-                    }
                 }
             }
         },
@@ -593,30 +525,6 @@
                     "$type": "EditorDisabledCompositionComponent",
                     "Id": 15400803850908131451
                 },
-                "Component_[16297437667241749172]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 16297437667241749172,
-                    "m_template": {
-                        "$type": "UiCanvasOnMeshComponent",
-                        "AttachmentImageAssetOverride": {
-                            "assetId": {
-                                "guid": "{84430B69-B561-51EA-A2C6-04CACE551145}"
-                            },
-                            "assetHint": "levels/samplebase/placard_level_netentity_with_nonnetchild.attimage"
-                        }
-                    }
-                },
-                "Component_[16820956745044132717]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 16820956745044132717,
-                    "m_template": {
-                        "$type": "UiCanvasAssetRefComponent",
-                        "CanvasAssetRef": {
-                            "AssetPath": "uicanvases/worldspaceplacard.uicanvas"
-                        },
-                        "IsAutoLoad": true
-                    }
-                },
                 "Component_[3637526016639674263]": {
                     "$type": "EditorInspectorComponent",
                     "Id": 3637526016639674263
@@ -664,16 +572,6 @@
                 "Component_[8328462562183634271]": {
                     "$type": "EditorPendingCompositionComponent",
                     "Id": 8328462562183634271
-                },
-                "Component_[14649782571954442265]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 14649782571954442265,
-                    "m_template": {
-                        "$type": "MultiplayerSample::DemoPlacardComponent",
-                        "Id": 0,
-                        "Text": "Network Ball with Non-Net ParticleFx",
-                        "TextboxUiId": 3
-                    }
                 }
             }
         },
@@ -958,30 +856,6 @@
                     "$type": "EditorDisabledCompositionComponent",
                     "Id": 15400803850908131451
                 },
-                "Component_[16297437667241749172]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 16297437667241749172,
-                    "m_template": {
-                        "$type": "UiCanvasOnMeshComponent",
-                        "AttachmentImageAssetOverride": {
-                            "assetId": {
-                                "guid": "{AF0A7066-3089-51DF-B847-BAB45A9F3BA8}"
-                            },
-                            "assetHint": "levels/samplebase/placard_dynamicspawn_player.attimage"
-                        }
-                    }
-                },
-                "Component_[16820956745044132717]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 16820956745044132717,
-                    "m_template": {
-                        "$type": "UiCanvasAssetRefComponent",
-                        "CanvasAssetRef": {
-                            "AssetPath": "uicanvases/worldspaceplacard.uicanvas"
-                        },
-                        "IsAutoLoad": true
-                    }
-                },
                 "Component_[3637526016639674263]": {
                     "$type": "EditorInspectorComponent",
                     "Id": 3637526016639674263
@@ -1029,16 +903,6 @@
                 "Component_[8328462562183634271]": {
                     "$type": "EditorPendingCompositionComponent",
                     "Id": 8328462562183634271
-                },
-                "Component_[1872262816768040153]": {
-                    "$type": "GenericComponentWrapper",
-                    "Id": 1872262816768040153,
-                    "m_template": {
-                        "$type": "MultiplayerSample::DemoPlacardComponent",
-                        "Id": 0,
-                        "Text": "Player Spawner",
-                        "TextboxUiId": 3
-                    }
                 }
             }
         },
@@ -1947,9 +1811,7 @@
                     "$type": "GenericComponentWrapper",
                     "Id": 13442028985855289554,
                     "m_template": {
-                        "$type": "MultiplayerSample::NetworkMatchComponent",
-                        "RoundDuration": 120.0,
-                        "TotalRounds": 3
+                        "$type": "MultiplayerSample::NetworkMatchComponent"
                     }
                 },
                 "Component_[14435868710318598385]": {
