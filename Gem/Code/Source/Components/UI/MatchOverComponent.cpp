@@ -70,7 +70,7 @@ namespace MultiplayerSample
 
     void MatchOverComponent::Deactivate()
     {
-        UiCanvasAssetRefNotificationBus::Handler::BusDisconnect(GetEntityId());
+        UiCanvasAssetRefNotificationBus::Handler::BusDisconnect();
     }
 
     void MatchOverComponent::OnCanvasLoadedIntoEntity(AZ::EntityId uiCanvasEntity)
