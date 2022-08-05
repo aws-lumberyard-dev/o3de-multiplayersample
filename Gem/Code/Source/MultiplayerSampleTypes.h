@@ -44,6 +44,48 @@ namespace MultiplayerSample
     };
 
     using RoundTimeSec = AzNetworking::QuantizedValues<1, 2, 0, 3600>; // 1 hour max round duration
+
+    struct PlayerState
+    {
+        AZStd::string m_playerName;
+        uint32_t m_score;          // coins collected
+        uint8_t m_remainingSheild; // % of shield left, max of ~200% allowed for buffs
+        bool operator!=(const PlayerState& rhs) const;
+        bool Serialize(AzNetworking::ISerializer& serializer);
+    };
+
+    inline bool PlayerState::Serialize(AzNetworking::ISerializer& serializer)
+    {
+        return serializer.Serialize(m_playerName, "playerName")
+            && serializer.Serialize(m_score, "score") 
+            && serializer.Serialize(m_remainingSheild, "remainingSheild");
+    }
+
+    inline bool PlayerState::operator!=(const PlayerState& rhs) const
+    {
+        return m_playerName != rhs.m_playerName
+            || m_score != rhs.m_score
+            || m_remainingSheild != rhs.m_remainingSheild;
+    }
+    
+    struct MatchResults
+    {
+        AZStd::string m_winningPlayerName;
+        AZStd::vector<PlayerState> m_playerStates;
+        bool operator!=(const MatchResults& rhs) const;
+        bool Serialize(AzNetworking::ISerializer& serializer);
+    };
+
+    inline bool MatchResults::Serialize(AzNetworking::ISerializer& serializer)
+    {
+        return serializer.Serialize(m_winningPlayerName, "winningPlayerName")
+            && serializer.Serialize(m_playerStates, "playerStates");
+    }
+
+    inline bool MatchResults::operator!=(const MatchResults& rhs) const
+    {
+        return m_winningPlayerName != rhs.m_winningPlayerName;
+    }
 }
 
 namespace AZ

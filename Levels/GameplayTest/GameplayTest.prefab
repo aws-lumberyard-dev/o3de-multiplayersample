@@ -5282,7 +5282,8 @@
                     "m_template": {
                         "$type": "MatchOverComponent",
                         "GameOverElementId": 11,
-                        "HudElementId": 10
+                        "HudElementId": 10,
+                        "ResultsElementId": 13
                     }
                 },
                 "Component_[2827181128407867340]": {

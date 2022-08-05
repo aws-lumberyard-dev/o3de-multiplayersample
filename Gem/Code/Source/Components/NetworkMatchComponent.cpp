@@ -32,6 +32,12 @@ namespace MultiplayerSample
     {
         //Signal event to end the match
         m_roundTickEvent.RemoveFromQueue();
+
+        // TODO: get actual player state and calculate winner
+        PlayerState jackState = PlayerState{ "Jack", 25, 80 };
+        PlayerState allieState = PlayerState{ "Allie", 23, 70 };
+        PlayerState olexState = PlayerState{ "Olex", 5, 42};
+        SetResults(MatchResults{ "Jack", {jackState, allieState, olexState} });
     }
 
     void NetworkMatchComponentController::EndRound()

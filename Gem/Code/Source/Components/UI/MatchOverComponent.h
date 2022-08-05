@@ -35,14 +35,20 @@ namespace MultiplayerSample
         void OnCanvasLoadedIntoEntity(AZ::EntityId uiCanvasEntity) override;
 
         void UpdateRound(uint16_t round);
+        void UpdateResults(MatchResults results);
         void DetermineIfMatchEnded(RoundTimeSec);
+        void AddResultsToDisplay(MatchResults results);
+        AZStd::string BuildPlayerSummary(AZStd::vector<PlayerState> playerStates);
         void OnMatchEnd();
 
         AZ::EntityId m_uiCanvasId;
         uint16_t m_currentRound = 1;
+        MatchResults m_matchResults {};
         int m_gameOverElementId = 0;
         int m_hudElementId = 0;
+        int m_resultsElementId = 0;
         AZ::EventHandler<uint16_t> m_roundNumberHandler;
         AZ::EventHandler<RoundTimeSec> m_roundTimerHandler;
+        AZ::EventHandler<MatchResults> m_matchResultsHandler;
     };
 } // namespace MultiplayerSample

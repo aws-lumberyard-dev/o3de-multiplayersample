@@ -13,6 +13,7 @@
 
 #include <LyShine/Bus/UiCanvasBus.h>
 #include <LyShine/Bus/UiElementBus.h>
+#include <LyShine/Bus/UiTextBus.h>
 
 namespace MultiplayerSample
 {
@@ -24,6 +25,7 @@ namespace MultiplayerSample
                 ->Version(1)
                 ->Field("GameOverElementId", &MatchOverComponent::m_gameOverElementId)
                 ->Field("HudElementId", &MatchOverComponent::m_hudElementId)
+                ->Field("ResultsElementId", &MatchOverComponent::m_resultsElementId)
                 ;
 
             if (AZ::EditContext* editContext = serializeContext->GetEditContext())
@@ -37,6 +39,8 @@ namespace MultiplayerSample
                         AZ::Edit::UIHandlers::Default, &MatchOverComponent::m_gameOverElementId, "Game Over element ID", "The element ID of the Game Over UI element to display at Match end.")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default, &MatchOverComponent::m_hudElementId, "HUD element ID", "The element ID of the UI element for the HUD")
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::Default, &MatchOverComponent::m_resultsElementId, "Results element ID", "The ID of the UI element for the match results")
                     ;
             }
         }
@@ -65,6 +69,10 @@ namespace MultiplayerSample
             m_roundTimerHandler = AZ::EventHandler<RoundTimeSec>([this](RoundTimeSec value) 
                 { DetermineIfMatchEnded(value); });
             netMatchComponent->RoundTimeAddEvent(m_roundTimerHandler);
+
+            m_matchResultsHandler = AZ::EventHandler<MatchResults>([this](MatchResults value)
+                { UpdateResults(value); });
+            netMatchComponent->ResultsAddEvent(m_matchResultsHandler);
         }
     }
 
@@ -83,6 +91,12 @@ namespace MultiplayerSample
         m_currentRound = round;
     }
 
+    void MatchOverComponent::UpdateResults(MatchResults results)
+    {
+        m_matchResults = results;
+        AddResultsToDisplay(results);
+    }
+
     void MatchOverComponent::DetermineIfMatchEnded(RoundTimeSec roundTime)
     {
         
@@ -97,6 +111,33 @@ namespace MultiplayerSample
                 OnMatchEnd();
             }
         }
+    }
+
+    void MatchOverComponent::AddResultsToDisplay(MatchResults results)
+    {
+        if (m_uiCanvasId.IsValid())
+        {
+            AZ::Entity* winnerTextElement;
+            UiCanvasBus::EventResult(winnerTextElement, m_uiCanvasId, &UiCanvasBus::Events::FindElementById, m_resultsElementId);
+            if (winnerTextElement)
+            {
+                auto finalStandings = BuildPlayerSummary(results.m_playerStates);
+                UiTextBus::Event(winnerTextElement->GetId(), &UiTextBus::Events::SetText,
+                    AZStd::string::format("WINNER:  %s\n\n%s", results.m_winningPlayerName.c_str(), finalStandings.c_str()));
+            }
+        }
+    }
+
+    AZStd::string MatchOverComponent::BuildPlayerSummary(AZStd::vector<PlayerState> playerStates)
+    {
+        AZStd::string resultTable = "---------- Final Standings ----------\n\n";
+        for (PlayerState result : playerStates)
+        {
+            resultTable.append(
+                AZStd::string::format("%s :  score  %i, shields %i\n",
+                result.m_playerName.c_str(), result.m_score, result.m_remainingSheild));
+        }
+        return resultTable;
     }
 
     void MatchOverComponent::OnMatchEnd()
