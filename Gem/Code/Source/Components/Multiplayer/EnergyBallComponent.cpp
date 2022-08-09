@@ -6,8 +6,11 @@
  */
 
 #include <AzCore/Component/ComponentApplicationBus.h>
+#include <AzCore/Component/TransformBus.h>
 #include <AzFramework/Physics/RigidBodyBus.h>
 #include <AzFramework/Physics/Collision/CollisionEvents.h>
+#include <AzFramework/Physics/SimulatedBodies/RigidBody.h>
+#include <Multiplayer/Components/NetworkTransformComponent.h>
 #include <Source/AutoGen/NetworkHealthComponent.AutoComponent.h>
 #include <Source/Components/Multiplayer/EnergyBallComponent.h>
 
