@@ -45,6 +45,8 @@ namespace MultiplayerSample
 
     using RoundTimeSec = AzNetworking::QuantizedValues<1, 2, 0, 3600>; // 1 hour max round duration
 
+    static constexpr int MaxSupportedPlayers = 8;
+
     // Temporary match player state.
     struct PlayerCoinState
     {
