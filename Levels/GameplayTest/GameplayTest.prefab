@@ -79,7 +79,8 @@
                     "Instance_[59332693509213]/ContainerEntity",
                     "Entity_[727777302952]",
                     "Entity_[605362165710]",
-                    "Instance_[5994660872920]/ContainerEntity"
+                    "Instance_[5994660872920]/ContainerEntity",
+                    "Entity_[645621920682]"
                 ]
             }
         }
@@ -192,6 +193,88 @@
                 "Component_[8328462562183634271]": {
                     "$type": "EditorPendingCompositionComponent",
                     "Id": 8328462562183634271
+                }
+            }
+        },
+        "Entity_[1234032440234]": {
+            "Id": "Entity_[1234032440234]",
+            "Name": "Energy Ball",
+            "Components": {
+                "Component_[10306762055022788925]": {
+                    "$type": "EditorDisabledCompositionComponent",
+                    "Id": 10306762055022788925
+                },
+                "Component_[10375256730531750003]": {
+                    "$type": "EditorEntitySortComponent",
+                    "Id": 10375256730531750003
+                },
+                "Component_[1260159715379895998]": {
+                    "$type": "EditorRigidBodyComponent",
+                    "Id": 1260159715379895998,
+                    "Configuration": {
+                        "entityId": ""
+                    }
+                },
+                "Component_[1317909201307914089]": {
+                    "$type": "EditorOnlyEntityComponent",
+                    "Id": 1317909201307914089
+                },
+                "Component_[14745079858933335176]": {
+                    "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
+                    "Id": 14745079858933335176,
+                    "Parent Entity": "Entity_[645621920682]"
+                },
+                "Component_[15147782715820726746]": {
+                    "$type": "EditorVisibilityComponent",
+                    "Id": 15147782715820726746
+                },
+                "Component_[16569145727191893785]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 16569145727191893785,
+                    "m_template": {
+                        "$type": "MultiplayerSample::EnergyBallComponent"
+                    }
+                },
+                "Component_[16681766830394531701]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 16681766830394531701,
+                    "m_template": {
+                        "$type": "Multiplayer::NetworkRigidBodyComponent"
+                    }
+                },
+                "Component_[3162513567929341521]": {
+                    "$type": "SelectionComponent",
+                    "Id": 3162513567929341521
+                },
+                "Component_[425805608025666933]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 425805608025666933,
+                    "m_template": {
+                        "$type": "NetBindComponent"
+                    }
+                },
+                "Component_[4846885455041562164]": {
+                    "$type": "EditorPendingCompositionComponent",
+                    "Id": 4846885455041562164
+                },
+                "Component_[7697210517306281973]": {
+                    "$type": "EditorLockComponent",
+                    "Id": 7697210517306281973
+                },
+                "Component_[8670461081840355986]": {
+                    "$type": "EditorInspectorComponent",
+                    "Id": 8670461081840355986
+                },
+                "Component_[8772152848682895905]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 8772152848682895905,
+                    "m_template": {
+                        "$type": "Multiplayer::NetworkTransformComponent"
+                    }
+                },
+                "Component_[9370914006782848444]": {
+                    "$type": "EditorEntityIconComponent",
+                    "Id": 9370914006782848444
                 }
             }
         },
@@ -5003,8 +5086,10 @@
                 "Component_[3100161181283689811]": {
                     "$type": "EditorAxisAlignedBoxShapeComponent",
                     "Id": 3100161181283689811,
+                    "DisplayFilled": false,
                     "AxisAlignedBoxShape": {
                         "Configuration": {
+                            "IsFilled": false,
                             "Dimensions": [
                                 27.733196258544922,
                                 28.316869735717773,
@@ -5228,6 +5313,63 @@
                 }
             }
         },
+        "Entity_[645621920682]": {
+            "Id": "Entity_[645621920682]",
+            "Name": "Energy Cannon",
+            "Components": {
+                "Component_[13913926960209768839]": {
+                    "$type": "EditorVisibilityComponent",
+                    "Id": 13913926960209768839
+                },
+                "Component_[14739979666928822184]": {
+                    "$type": "EditorInspectorComponent",
+                    "Id": 14739979666928822184
+                },
+                "Component_[15505496297744353802]": {
+                    "$type": "EditorPendingCompositionComponent",
+                    "Id": 15505496297744353802
+                },
+                "Component_[15594701352099365687]": {
+                    "$type": "EditorLockComponent",
+                    "Id": 15594701352099365687
+                },
+                "Component_[1696390050425520783]": {
+                    "$type": "SelectionComponent",
+                    "Id": 1696390050425520783
+                },
+                "Component_[2942213479640514248]": {
+                    "$type": "EditorOnlyEntityComponent",
+                    "Id": 2942213479640514248
+                },
+                "Component_[3533828349650165605]": {
+                    "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
+                    "Id": 3533828349650165605,
+                    "Parent Entity": "Entity_[356758116574]",
+                    "Transform Data": {
+                        "Translate": [
+                            15.38675308227539,
+                            -2.788005828857422,
+                            0.0
+                        ]
+                    }
+                },
+                "Component_[398718130345139058]": {
+                    "$type": "EditorEntitySortComponent",
+                    "Id": 398718130345139058,
+                    "Child Entity Order": [
+                        "Entity_[1234032440234]"
+                    ]
+                },
+                "Component_[5124962855717337225]": {
+                    "$type": "EditorDisabledCompositionComponent",
+                    "Id": 5124962855717337225
+                },
+                "Component_[8731904734389776651]": {
+                    "$type": "EditorEntityIconComponent",
+                    "Id": 8731904734389776651
+                }
+            }
+        },
         "Entity_[727777302952]": {
             "Id": "Entity_[727777302952]",
             "Name": "MatchController",
@@ -5381,7 +5523,7 @@
                     "Id": 7092071161962745685,
                     "Controller": {
                         "Configuration": {
-                            "EditorEntityId": 12299741056352151721
+                            "EditorEntityId": 5318453575779529363
                         }
                     }
                 },
