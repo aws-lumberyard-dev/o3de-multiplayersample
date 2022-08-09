@@ -26,9 +26,9 @@ namespace MultiplayerSample
         void OnDeactivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
 
         //! MatchPlayerCoinsRequestBus overrides ...
-        //@{
+        //! @{
         AZStd::vector<PlayerCoinState> GetPlayerCoinCounts() const override;
-        //}@
+        //! }@
     };
 
     class MatchPlayerCoinsComponentController
@@ -42,11 +42,11 @@ namespace MultiplayerSample
         void OnDeactivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
 
         //! PlayerCoinCollectorNotificationBus overrides ...
-        //@{
+        //! @{
         void OnPlayerCollectedCoinCountChanged(Multiplayer::NetEntityId playerEntity, uint16_t coinsCollected) override;
         void OnPlayerCollectorActivated(Multiplayer::NetEntityId playerEntity) override;
         void OnPlayerCollectorDeactivated(Multiplayer::NetEntityId playerEntity) override;
-        //}@
+        //! }@
 
     private:
         // Return -1 if a state is not available for this player id
