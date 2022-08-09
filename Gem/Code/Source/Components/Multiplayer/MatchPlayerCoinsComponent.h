@@ -21,8 +21,7 @@ namespace MultiplayerSample
         AZ_MULTIPLAYER_COMPONENT(MultiplayerSample::MatchPlayerCoinsComponent, s_matchPlayerCoinsComponentConcreteUuid, MultiplayerSample::MatchPlayerCoinsComponentBase);
 
         static void Reflect(AZ::ReflectContext* context);
-
-        void OnInit() override;
+        
         void OnActivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
         void OnDeactivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
 

@@ -21,10 +21,6 @@ namespace MultiplayerSample
         MatchPlayerCoinsComponentBase::Reflect(context);
     }
 
-    void MatchPlayerCoinsComponent::OnInit()
-    {
-    }
-
     void MatchPlayerCoinsComponent::OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
     {
         if (IsNetEntityRoleClient())
