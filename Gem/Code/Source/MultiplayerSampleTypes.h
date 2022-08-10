@@ -76,7 +76,7 @@ struct PlayerState
 {
     AZStd::string m_playerName = "";
     uint32_t m_score = 0;          // coins collected
-    uint8_t m_remainingSheild = 0; // % of shield left, max of ~200% allowed for buffs
+    uint8_t m_remainingShield = 0; // % of shield left, max of ~200% allowed for buffs
     bool operator!=(const PlayerState& rhs) const;
     bool Serialize(AzNetworking::ISerializer& serializer);
 };
@@ -85,14 +85,14 @@ inline bool PlayerState::Serialize(AzNetworking::ISerializer& serializer)
 {
     return serializer.Serialize(m_playerName, "playerName")
         && serializer.Serialize(m_score, "score")
-        && serializer.Serialize(m_remainingSheild, "remainingSheild");
+        && serializer.Serialize(m_remainingShield, "remainingShield");
 }
 
 inline bool PlayerState::operator!=(const PlayerState& rhs) const
 {
     return m_playerName != rhs.m_playerName
         || m_score != rhs.m_score
-        || m_remainingSheild != rhs.m_remainingSheild;
+        || m_remainingShield != rhs.m_remainingShield;
 }
 
 struct MatchResultsSummary
