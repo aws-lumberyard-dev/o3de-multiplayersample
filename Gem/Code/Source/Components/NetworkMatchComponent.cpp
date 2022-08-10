@@ -25,7 +25,6 @@ namespace MultiplayerSample
     void NetworkMatchComponent::HandleRPC_EndMatch(
         [[maybe_unused]] AzNetworking::IConnection* invokingConnection, [[maybe_unused]] const MatchResultsSummary& results)
     {
-        AZ_TracePrintf("NetworkMatchComponent", "Handling RPC_EndMatch\n", "...");
         if (IsNetEntityRoleClient())
         {
             UiGameOverBus::Broadcast(&UiGameOverBus::Events::SetGameOverScreenEnabled, true);
