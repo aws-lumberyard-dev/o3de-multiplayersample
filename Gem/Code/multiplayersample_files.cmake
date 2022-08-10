@@ -76,14 +76,18 @@ set(FILES
     Source/Components/NetworkStressTestComponent.h
     Source/Components/NetworkPlayerMovementComponent.cpp
     Source/Components/NetworkPlayerMovementComponent.h
+
     Source/Components/UI/HUDComponent.cpp
     Source/Components/UI/HUDComponent.h
     Source/Components/UI/UiCoinCountComponent.cpp
     Source/Components/UI/UiCoinCountComponent.h
+    Source/Components/UI/UiGameOverComponent.cpp
+    Source/Components/UI/UiGameOverComponent.h
     Source/Components/UI/UiMatchPlayerCoinCountsComponent.cpp
     Source/Components/UI/UiMatchPlayerCoinCountsComponent.h
     Source/Components/UI/UiPlayerArmorComponent.cpp
     Source/Components/UI/UiPlayerArmorComponent.h
+
     Source/Components/Multiplayer/MatchPlayerCoinsComponent.cpp
     Source/Components/Multiplayer/MatchPlayerCoinsComponent.h
     Source/Components/Multiplayer/PlayerArmorComponent.cpp

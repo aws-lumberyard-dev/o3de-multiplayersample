@@ -40,7 +40,7 @@ namespace MultiplayerSample
                 NetworkPrefabSpawnerComponent::CreateDescriptor(),
                 UiCoinCountComponent::CreateDescriptor(),
                 UiMatchPlayerCoinCountsComponent::CreateDescriptor(),
-                UiGameOverComponent::CreateDescriptor()
+                UiGameOverComponent::CreateDescriptor(),
                 UiPlayerArmorComponent::CreateDescriptor(),
             });
 
