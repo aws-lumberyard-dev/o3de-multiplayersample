@@ -5307,7 +5307,7 @@
                     "Id": 11044208504869032248,
                     "m_template": {
                         "$type": "MultiplayerSample::NetworkMatchComponent",
-                        "RoundDuration": 100000.0,
+                        "RoundDuration": 15.0,
                         "TotalRounds": 1
                     }
                 },
@@ -5469,7 +5469,7 @@
                 {
                     "op": "replace",
                     "path": "/ContainerEntity/Components/Component_[16896350622714100755]/Transform Data/Translate/0",
-                    "value": 13.394186019897461
+                    "value": 13.39418601989746
                 },
                 {
                     "op": "replace",
@@ -5853,7 +5853,7 @@
                 {
                     "op": "replace",
                     "path": "/ContainerEntity/Components/Component_[16896350622714100755]/Transform Data/Translate/0",
-                    "value": 13.624067306518555
+                    "value": 13.624067306518556
                 },
                 {
                     "op": "replace",
@@ -5868,7 +5868,7 @@
                 {
                     "op": "replace",
                     "path": "/ContainerEntity/Components/Component_[16896350622714100755]/Transform Data/Rotate/2",
-                    "value": -94.26289367675781
+                    "value": -94.2628936767578
                 }
             ]
         },
@@ -5893,7 +5893,7 @@
                 {
                     "op": "replace",
                     "path": "/ContainerEntity/Components/Component_[16896350622714100755]/Transform Data/Translate/2",
-                    "value": 1.8678438663482666
+                    "value": 1.8678438663482664
                 },
                 {
                     "op": "replace",
@@ -5958,7 +5958,7 @@
                 {
                     "op": "replace",
                     "path": "/ContainerEntity/Components/Component_[16896350622714100755]/Transform Data/Translate/0",
-                    "value": 13.246040344238281
+                    "value": 13.24604034423828
                 },
                 {
                     "op": "replace",

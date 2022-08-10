@@ -46,22 +46,22 @@ namespace MultiplayerSample
             serializeContext->Class<UiPlayerArmorComponent, AZ::Component>()
                 ->Version(1)
                 ->Field("Root Element", &UiPlayerArmorComponent::m_rootElement)
-                ->Field("Player Life Visual", &UiPlayerArmorComponent::m_armorVisualEntity)
-                ->Field("Player Life Text", &UiPlayerArmorComponent::m_armorText)
+                ->Field("Player Armor Visual", &UiPlayerArmorComponent::m_armorVisualEntity)
+                ->Field("Player Armor Text", &UiPlayerArmorComponent::m_armorText)
                 ;
 
             if (AZ::EditContext* editContext = serializeContext->GetEditContext())
             {
                 editContext->Class<UiPlayerArmorComponent>("UiPlayerArmorComponent",
-                    "Shows list of coins collected by each player in the match.")
+                    "Shows how much armor the local player has.")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("UI"))
 
                     ->DataElement(AZ::Edit::UIHandlers::Default, &UiPlayerArmorComponent::m_rootElement,
                         "Root Element",
-                        "Top level element that contains all other elements for showing coins collected by players")
-                    ->DataElement(nullptr, &UiPlayerArmorComponent::m_armorVisualEntity, "Player Life Visual", "")
-                    ->DataElement(nullptr, &UiPlayerArmorComponent::m_armorText, "Player Life Text", "")
+                        "Top level element that contains all other elements for player's armor value")
+                    ->DataElement(nullptr, &UiPlayerArmorComponent::m_armorVisualEntity, "Player Armor Visual", "")
+                    ->DataElement(nullptr, &UiPlayerArmorComponent::m_armorText, "Player Armor Text", "")
                     ;
             }
         }
