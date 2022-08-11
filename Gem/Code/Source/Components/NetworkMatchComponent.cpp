@@ -7,9 +7,9 @@
 
 #include <MultiplayerSampleTypes.h>
 #include <UiGameOverBus.h>
-#include <Source/Components/Multiplayer/NetworkMatchComponent.h>
-
-#include "MatchPlayerCoinsComponent.h"
+#include <Source/Components/Multiplayer/MatchPlayerCoinsComponent.h>
+#include <Source/Components/Multiplayer/PlayerIdentityComponent.h>
+#include <Source/Components/NetworkMatchComponent.h>
 
 namespace MultiplayerSample
 {

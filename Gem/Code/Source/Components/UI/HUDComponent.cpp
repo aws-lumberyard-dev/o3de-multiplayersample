@@ -7,7 +7,7 @@
  */
 
 #include <Source/Components/UI/HUDComponent.h>
-#include <Source/Components/Multiplayer/NetworkMatchComponent.h>
+#include <Source/Components/NetworkMatchComponent.h>
 
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/Serialization/EditContext.h>

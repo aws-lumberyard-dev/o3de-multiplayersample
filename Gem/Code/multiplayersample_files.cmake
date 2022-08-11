@@ -52,6 +52,8 @@ set(FILES
     Source/Components/NetworkCoinSpawnerComponent.h
     Source/Components/NetworkHealthComponent.cpp
     Source/Components/NetworkHealthComponent.h
+    Source/Components/NetworkMatchComponent.cpp
+    Source/Components/NetworkMatchComponent.h
     Source/Components/NetworkPlayerSpawnerComponent.cpp
     Source/Components/NetworkPlayerSpawnerComponent.h
     Source/Components/NetworkRandomComponent.cpp
@@ -96,8 +98,6 @@ set(FILES
     Source/Components/Multiplayer/PlayerCoinCollectorComponent.h
     Source/Components/Multiplayer/PlayerIdentityComponent.cpp
     Source/Components/Multiplayer/PlayerIdentityComponent.h
-    Source/Components/Multiplayer/NetworkMatchComponent.cpp
-    Source/Components/Multiplayer/NetworkMatchComponent.h
     Source/Components/Multiplayer/EnergyBallComponent.cpp
     Source/Components/Multiplayer/EnergyBallComponent.h
     Source/Components/Multiplayer/EnergyCannonComponent.cpp
