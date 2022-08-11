@@ -9,6 +9,7 @@ set(FILES
     Include/MatchPlayerCoinsBus.h
     Include/NetworkPrefabSpawnerInterface.h
     Include/PlayerCoinCollectorBus.h
+    Include/PlayerIdentityBus.h
     Include/UiCoinCountBus.h
     Include/UiGameOverBus.h
     Include/UiPlayerArmorBus.h
@@ -37,6 +38,7 @@ set(FILES
     Source/AutoGen/NetworkWeaponsComponent.AutoComponent.xml
     Source/AutoGen/PlayerArmorComponent.AutoComponent.xml
     Source/AutoGen/PlayerCoinCollectorComponent.AutoComponent.xml
+    Source/AutoGen/PlayerIdentityComponent.AutoComponent.xml
 
     Source/Components/ExampleFilteredEntityComponent.h
     Source/Components/ExampleFilteredEntityComponent.cpp
@@ -50,8 +52,6 @@ set(FILES
     Source/Components/NetworkCoinSpawnerComponent.h
     Source/Components/NetworkHealthComponent.cpp
     Source/Components/NetworkHealthComponent.h
-    Source/Components/NetworkMatchComponent.cpp
-    Source/Components/NetworkMatchComponent.h
     Source/Components/NetworkPlayerSpawnerComponent.cpp
     Source/Components/NetworkPlayerSpawnerComponent.h
     Source/Components/NetworkRandomComponent.cpp
@@ -94,10 +94,15 @@ set(FILES
     Source/Components/Multiplayer/PlayerArmorComponent.h
     Source/Components/Multiplayer/PlayerCoinCollectorComponent.cpp
     Source/Components/Multiplayer/PlayerCoinCollectorComponent.h
+    Source/Components/Multiplayer/PlayerIdentityComponent.cpp
+    Source/Components/Multiplayer/PlayerIdentityComponent.h
+    Source/Components/Multiplayer/NetworkMatchComponent.cpp
+    Source/Components/Multiplayer/NetworkMatchComponent.h
     Source/Components/Multiplayer/EnergyBallComponent.cpp
     Source/Components/Multiplayer/EnergyBallComponent.h
     Source/Components/Multiplayer/EnergyCannonComponent.cpp
     Source/Components/Multiplayer/EnergyCannonComponent.h
+
     Source/Spawners/IPlayerSpawner.h
     Source/Spawners/RoundRobinSpawner.h
     Source/Spawners/RoundRobinSpawner.cpp
