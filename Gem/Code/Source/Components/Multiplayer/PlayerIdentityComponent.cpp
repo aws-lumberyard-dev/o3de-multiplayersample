@@ -21,10 +21,6 @@ namespace MultiplayerSample
         PlayerIdentityComponentBase::Reflect(context);
     }
 
-    void PlayerIdentityComponent::OnInit()
-    {
-    }
-
     void PlayerIdentityComponent::OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
     {
     }
