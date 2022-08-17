@@ -8,12 +8,12 @@
     OverrideInclude="Source/Components/Multiplayer/PlayerIdentityComponent.h"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-	<ComponentRelation Constraint="Required" HasController="true" Name="PlayerCoinCollectorComponent" Namespace="MultiplayerSample" 
-	                   Include="Components/Multiplayer/PlayerCoinCollectorComponent.h" />
-	<ComponentRelation Constraint="Required" HasController="true" Name="NetworkHealthComponent" Namespace="MultiplayerSample" 
-	                   Include="Components/NetworkHealthComponent.h" />
+    <ComponentRelation Constraint="Required" HasController="true" Name="PlayerCoinCollectorComponent" Namespace="MultiplayerSample"
+                       Include="Components/Multiplayer/PlayerCoinCollectorComponent.h" />
+    <ComponentRelation Constraint="Required" HasController="true" Name="NetworkHealthComponent" Namespace="MultiplayerSample"
+                       Include="Components/NetworkHealthComponent.h" />
 
-	<Include File="MultiplayerSampleTypes.h" />
+    <Include File="MultiplayerSampleTypes.h" />
 
     <NetworkProperty Type="PlayerNameString" Name="PlayerName" Init="{}" ReplicateFrom="Authority" ReplicateTo="Client" Container="Object" IsPublic="true" IsRewindable="true" IsPredictable="false" ExposeToEditor="false" ExposeToScript="false" GenerateEventBindings="true" Description="The name of the player." />
 
