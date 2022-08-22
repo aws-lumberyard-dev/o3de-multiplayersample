@@ -203,10 +203,12 @@ namespace MultiplayerSample
     void NetworkMatchComponentController::OnPlayerArmorZero(Multiplayer::NetEntityId playerEntity)
     {
         const auto playerIterator = AZStd::find(m_players.begin(), m_players.end(), playerEntity);
-        const auto playerHandle = Multiplayer::GetNetworkEntityManager()->GetEntity(playerEntity);
-        if ((playerIterator != m_players.end()) && playerHandle.Exists())
+        if (playerIterator != m_players.end())
         {
-            RespawnPlayer(playerEntity, PlayerResetOptions{ true, GetRespawnPenaltyPercent() });
+            if (Multiplayer::ConstNetworkEntityHandle playerHandle = Multiplayer::GetNetworkEntityManager()->GetEntity(playerEntity))
+            {
+                RespawnPlayer(playerEntity, PlayerResetOptions{ true, GetRespawnPenaltyPercent() });
+            }
         }
         else
         {
