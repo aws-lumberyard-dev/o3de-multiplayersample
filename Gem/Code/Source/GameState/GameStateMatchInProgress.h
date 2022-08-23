@@ -33,7 +33,7 @@ namespace MultiplayerSample
         //! PlayerCoinCollectorNotificationBus overrides
         //! @{
         void OnPlayerCollectedCoinCountChanged(Multiplayer::NetEntityId playerEntity, uint16_t coinsCollected) override;
-        int GetNotificationOrder() override { return LastNotificationOrder; }
+        int GetNotificationOrder() override;
         //! )@
 
     private:

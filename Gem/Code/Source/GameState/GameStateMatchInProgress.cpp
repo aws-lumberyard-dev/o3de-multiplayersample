@@ -46,6 +46,12 @@ namespace MultiplayerSample
         }
     }
 
+    int GameStateMatchInProgress::GetNotificationOrder()
+    {
+        // Putting this state as the last handler so that the player states are updated, otherwise the winning count might be off.
+        return LastNotificationOrder;
+    }
+
     void GameStateMatchInProgress::OnRoundChanged(AZ::u16 round)
     {
         if (round > m_controller->GetTotalRounds())
