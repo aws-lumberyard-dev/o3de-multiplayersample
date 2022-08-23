@@ -26,7 +26,7 @@ namespace MultiplayerSample
 
     void UiCoinCountComponent::OnCoinCountChanged(uint16_t totalCoinsCollectedByLocalPlayer)
     {
-        AZ::u64 winningCoinCount = 1;
+        AZ::u64 winningCoinCount = 10;
         if (const auto registry = AZ::SettingsRegistry::Get())
         {
             registry->Get(winningCoinCount, WinningCoinCountSetting);
