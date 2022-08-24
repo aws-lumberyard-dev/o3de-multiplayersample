@@ -56,7 +56,7 @@ namespace MultiplayerSample
         void SubmitEndpointConnectionCountMetrics();
 
         ConnectionAcquiredEvent::Handler m_connectHandler;
-        EndpointDisonnectedEvent::Handler m_disconnectHandler;
+        EndpointDisconnectedEvent::Handler m_disconnectHandler;
 
         //! Time interval for submitting metrics.
         //! This value only applies to metrics which are required to be submitted periodically, like client connection counts.
