@@ -99,7 +99,7 @@ namespace MultiplayerSample
         AZ::Interface<IMultiplayer>::Get()->AddConnectionAcquiredHandler(m_connectHandler);
 
         // Add a handler for the EndpointDisonnected event to submit the client_leave metrics
-        m_disconnectHandler = EndpointDisonnectedEvent::Handler([](MultiplayerAgentType)
+        m_disconnectHandler = EndpointDisconnectedEvent::Handler([](MultiplayerAgentType)
             {
                 AZStd::vector<AWSMetrics::MetricsAttribute> clientLeaveMetricsAttributes;
                 clientLeaveMetricsAttributes.emplace_back(AWSMetrics::MetricsAttribute(MetricsEventNameAttributeKey, ClientLeaveMetricsEvent));
@@ -112,7 +112,7 @@ namespace MultiplayerSample
                 }
 
             });
-        AZ::Interface<IMultiplayer>::Get()->AddEndpointDisonnectedHandler(m_disconnectHandler);
+        AZ::Interface<IMultiplayer>::Get()->AddEndpointDisconnectedHandler(m_disconnectHandler);
     }
 
     void AWSMetricsSubmissionComponent::OnTick([[maybe_unused]] float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
