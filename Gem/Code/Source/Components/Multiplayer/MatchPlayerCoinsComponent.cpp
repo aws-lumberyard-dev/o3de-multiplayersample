@@ -62,8 +62,16 @@ namespace MultiplayerSample
         PlayerCoinCollectorNotificationBus::Handler::BusDisconnect();
     }
 
+    void MatchPlayerCoinsComponentController::ResetAllCoins()
+    {
+        for (int i = 0; i < MultiplayerSample::MaxSupportedPlayers; ++i)
+        {
+            ModifyCoinsPerPlayer(i).m_coins = 0;
+        }
+    }
+
     void MatchPlayerCoinsComponentController::OnPlayerCollectedCoinCountChanged(Multiplayer::NetEntityId playerEntity,
-        uint16_t coinsCollected)
+                                                                                uint16_t coinsCollected)
     {
         const int stateIndex = GetCoinStateIndex(playerEntity);
         if (stateIndex >= 0)
