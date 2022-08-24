@@ -3,7 +3,7 @@
         "Settings": {
             "WinningCoinCount": 3,
             "EnergyBall": {
-                "KnockbackDistance": 2.0,
+                "KnockbackDistanceMeters": 2.0,
                 "Speed": 15.0,
                 "ArmorDamage": 10
             },
