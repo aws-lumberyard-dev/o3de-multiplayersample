@@ -165,7 +165,6 @@ namespace MultiplayerSample
                 if (highestCoins < aznumeric_cast<int>(state.m_score))
                 {
                     highestCoins = aznumeric_cast<int>(state.m_score);
-                    results.m_winningPlayerName = state.m_playerName;
 
                     // There is no tie so far.
                     potentialWinners.clear();
