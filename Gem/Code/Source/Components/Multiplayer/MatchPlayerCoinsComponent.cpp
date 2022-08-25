@@ -71,7 +71,7 @@ namespace MultiplayerSample
     }
 
     void MatchPlayerCoinsComponentController::OnPlayerCollectedCoinCountChanged(Multiplayer::NetEntityId playerEntity,
-                                                                                uint16_t coinsCollected)
+        uint16_t coinsCollected)
     {
         const int stateIndex = GetCoinStateIndex(playerEntity);
         if (stateIndex >= 0)
@@ -115,7 +115,7 @@ namespace MultiplayerSample
     {
         int32_t stateIndex = 0;
         const int32_t stateCount = aznumeric_cast<int32_t>(GetCoinsPerPlayerArray().size());
-        for (; stateIndex < stateCount; ++stateIndex )
+        for (; stateIndex < stateCount; ++stateIndex)
         {
             if (GetCoinsPerPlayer(stateIndex).m_playerId == playerEntity)
             {
