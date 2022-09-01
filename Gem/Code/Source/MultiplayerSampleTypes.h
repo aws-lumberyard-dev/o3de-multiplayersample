@@ -136,7 +136,7 @@ namespace MultiplayerSample
             && serializer.Serialize(m_coinPenalty, "coinPenalty");
     }
 
-
+    //! Defines a gem type with an asset and a tag name.
     class GemSpawnable
     {
     public:
@@ -151,7 +151,7 @@ namespace MultiplayerSample
 
     using GemSpawnableVector = AZStd::vector<GemSpawnable>;
 
-
+    //! Defines a weighted chance for a gem type to spawn in a given round.
     class GemWeightChance
     {
     public:
@@ -164,6 +164,7 @@ namespace MultiplayerSample
         float m_weight = 1.f;
     };
 
+    //! Defines chances for gem types to spawn in a given round.
     class RoundSpawnTable
     {
     public:

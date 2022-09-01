@@ -12,8 +12,6 @@
 #include <Source/Components/Multiplayer/GemSpawnerComponent.h>
 #include <Source/Components/PerfTest/NetworkPrefabSpawnerComponent.h>
 
-#pragma optimize("", off)
-
 namespace MultiplayerSample
 {
     void GemSpawnable::Reflect(AZ::ReflectContext* context)
@@ -29,7 +27,7 @@ namespace MultiplayerSample
 
             if (AZ::EditContext* editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<GemSpawnable>("GemSpawnable", "")
+                editContext->Class<GemSpawnable>("GemSpawnable", "Defines a gem type with an asset and a tag name.")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &GemSpawnable::m_tag, "Tag", "Assigned tag for this gem type")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &GemSpawnable::m_gemAsset, "Asset", "Spawnable for the gem")
@@ -51,7 +49,7 @@ namespace MultiplayerSample
 
             if (AZ::EditContext* editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<GemWeightChance>("GemWeightChance", "")
+                editContext->Class<GemWeightChance>("GemWeightChance", "Defines a weighted chance for a gem type to spawn in a given round.")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &GemWeightChance::m_tag, "Gem Tag Type", "Assigned tag for this gem type")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &GemWeightChance::m_weight, "Gem Weight", "Weight value in randomly choosing between the gems")
@@ -72,7 +70,7 @@ namespace MultiplayerSample
 
             if (AZ::EditContext* editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<RoundSpawnTable>("RoundSpawnTable", "")
+                editContext->Class<RoundSpawnTable>("RoundSpawnTable", "Defines chances for gem types to spawn in a given round.")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &RoundSpawnTable::m_gemWeights, "Gem Weights", "Gem weights for a given round")
                     ;
@@ -110,16 +108,19 @@ namespace MultiplayerSample
     {
         RemoveGems();
 
+        // Collect all entities marked with a tag to spawn a gem.
         AZ::EBusAggregateResults<AZ::EntityId> aggregator;
         LmbrCentral::TagGlobalRequestBus::EventResult(aggregator, AZ::Crc32(GetGemSpawnTag()),
             &LmbrCentral::TagGlobalRequests::RequestTaggedEntities);
 
         for (const AZ::EntityId gemSpawnEntity : aggregator.values)
         {
+            // Collect the gem tags for this specific entity.
             LmbrCentral::Tags tags;
             LmbrCentral::TagComponentRequestBus::EventResult(tags, gemSpawnEntity,
                 &LmbrCentral::TagComponentRequestBus::Events::GetTags);
 
+            // Randomly select a gem type for this entity.
             const AZ::Crc32 type = ChooseGemType(tags);
 
             AZ::Vector3 position = AZ::Vector3::CreateZero();
@@ -143,7 +144,6 @@ namespace MultiplayerSample
                 spawnable = &gemType;
             }
         }
-
         if (!spawnable)
         {
             return;
@@ -176,8 +176,8 @@ namespace MultiplayerSample
     {
         for (const auto& gem : m_spawnedGems)
         {
-            const auto netEntityId = Multiplayer::GetNetworkEntityManager()->GetNetEntityIdById(gem.first);
-            auto netEntityHandle = Multiplayer::GetNetworkEntityManager()->GetEntity(netEntityId);
+            const Multiplayer::NetEntityId netEntityId = Multiplayer::GetNetworkEntityManager()->GetNetEntityIdById(gem.first);
+            Multiplayer::ConstNetworkEntityHandle netEntityHandle = Multiplayer::GetNetworkEntityManager()->GetEntity(netEntityId);
 
             if (netEntityHandle.Exists())
             {
@@ -208,8 +208,9 @@ namespace MultiplayerSample
             return {};
         }
 
+        // Get the current's round spawn table, or the last defined round as a fallback.
         const uint16_t round = GetNetworkMatchComponentController()->GetRoundNumber();
-        const RoundSpawnTable* table = nullptr;
+        const RoundSpawnTable* table;
         if (round < GetSpawnTablesPerRound().size())
         {
             table = &GetSpawnTablesPerRound()[round];
@@ -219,6 +220,7 @@ namespace MultiplayerSample
             table = &GetSpawnTablesPerRound().back();
         }
 
+        // Calculate the total weight of all applicable gem tags.
         float totalWeight = 0.f;
         for (const GemWeightChance& gemWeight : table->m_gemWeights)
         {
@@ -228,9 +230,11 @@ namespace MultiplayerSample
                 totalWeight += gemWeight.m_weight;
             }
         }
+        
+        // Create a random float in the range of [0, totalWeight)
+        float randomWeight = GetNetworkRandomComponentController()->GetRandomFloat() * totalWeight;
 
         AZ::Crc32 chosenType(table->m_gemWeights.front().m_tag);
-        float randomWeight = GetNetworkRandomComponentController()->GetRandomFloat() * totalWeight;
         for (const GemWeightChance& gemWeight : table->m_gemWeights)
         {
             const auto tagIterator = tags.find(AZ::Crc32(gemWeight.m_tag));
@@ -239,6 +243,10 @@ namespace MultiplayerSample
                 continue;
             }
 
+            // For every acceptable tag, reduce the the weight value until the right gem type is found for the random value.
+            // >----------------------\
+            //                        |
+            // gem1--------gem2-------*--gem3------
             if (randomWeight > gemWeight.m_weight)
             {
                 randomWeight -= gemWeight.m_weight;
@@ -253,5 +261,3 @@ namespace MultiplayerSample
         return chosenType;
     }
 }
-
-#pragma optimize("", on)

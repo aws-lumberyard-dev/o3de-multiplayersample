@@ -22,7 +22,7 @@ namespace MultiplayerSample
         void OnActivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
         void OnDeactivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
 
-    protected:
+    private:
         // Animate the gem on clients without spending network traffic. (The gem will not spin on the authority server.)
         void ClientAnimationTick();
         AZ::ScheduledEvent m_clientAnimationEvent{ [this]()
@@ -31,7 +31,7 @@ namespace MultiplayerSample
         }, AZ::Name("GemComponent") };
 
         void OnNetworkLocationChanged(const AZ::Vector3& location);
-        AZ::Event<AZ::Vector3>::Handler m_networkLocationHandler{ [this](AZ::Vector3 location)
+        AZ::Event<AZ::Vector3>::Handler m_networkLocationHandler{ [this](const AZ::Vector3& location)
         {
             OnNetworkLocationChanged(location);
         } };

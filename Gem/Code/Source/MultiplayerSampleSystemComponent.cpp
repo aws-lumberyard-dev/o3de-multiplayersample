@@ -32,11 +32,12 @@ namespace MultiplayerSample
         ReflectWeaponEnums(context);
         ClientEffect::Reflect(context);
         GatherParams::Reflect(context);
+        HitEffect::Reflect(context);
+        WeaponParams::Reflect(context);
+
         GemSpawnable::Reflect(context);
         GemWeightChance::Reflect(context);
         RoundSpawnTable::Reflect(context);
-        HitEffect::Reflect(context);
-        WeaponParams::Reflect(context);
 
         if (AZ::SerializeContext* serialize = azrtti_cast<AZ::SerializeContext*>(context))
         {

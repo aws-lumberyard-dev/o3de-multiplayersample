@@ -50,6 +50,7 @@ namespace MultiplayerSample
         AZStd::unordered_map<AZ::EntityId, AZStd::shared_ptr<AzFramework::EntitySpawnTicket>> m_spawnedGems;
         AZStd::unordered_map<AZ::EntityId, AZStd::shared_ptr<AzFramework::EntitySpawnTicket>> m_queuedForRemovalGems;
 
+        //! Randomly choose a gem type from the given set of weights for the current round.
         AZ::Crc32 ChooseGemType(const LmbrCentral::Tags& tags);
     };
 }

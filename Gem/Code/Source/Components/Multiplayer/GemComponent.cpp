@@ -5,11 +5,10 @@
  *
  */
 
-#include <Source/Components/Multiplayer/GemComponent.h>
-
 #include <AzCore/Serialization/SerializeContext.h>
 #include <Components/Multiplayer/GemSpawnerComponent.h>
 #include <Multiplayer/Components/NetworkTransformComponent.h>
+#include <Source/Components/Multiplayer/GemComponent.h>
 
 namespace MultiplayerSample
 {
