@@ -181,8 +181,12 @@ namespace MultiplayerSample
 
             if (netEntityHandle.Exists())
             {
-                AZ::EntityBus::MultiHandler::BusConnect(gem.first);
-                Multiplayer::GetNetworkEntityManager()->MarkForRemoval(netEntityHandle);
+                // Currently blocked by https://github.com/o3de/o3de/issues/11695
+                /*AZ::EntityBus::MultiHandler::BusConnect(gem.first);
+                Multiplayer::GetNetworkEntityManager()->MarkForRemoval(netEntityHandle);*/
+
+                // Until https://github.com/o3de/o3de/issues/11695 is fixed, move the gem out of the view
+                AZ::TransformBus::Event(gem.first, &AZ::TransformBus::Events::SetWorldTranslation, AZ::Vector3::CreateAxisZ(-1000.f));
 
                 m_queuedForRemovalGems.emplace(gem.first, gem.second);
             }
