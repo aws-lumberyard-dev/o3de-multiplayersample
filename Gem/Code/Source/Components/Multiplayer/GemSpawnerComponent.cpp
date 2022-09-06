@@ -208,7 +208,7 @@ namespace MultiplayerSample
             return {};
         }
 
-        // Get the current's round spawn table, or the last defined round as a fallback.
+        // Get the current round's spawn table, or the last defined round as a fallback.
         const uint16_t round = GetNetworkMatchComponentController()->GetRoundNumber();
         const RoundSpawnTable* table;
         if (round < GetSpawnTablesPerRound().size())
