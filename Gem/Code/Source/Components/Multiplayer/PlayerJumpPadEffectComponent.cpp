@@ -53,8 +53,6 @@ namespace MultiplayerSample
         [[maybe_unused]] AzNetworking::IConnection* invokingConnection, 
         const AZ::Vector3& jumpVelocity, const AZ::TimeMs& effectDuration)
     {
-        AZ_Printf(__FUNCTION__, "");
-
         GetNetworkTransformComponentController()->ModifyResetCount()++;
         RPC_StartJump(jumpVelocity, effectDuration);
     }
@@ -62,8 +60,6 @@ namespace MultiplayerSample
     void PlayerJumpPadEffectComponentController::HandleRPC_StartJump([[maybe_unused]] AzNetworking::IConnection* invokingConnection,
         const AZ::Vector3& jumpVelocity, const AZ::TimeMs& effectDuration)
     {
-        AZ_Printf(__FUNCTION__, "");
-
         m_isUnderJumpPadEffect = true;
         m_jumpPadVector = jumpVelocity;
         m_jumpPadEffectEvent.Enqueue(effectDuration);
@@ -71,8 +67,6 @@ namespace MultiplayerSample
 
     void PlayerJumpPadEffectComponentController::JumpPadEffectTick()
     {
-        AZ_Printf(__FUNCTION__, "Jump effect is over");
-
         // Jump effect is over
         m_isUnderJumpPadEffect = false;
     }

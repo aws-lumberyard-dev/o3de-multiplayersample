@@ -71,8 +71,6 @@ namespace MultiplayerSample
     {
         if (triggerEvent.m_otherBody)
         {
-            AZ_Printf(__FUNCTION__, "an object entered the jump pad");
-
             AZ::Entity* collidingEntity = nullptr;
             AZ::EntityId collidingEntityId = triggerEvent.m_otherBody->GetEntityId();
             AZ::ComponentApplicationBus::BroadcastResult(collidingEntity,
