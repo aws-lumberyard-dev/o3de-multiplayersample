@@ -1,0 +1,362 @@
+{
+    "ContainerEntity": {
+        "Id": "ContainerEntity",
+        "Name": "Jump_Pad",
+        "Components": {
+            "Component_[11833957032818997592]": {
+                "$type": "EditorEntityIconComponent",
+                "Id": 11833957032818997592
+            },
+            "Component_[17116118936771923623]": {
+                "$type": "EditorEntitySortComponent",
+                "Id": 17116118936771923623,
+                "Child Entity Order": [
+                    "Entity_[870884710649]"
+                ]
+            },
+            "Component_[17647569774325953738]": {
+                "$type": "EditorDisabledCompositionComponent",
+                "Id": 17647569774325953738
+            },
+            "Component_[2068698522114244344]": {
+                "$type": "EditorInspectorComponent",
+                "Id": 2068698522114244344
+            },
+            "Component_[4868483987734638563]": {
+                "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
+                "Id": 4868483987734638563,
+                "Parent Entity": ""
+            },
+            "Component_[526277165904729370]": {
+                "$type": "EditorPrefabComponent",
+                "Id": 526277165904729370
+            },
+            "Component_[6247048423506022872]": {
+                "$type": "EditorPendingCompositionComponent",
+                "Id": 6247048423506022872
+            },
+            "Component_[7988753762402592505]": {
+                "$type": "EditorOnlyEntityComponent",
+                "Id": 7988753762402592505
+            },
+            "Component_[8275605844140950722]": {
+                "$type": "EditorLockComponent",
+                "Id": 8275605844140950722
+            },
+            "Component_[9493663043979608841]": {
+                "$type": "EditorVisibilityComponent",
+                "Id": 9493663043979608841
+            }
+        }
+    },
+    "Entities": {
+        "Entity_[870884710649]": {
+            "Id": "Entity_[870884710649]",
+            "Name": "Jump Pad",
+            "Components": {
+                "Component_[1185715270156812311]": {
+                    "$type": "EditorDisabledCompositionComponent",
+                    "Id": 1185715270156812311
+                },
+                "Component_[12430382301978975471]": {
+                    "$type": "EditorLockComponent",
+                    "Id": 12430382301978975471
+                },
+                "Component_[1530632711029639956]": {
+                    "$type": "EditorPendingCompositionComponent",
+                    "Id": 1530632711029639956
+                },
+                "Component_[16493884633296455256]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 16493884633296455256,
+                    "m_template": {
+                        "$type": "Multiplayer::NetworkTransformComponent"
+                    }
+                },
+                "Component_[16688270418198364454]": {
+                    "$type": "EditorEntityIconComponent",
+                    "Id": 16688270418198364454
+                },
+                "Component_[17162729604377223959]": {
+                    "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
+                    "Id": 17162729604377223959,
+                    "Parent Entity": "ContainerEntity",
+                    "Transform Data": {
+                        "Rotate": [
+                            0.0,
+                            0.0,
+                            0.000013660377589985728
+                        ]
+                    }
+                },
+                "Component_[17792969157736167259]": {
+                    "$type": "EditorVisibilityComponent",
+                    "Id": 17792969157736167259
+                },
+                "Component_[1935099591485995531]": {
+                    "$type": "EditorOnlyEntityComponent",
+                    "Id": 1935099591485995531
+                },
+                "Component_[2661609229233795858]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 2661609229233795858,
+                    "m_template": {
+                        "$type": "NetBindComponent"
+                    }
+                },
+                "Component_[7135331581762179843]": {
+                    "$type": "EditorEntitySortComponent",
+                    "Id": 7135331581762179843,
+                    "Child Entity Order": [
+                        "Entity_[879474645241]",
+                        "Entity_[875179677945]"
+                    ]
+                },
+                "Component_[9127719548496298131]": {
+                    "$type": "EditorInspectorComponent",
+                    "Id": 9127719548496298131,
+                    "ComponentOrderEntryArray": [
+                        {
+                            "ComponentId": 17162729604377223959
+                        },
+                        {
+                            "ComponentId": 2661609229233795858,
+                            "SortIndex": 1
+                        },
+                        {
+                            "ComponentId": 16493884633296455256,
+                            "SortIndex": 2
+                        }
+                    ]
+                }
+            }
+        },
+        "Entity_[875179677945]": {
+            "Id": "Entity_[875179677945]",
+            "Name": "Jump Pad Detector",
+            "Components": {
+                "Component_[10089533960369615228]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 10089533960369615228,
+                    "m_template": {
+                        "$type": "Multiplayer::NetworkTransformComponent"
+                    }
+                },
+                "Component_[10706272707982132991]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 10706272707982132991,
+                    "m_template": {
+                        "$type": "MultiplayerSample::JumpPadComponent",
+                        "JumpVelocity": 10.0,
+                        "JumpDuration": 2000
+                    }
+                },
+                "Component_[11364862236658131028]": {
+                    "$type": "EditorInspectorComponent",
+                    "Id": 11364862236658131028
+                },
+                "Component_[11645429160233386144]": {
+                    "$type": "EditorLockComponent",
+                    "Id": 11645429160233386144
+                },
+                "Component_[13329144701653463968]": {
+                    "$type": "EditorEntityIconComponent",
+                    "Id": 13329144701653463968
+                },
+                "Component_[15609335144954614819]": {
+                    "$type": "EditorPendingCompositionComponent",
+                    "Id": 15609335144954614819
+                },
+                "Component_[3876374069328502786]": {
+                    "$type": "EditorOnlyEntityComponent",
+                    "Id": 3876374069328502786
+                },
+                "Component_[5288111746761987569]": {
+                    "$type": "EditorVisibilityComponent",
+                    "Id": 5288111746761987569
+                },
+                "Component_[5459222238996576739]": {
+                    "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
+                    "Id": 5459222238996576739,
+                    "Parent Entity": "Entity_[870884710649]",
+                    "Transform Data": {
+                        "Translate": [
+                            0.26211118698120117,
+                            0.2405543327331543,
+                            1.1113882064819336
+                        ],
+                        "Rotate": [
+                            16.99999237060547,
+                            0.0,
+                            0.0
+                        ]
+                    }
+                },
+                "Component_[6022230047961309769]": {
+                    "$type": "EditorColliderComponent",
+                    "Id": 6022230047961309769,
+                    "ColliderConfiguration": {
+                        "Trigger": true,
+                        "InSceneQueries": false,
+                        "Position": [
+                            -0.2587048411369324,
+                            -0.01622152328491211,
+                            -0.4519158601760864
+                        ],
+                        "MaterialSlots": {
+                            "Slots": [
+                                {
+                                    "Name": "Entire object"
+                                }
+                            ]
+                        }
+                    },
+                    "ShapeConfiguration": {
+                        "ShapeType": 1,
+                        "Box": {
+                            "Configuration": [
+                                1.5,
+                                1.0,
+                                1.0
+                            ]
+                        }
+                    }
+                },
+                "Component_[7916417083735857593]": {
+                    "$type": "EditorDisabledCompositionComponent",
+                    "Id": 7916417083735857593
+                },
+                "Component_[81125327900736471]": {
+                    "$type": "EditorEntitySortComponent",
+                    "Id": 81125327900736471
+                },
+                "Component_[9279311253010100805]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 9279311253010100805,
+                    "m_template": {
+                        "$type": "NetBindComponent"
+                    }
+                },
+                "Component_[9746619867899900279]": {
+                    "$type": "EditorRigidBodyComponent",
+                    "Id": 9746619867899900279,
+                    "Configuration": {
+                        "entityId": "",
+                        "Gravity Enabled": false,
+                        "Kinematic": true
+                    }
+                }
+            }
+        },
+        "Entity_[879474645241]": {
+            "Id": "Entity_[879474645241]",
+            "Name": "Jump Pad Mesh",
+            "Components": {
+                "Component_[10381252435048010465]": {
+                    "$type": "EditorInspectorComponent",
+                    "Id": 10381252435048010465
+                },
+                "Component_[10646139244025081355]": {
+                    "$type": "EditorEntitySortComponent",
+                    "Id": 10646139244025081355
+                },
+                "Component_[12460276550154915338]": {
+                    "$type": "EditorEntityIconComponent",
+                    "Id": 12460276550154915338
+                },
+                "Component_[1320441123159991856]": {
+                    "$type": "EditorColliderComponent",
+                    "Id": 1320441123159991856,
+                    "ColliderConfiguration": {
+                        "MaterialSlots": {
+                            "Slots": [
+                                {
+                                    "Name": "DefaultMaterial"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "Component_[13784909050924720005]": {
+                    "$type": "EditorPendingCompositionComponent",
+                    "Id": 13784909050924720005
+                },
+                "Component_[14554559564136193069]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 14554559564136193069,
+                    "m_template": {
+                        "$type": "NetBindComponent"
+                    }
+                },
+                "Component_[15868438811917829257]": {
+                    "$type": "EditorMaterialComponent",
+                    "Id": 15868438811917829257,
+                    "Controller": {
+                        "Configuration": {
+                            "materials": {
+                                "{}": {
+                                    "MaterialAsset": {
+                                        "assetId": {
+                                            "guid": "{F4DF12BC-C818-550C-AA95-F4BE4A457772}"
+                                        },
+                                        "assetHint": "materials/presets/macbeth/14_green_tex.azmaterial"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "Component_[17260698852462033441]": {
+                    "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
+                    "Id": 17260698852462033441,
+                    "Parent Entity": "Entity_[870884710649]",
+                    "Transform Data": {
+                        "Rotate": [
+                            0.0,
+                            0.0,
+                            90.0
+                        ]
+                    }
+                },
+                "Component_[3665156267608823222]": {
+                    "$type": "EditorVisibilityComponent",
+                    "Id": 3665156267608823222
+                },
+                "Component_[3789725651375458732]": {
+                    "$type": "EditorOnlyEntityComponent",
+                    "Id": 3789725651375458732
+                },
+                "Component_[4633469308968465590]": {
+                    "$type": "EditorDisabledCompositionComponent",
+                    "Id": 4633469308968465590
+                },
+                "Component_[4679835474277264560]": {
+                    "$type": "EditorLockComponent",
+                    "Id": 4679835474277264560
+                },
+                "Component_[6397980532267620841]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 6397980532267620841,
+                    "m_template": {
+                        "$type": "Multiplayer::NetworkTransformComponent"
+                    }
+                },
+                "Component_[6960278601092938443]": {
+                    "$type": "AZ::Render::EditorMeshComponent",
+                    "Id": 6960278601092938443,
+                    "Controller": {
+                        "Configuration": {
+                            "ModelAsset": {
+                                "assetId": {
+                                    "guid": "{52764BA3-1AC0-591B-955D-829083A5DE8F}",
+                                    "subId": 273148126
+                                },
+                                "assetHint": "objects/jump_pad.azmodel"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

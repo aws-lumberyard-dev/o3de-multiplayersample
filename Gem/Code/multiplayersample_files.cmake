@@ -136,4 +136,12 @@ set(FILES
     Source/MultiplayerSampleSystemComponent.cpp
     Source/MultiplayerSampleSystemComponent.h
     Source/MultiplayerSampleTypes.h
+
+    # Jump Pad logic
+    Source/AutoGen/JumpPadComponent.AutoComponent.xml
+    Source/Components/Multiplayer/JumpPadComponent.cpp
+    Source/Components/Multiplayer/JumpPadComponent.h
+    Source/AutoGen/PlayerJumpPadEffectComponent.AutoComponent.xml
+    Source/Components/Multiplayer/PlayerJumpPadEffectComponent.cpp
+    Source/Components/Multiplayer/PlayerJumpPadEffectComponent.h
 )

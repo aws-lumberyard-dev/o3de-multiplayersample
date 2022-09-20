@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<Component
+    Name="PlayerJumpPadEffectComponent"
+    Namespace="MultiplayerSample"
+    OverrideComponent="true"
+    OverrideController="true"
+    OverrideInclude="Source/Components/Multiplayer/PlayerJumpPadEffectComponent.h"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <ComponentRelation Constraint="Required" HasController="true" Name="NetworkTransformComponent" Namespace="Multiplayer" Include="Multiplayer/Components/NetworkTransformComponent.h" />
+    <ComponentRelation Constraint="Required" HasController="true" Name="NetworkCharacterComponent" Namespace="Multiplayer" Include="Multiplayer/Components/NetworkCharacterComponent.h" />
+
+    <ArchetypeProperty Type="float" Name="Gravity" ExposeToEditor="true"
+                       Description="Gravity along negative Z axis" />
+
+	<NetworkInput Type="bool" Name="JumpPadEffect" Init="false" />
+    <NetworkInput Type="AZ::Vector3" Name="JumpPadVector" Init="AZ::Vector3::CreateZero()" />
+
+    <RemoteProcedure Name="RPC_ApplyJumpPadEffect" InvokeFrom="Server" HandleOn="Authority" IsPublic="true" IsReliable="true" GenerateEventBindings="false" Description="A player stepped on a jump pad.">
+        <Param Type="AZ::Vector3" Name="JumpVelocity" />
+        <Param Type="AZ::TimeMs" Name="EffectDuration" />
+    </RemoteProcedure>
+
+    <RemoteProcedure Name="RPC_StartJump" InvokeFrom="Authority" HandleOn="Autonomous" IsPublic="true" IsReliable="true" GenerateEventBindings="false" Description="Start a jump effect on the player.">
+        <Param Type="AZ::Vector3" Name="JumpVelocity" />
+        <Param Type="AZ::TimeMs" Name="EffectDuration" />
+    </RemoteProcedure>
+</Component>

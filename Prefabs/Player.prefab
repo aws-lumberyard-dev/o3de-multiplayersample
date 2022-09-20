@@ -51,6 +51,14 @@
             "Id": "Entity_[1423682492746]",
             "Name": "Player",
             "Components": {
+                "Component_[1023453620337530999]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 1023453620337530999,
+                    "m_template": {
+                        "$type": "MultiplayerSample::PlayerJumpPadEffectComponent",
+                        "Gravity": 5.0
+                    }
+                },
                 "Component_[10731928891422556040]": {
                     "$type": "GenericComponentWrapper",
                     "Id": 10731928891422556040,

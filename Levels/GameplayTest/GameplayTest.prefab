@@ -75,7 +75,8 @@
                     "Entity_[727777302952]",
                     "Entity_[38397922475797]",
                     "Entity_[3691264858177]",
-                    "Entity_[859737656967]"
+                    "Entity_[859737656967]",
+                    "Instance_[3994533773825]/ContainerEntity"
                 ]
             }
         }
@@ -6359,6 +6360,71 @@
                 }
             ]
         },
+        "Instance_[23584991524674]": {
+            "Source": "Prefabs/Jump_Pad.prefab",
+            "Patches": [
+                {
+                    "op": "replace",
+                    "path": "/ContainerEntity/Components/Component_[4868483987734638563]/Parent Entity",
+                    "value": "../Entity_[356758116574]"
+                },
+                {
+                    "op": "replace",
+                    "path": "/ContainerEntity/Components/Component_[4868483987734638563]/Transform Data/Translate/0",
+                    "value": 27.576793670654297
+                },
+                {
+                    "op": "replace",
+                    "path": "/ContainerEntity/Components/Component_[4868483987734638563]/Transform Data/Translate/1",
+                    "value": -6.407594680786133
+                },
+                {
+                    "op": "replace",
+                    "path": "/ContainerEntity/Components/Component_[4868483987734638563]/Transform Data/Translate/2",
+                    "value": 0.011153697967529297
+                },
+                {
+                    "op": "replace",
+                    "path": "/ContainerEntity/Components/Component_[4868483987734638563]/Transform Data/Rotate/2",
+                    "value": 64.4781265258789
+                },
+                {
+                    "op": "replace",
+                    "path": "/Entities/Entity_[879474645241]/Components/Component_[1320441123159991856]/ShapeConfiguration/PhysicsAsset/Asset/assetId/guid",
+                    "value": "{52764BA3-1AC0-591B-955D-829083A5DE8F}"
+                },
+                {
+                    "op": "replace",
+                    "path": "/Entities/Entity_[879474645241]/Components/Component_[1320441123159991856]/ShapeConfiguration/PhysicsAsset/Asset/assetId/subId",
+                    "value": 2518358450
+                },
+                {
+                    "op": "replace",
+                    "path": "/Entities/Entity_[879474645241]/Components/Component_[1320441123159991856]/ShapeConfiguration/PhysicsAsset/Asset/assetHint",
+                    "value": "objects/jump_pad.pxmesh"
+                },
+                {
+                    "op": "replace",
+                    "path": "/Entities/Entity_[879474645241]/Components/Component_[1320441123159991856]/ShapeConfiguration/PhysicsAsset/Configuration/PhysicsAsset/assetId/guid",
+                    "value": "{52764BA3-1AC0-591B-955D-829083A5DE8F}"
+                },
+                {
+                    "op": "replace",
+                    "path": "/Entities/Entity_[879474645241]/Components/Component_[1320441123159991856]/ShapeConfiguration/PhysicsAsset/Configuration/PhysicsAsset/assetId/subId",
+                    "value": 2518358450
+                },
+                {
+                    "op": "replace",
+                    "path": "/Entities/Entity_[879474645241]/Components/Component_[1320441123159991856]/ShapeConfiguration/PhysicsAsset/Configuration/PhysicsAsset/loadBehavior",
+                    "value": "QueueLoad"
+                },
+                {
+                    "op": "replace",
+                    "path": "/Entities/Entity_[879474645241]/Components/Component_[1320441123159991856]/ShapeConfiguration/PhysicsAsset/Configuration/PhysicsAsset/assetHint",
+                    "value": "objects/jump_pad.pxmesh"
+                }
+            ]
+        },
         "Instance_[3293577808227]": {
             "Source": "Prefabs/4x4x4BoxGrid.prefab",
             "Patches": [
@@ -6820,6 +6886,71 @@
                     "op": "replace",
                     "path": "/ContainerEntity/Components/Component_[16896350622714100755]/Transform Data/Rotate/2",
                     "value": -87.5962142944336
+                }
+            ]
+        },
+        "Instance_[3994533773825]": {
+            "Source": "Prefabs/Jump_Pad.prefab",
+            "Patches": [
+                {
+                    "op": "replace",
+                    "path": "/ContainerEntity/Components/Component_[4868483987734638563]/Parent Entity",
+                    "value": "../Entity_[356758116574]"
+                },
+                {
+                    "op": "replace",
+                    "path": "/ContainerEntity/Components/Component_[4868483987734638563]/Transform Data/Translate/0",
+                    "value": 6.4868574142456055
+                },
+                {
+                    "op": "replace",
+                    "path": "/ContainerEntity/Components/Component_[4868483987734638563]/Transform Data/Translate/1",
+                    "value": 5.3447675704956055
+                },
+                {
+                    "op": "replace",
+                    "path": "/ContainerEntity/Components/Component_[4868483987734638563]/Transform Data/Translate/2",
+                    "value": 0.011153697967529297
+                },
+                {
+                    "op": "replace",
+                    "path": "/ContainerEntity/Components/Component_[4868483987734638563]/Transform Data/Rotate/2",
+                    "value": -128.8099365234375
+                },
+                {
+                    "op": "replace",
+                    "path": "/Entities/Entity_[879474645241]/Components/Component_[1320441123159991856]/ShapeConfiguration/PhysicsAsset/Asset/assetId/guid",
+                    "value": "{52764BA3-1AC0-591B-955D-829083A5DE8F}"
+                },
+                {
+                    "op": "replace",
+                    "path": "/Entities/Entity_[879474645241]/Components/Component_[1320441123159991856]/ShapeConfiguration/PhysicsAsset/Asset/assetId/subId",
+                    "value": 2518358450
+                },
+                {
+                    "op": "replace",
+                    "path": "/Entities/Entity_[879474645241]/Components/Component_[1320441123159991856]/ShapeConfiguration/PhysicsAsset/Asset/assetHint",
+                    "value": "objects/jump_pad.pxmesh"
+                },
+                {
+                    "op": "replace",
+                    "path": "/Entities/Entity_[879474645241]/Components/Component_[1320441123159991856]/ShapeConfiguration/PhysicsAsset/Configuration/PhysicsAsset/assetId/guid",
+                    "value": "{52764BA3-1AC0-591B-955D-829083A5DE8F}"
+                },
+                {
+                    "op": "replace",
+                    "path": "/Entities/Entity_[879474645241]/Components/Component_[1320441123159991856]/ShapeConfiguration/PhysicsAsset/Configuration/PhysicsAsset/assetId/subId",
+                    "value": 2518358450
+                },
+                {
+                    "op": "replace",
+                    "path": "/Entities/Entity_[879474645241]/Components/Component_[1320441123159991856]/ShapeConfiguration/PhysicsAsset/Configuration/PhysicsAsset/loadBehavior",
+                    "value": "QueueLoad"
+                },
+                {
+                    "op": "replace",
+                    "path": "/Entities/Entity_[879474645241]/Components/Component_[1320441123159991856]/ShapeConfiguration/PhysicsAsset/Configuration/PhysicsAsset/assetHint",
+                    "value": "objects/jump_pad.pxmesh"
                 }
             ]
         },

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<Component
+    Name="JumpPadComponent"
+    Namespace="MultiplayerSample"
+    OverrideComponent="true"
+    OverrideController="true"
+    OverrideInclude="Source/Components/Multiplayer/JumpPadComponent.h"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <ComponentRelation Constraint="Required" HasController="true" Name="NetworkTransformComponent" Namespace="Multiplayer" Include="Multiplayer/Components/NetworkTransformComponent.h" />
+
+    <ArchetypeProperty Type="float" Name="JumpVelocity" ExposeToEditor="true"
+                       Description="Velocity magnitude to apply to an object entering the jump pad." />
+    <ArchetypeProperty Type="AZ::TimeMs" Name="JumpDuration" ExposeToEditor="true"
+                       Description="Time in milliseconds of the upward jump effect" />
+</Component>
