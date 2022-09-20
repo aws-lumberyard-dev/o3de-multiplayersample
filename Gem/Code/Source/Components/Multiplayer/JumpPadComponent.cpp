@@ -82,7 +82,7 @@ namespace MultiplayerSample
                     const AZ::Quaternion worldQuaternion = GetEntity()->GetTransform()->GetWorldRotationQuaternion();
                     const AZ::Vector3 jumpVelocity = worldQuaternion.TransformVector(AZ::Vector3::CreateAxisY(GetJumpVelocity()));
 
-                    effect->RPC_ApplyJumpPadEffect(jumpVelocity, GetJumpDuration());
+                    effect->ApplyJumpPadEffect(jumpVelocity, GetJumpDuration());
                 }
             }
         }

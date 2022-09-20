@@ -34,6 +34,15 @@ namespace MultiplayerSample
     {
     }
 
+    void PlayerJumpPadEffectComponent::ApplyJumpPadEffect(const AZ::Vector3& jumpVelocity,
+        const AZ::TimeMs& effectDuration)
+    {
+        if (HasController())
+        {
+            static_cast<PlayerJumpPadEffectComponentController*>(GetController())->ApplyJumpPadEffect(jumpVelocity, effectDuration);
+        }
+    }
+
 
     PlayerJumpPadEffectComponentController::PlayerJumpPadEffectComponentController(PlayerJumpPadEffectComponent& parent)
         : PlayerJumpPadEffectComponentControllerBase(parent)
@@ -42,6 +51,7 @@ namespace MultiplayerSample
 
     void PlayerJumpPadEffectComponentController::OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
     {
+        m_jumpPadEffectEvent.Enqueue(AZ::Time::ZeroTimeMs, true);
     }
 
     void PlayerJumpPadEffectComponentController::OnDeactivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
@@ -49,52 +59,40 @@ namespace MultiplayerSample
         m_jumpPadEffectEvent.RemoveFromQueue();
     }
 
-    void PlayerJumpPadEffectComponentController::HandleRPC_ApplyJumpPadEffect(
-        [[maybe_unused]] AzNetworking::IConnection* invokingConnection, 
+    void PlayerJumpPadEffectComponentController::ApplyJumpPadEffect(
         const AZ::Vector3& jumpVelocity, const AZ::TimeMs& effectDuration)
     {
         GetNetworkTransformComponentController()->ModifyResetCount()++;
-        RPC_StartJump(jumpVelocity, effectDuration);
-    }
 
-    void PlayerJumpPadEffectComponentController::HandleRPC_StartJump([[maybe_unused]] AzNetworking::IConnection* invokingConnection,
-        const AZ::Vector3& jumpVelocity, const AZ::TimeMs& effectDuration)
-    {
-        m_isUnderJumpPadEffect = true;
-        m_jumpPadVector = jumpVelocity;
-        m_jumpPadEffectEvent.Enqueue(effectDuration);
+        SetIsJumpPadEffectInProgress(true);
+        SetJumpPadVector(jumpVelocity);
+        SetJumpPadEffectDuration(effectDuration);
     }
 
     void PlayerJumpPadEffectComponentController::JumpPadEffectTick()
     {
-        // Jump effect is over
-        m_isUnderJumpPadEffect = false;
-    }
+        const AZ::TimeMs deltaMs = m_jumpPadEffectEvent.TimeInQueueMs();
+        const float deltaTime = AZ::TimeMsToSeconds(deltaMs);
 
-    void PlayerJumpPadEffectComponentController::CreateInput([[maybe_unused]] Multiplayer::NetworkInput& input, [[maybe_unused]] float deltaTime)
-    {
-        auto* componentInput = input.FindComponentInput<PlayerJumpPadEffectComponentNetworkInput>();
-        if (componentInput)
+        if (GetJumpPadEffectDuration() > AZ::Time::ZeroTimeMs)
         {
-            componentInput->m_jumpPadEffect = m_isUnderJumpPadEffect;
-            componentInput->m_jumpPadVector = m_jumpPadVector;
-        }
-    }
-
-    void PlayerJumpPadEffectComponentController::ProcessInput([[maybe_unused]] Multiplayer::NetworkInput& input, [[maybe_unused]] float deltaTime)
-    {
-        const auto* componentInput = input.FindComponentInput<PlayerJumpPadEffectComponentNetworkInput>();
-        if (componentInput)
-        {
-            if (componentInput->m_jumpPadEffect)
+            ModifyJumpPadEffectDuration() -= deltaMs;
+            if (GetJumpPadEffectDuration() <= AZ::Time::ZeroTimeMs)
             {
-                GetNetworkCharacterComponentController()->TryMoveWithVelocity(componentInput->m_jumpPadVector, deltaTime);
+                // Jump effect is over
+                SetIsJumpPadEffectInProgress(false);
+                SetJumpPadEffectDuration(AZ::Time::ZeroTimeMs);
             }
-            else // apply gravity
-            {                
-                const AZ::Vector3 gravity = AZ::Vector3::CreateAxisZ(-GetGravity());
-                GetNetworkCharacterComponentController()->TryMoveWithVelocity(gravity, deltaTime);
-            }
+        }
+
+        if (GetIsJumpPadEffectInProgress())
+        {
+            GetNetworkCharacterComponentController()->TryMoveWithVelocity(GetJumpPadVector(), deltaTime);
+        }
+        else // apply gravity
+        {
+            const AZ::Vector3 gravity = AZ::Vector3::CreateAxisZ(-GetGravity());
+            GetNetworkCharacterComponentController()->TryMoveWithVelocity(gravity, deltaTime);
         }
     }
 }

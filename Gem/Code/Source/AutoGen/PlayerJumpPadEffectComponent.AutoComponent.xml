@@ -14,16 +14,13 @@
     <ArchetypeProperty Type="float" Name="Gravity" ExposeToEditor="true"
                        Description="Gravity along negative Z axis" />
 
-	<NetworkInput Type="bool" Name="JumpPadEffect" Init="false" />
-    <NetworkInput Type="AZ::Vector3" Name="JumpPadVector" Init="AZ::Vector3::CreateZero()" />
-
-    <RemoteProcedure Name="RPC_ApplyJumpPadEffect" InvokeFrom="Server" HandleOn="Authority" IsPublic="true" IsReliable="true" GenerateEventBindings="false" Description="A player stepped on a jump pad.">
-        <Param Type="AZ::Vector3" Name="JumpVelocity" />
-        <Param Type="AZ::TimeMs" Name="EffectDuration" />
-    </RemoteProcedure>
-
-    <RemoteProcedure Name="RPC_StartJump" InvokeFrom="Authority" HandleOn="Autonomous" IsPublic="true" IsReliable="true" GenerateEventBindings="false" Description="Start a jump effect on the player.">
-        <Param Type="AZ::Vector3" Name="JumpVelocity" />
-        <Param Type="AZ::TimeMs" Name="EffectDuration" />
-    </RemoteProcedure>
+    <NetworkProperty Type="bool" Name="IsJumpPadEffectInProgress" Init="false" ReplicateFrom="Authority" ReplicateTo="Autonomous" 
+                     Container="Object" IsPublic="true" IsRewindable="true" IsPredictable="true" ExposeToEditor="false" 
+                     ExposeToScript="false" GenerateEventBindings="true" Description="A jump pad effect is being applied to the player" />
+    <NetworkProperty Type="AZ::Vector3" Name="JumpPadVector" Init="AZ::Vector3::CreateZero()" ReplicateFrom="Authority" ReplicateTo="Autonomous"
+                     Container="Object" IsPublic="true" IsRewindable="true" IsPredictable="true" ExposeToEditor="false"
+                     ExposeToScript="false" GenerateEventBindings="true" Description="A jump pad effect velocity direction" />
+    <NetworkProperty Type="AZ::TimeMs" Name="JumpPadEffectDuration" Init="AZ::Time::ZeroTimeMs" ReplicateFrom="Authority" ReplicateTo="Autonomous"
+                     Container="Object" IsPublic="true" IsRewindable="true" IsPredictable="true" ExposeToEditor="false"
+                     ExposeToScript="false" GenerateEventBindings="true" Description="A jump pad effect duration in milliseconds" />
 </Component>

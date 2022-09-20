@@ -22,6 +22,8 @@ namespace MultiplayerSample
         void OnInit() override;
         void OnActivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
         void OnDeactivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
+
+        void ApplyJumpPadEffect(const AZ::Vector3& jumpVelocity, const AZ::TimeMs& effectDuration);
     };
 
 
@@ -34,25 +36,9 @@ namespace MultiplayerSample
         void OnActivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
         void OnDeactivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
 
-        //! Common input creation logic for the NetworkInput.
-        //! Fill out the input struct and the MultiplayerInputDriver will send the input data over the network
-        //!    to ensure it's processed.
-        //! @param input  input structure which to store input data for sending to the authority
-        //! @param deltaTime amount of time to integrate the provided inputs over
-        void CreateInput(Multiplayer::NetworkInput& input, float deltaTime) override;
-
-        //! Common input processing logic for the NetworkInput.
-        //! @param input  input structure to process
-        //! @param deltaTime amount of time to integrate the provided inputs over
-        void ProcessInput(Multiplayer::NetworkInput& input, float deltaTime) override;
-
-        void HandleRPC_ApplyJumpPadEffect(AzNetworking::IConnection* invokingConnection, const AZ::Vector3& jumpVelocity, const AZ::TimeMs& effectDuration) override;
-        void HandleRPC_StartJump(AzNetworking::IConnection* invokingConnection, const AZ::Vector3& jumpVelocity, const AZ::TimeMs& effectDuration) override;
+        void ApplyJumpPadEffect(const AZ::Vector3& jumpVelocity, const AZ::TimeMs& effectDuration);
 
     private:
-        bool m_isUnderJumpPadEffect = false;
-        AZ::Vector3 m_jumpPadVector = AZ::Vector3::CreateZero();
-        
         void JumpPadEffectTick();
         AZ::ScheduledEvent m_jumpPadEffectEvent{ [this]()
         {
