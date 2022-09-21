@@ -38,11 +38,15 @@ namespace MultiplayerSample
 
         void ApplyJumpPadEffect(const AZ::Vector3& jumpVelocity, const AZ::TimeMs& effectDuration);
 
+        void ProcessInput(Multiplayer::NetworkInput& networkInput, float deltaTime) override;
+
     private:
         void JumpPadEffectTick();
         AZ::ScheduledEvent m_jumpPadEffectEvent{ [this]()
         {
             JumpPadEffectTick();
         }, AZ::Name("PlayerJumpPadEffect") };
+
+        AZ::TimeMs m_jumpPadEffectDuration = AZ::Time::ZeroTimeMs;
     };
 }

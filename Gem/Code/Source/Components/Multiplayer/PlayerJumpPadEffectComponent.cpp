@@ -66,25 +66,11 @@ namespace MultiplayerSample
 
         SetIsJumpPadEffectInProgress(true);
         SetJumpPadVector(jumpVelocity);
-        SetJumpPadEffectDuration(effectDuration);
+        m_jumpPadEffectDuration = effectDuration;
     }
 
-    void PlayerJumpPadEffectComponentController::JumpPadEffectTick()
+    void PlayerJumpPadEffectComponentController::ProcessInput([[maybe_unused]] Multiplayer::NetworkInput& networkInput, float deltaTime)
     {
-        const AZ::TimeMs deltaMs = m_jumpPadEffectEvent.TimeInQueueMs();
-        const float deltaTime = AZ::TimeMsToSeconds(deltaMs);
-
-        if (GetJumpPadEffectDuration() > AZ::Time::ZeroTimeMs)
-        {
-            ModifyJumpPadEffectDuration() -= deltaMs;
-            if (GetJumpPadEffectDuration() <= AZ::Time::ZeroTimeMs)
-            {
-                // Jump effect is over
-                SetIsJumpPadEffectInProgress(false);
-                SetJumpPadEffectDuration(AZ::Time::ZeroTimeMs);
-            }
-        }
-
         if (GetIsJumpPadEffectInProgress())
         {
             GetNetworkCharacterComponentController()->TryMoveWithVelocity(GetJumpPadVector(), deltaTime);
@@ -93,6 +79,22 @@ namespace MultiplayerSample
         {
             const AZ::Vector3 gravity = AZ::Vector3::CreateAxisZ(-GetGravity());
             GetNetworkCharacterComponentController()->TryMoveWithVelocity(gravity, deltaTime);
+        }
+    }
+
+    void PlayerJumpPadEffectComponentController::JumpPadEffectTick()
+    {
+        if (m_jumpPadEffectDuration > AZ::Time::ZeroTimeMs)
+        {
+            const AZ::TimeMs deltaMs = m_jumpPadEffectEvent.TimeInQueueMs();
+
+            m_jumpPadEffectDuration -= deltaMs;
+            if (m_jumpPadEffectDuration <= AZ::Time::ZeroTimeMs)
+            {
+                // Jump effect is over
+                SetIsJumpPadEffectInProgress(false);
+                m_jumpPadEffectDuration = AZ::Time::ZeroTimeMs;
+            }
         }
     }
 }
