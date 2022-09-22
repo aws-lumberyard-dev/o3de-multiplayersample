@@ -6,6 +6,8 @@
 #
 
 set(FILES
+    Include/BubbleProjectileBus.h
+    Include/BubbleProjectileSpawnerBus.h
     Include/PlayerKnockbackBus.h
     Include/MatchPlayerCoinsBus.h
     Include/NetworkPrefabSpawnerInterface.h
@@ -107,6 +109,13 @@ set(FILES
     Source/Components/Multiplayer/EnergyBallComponent.h
     Source/Components/Multiplayer/EnergyCannonComponent.cpp
     Source/Components/Multiplayer/EnergyCannonComponent.h
+
+    Source/AutoGen/BubbleProjectileComponent.AutoComponent.xml
+    Source/Components/Multiplayer/BubbleProjectileComponent.cpp
+    Source/Components/Multiplayer/BubbleProjectileComponent.h
+    Source/AutoGen/BubbleProjectileSpawnerComponent.AutoComponent.xml
+    Source/Components/Multiplayer/BubbleProjectileSpawnerComponent.cpp
+    Source/Components/Multiplayer/BubbleProjectileSpawnerComponent.h
 
     Source/GameState/GameStateMatchEnded.h
     Source/GameState/GameStateMatchEnded.cpp
