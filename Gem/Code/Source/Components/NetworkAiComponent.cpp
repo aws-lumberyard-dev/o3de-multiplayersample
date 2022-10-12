@@ -16,6 +16,9 @@
 
 namespace MultiplayerSample
 {
+    // Cvar: mps_npcMode
+    AZ_CVAR(bool, mps_npcMode, false, nullptr, AZ::ConsoleFunctorFlags::Null, "If true enable NPC mode for MultiplayerSample.");
+
     constexpr static float SecondsToMs = 1000.f;
 
     NetworkAiComponentController::NetworkAiComponentController(NetworkAiComponent& parent)
@@ -25,6 +28,11 @@ namespace MultiplayerSample
 
     void NetworkAiComponentController::OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
     {
+        if (IsNetEntityRoleAutonomous() && mps_npcMode)
+        {
+            SetEnabled(true);
+        }
+
         if (GetEnabled())
         {
             Multiplayer::LocalPredictionPlayerInputComponentController* playerInputController = GetLocalPredictionPlayerInputComponentController();
