@@ -16,7 +16,6 @@
 
 namespace MultiplayerSample
 {
-    // Cvar: mps_botMode
     AZ_CVAR(bool, mps_botMode, false, nullptr, AZ::ConsoleFunctorFlags::Null, "If true, enable bot (AI) mode for client.");
 
     constexpr static float SecondsToMs = 1000.f;
