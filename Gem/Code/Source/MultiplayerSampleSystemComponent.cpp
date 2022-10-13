@@ -119,7 +119,7 @@ namespace MultiplayerSample
 
         Multiplayer::INetworkEntityManager::EntityList entityList =
             AZ::Interface<Multiplayer::IMultiplayer>::Get()->GetNetworkEntityManager()->CreateEntitiesImmediate(
-                entityParams.first, Multiplayer::NetEntityRole::Authority, entityParams.second, Multiplayer::AutoActivate::DoNotActivate);
+            entityParams.first, Multiplayer::NetEntityRole::Authority, entityParams.second, Multiplayer::AutoActivate::DoNotActivate);
 
         for (Multiplayer::NetworkEntityHandle subEntity : entityList)
         {
