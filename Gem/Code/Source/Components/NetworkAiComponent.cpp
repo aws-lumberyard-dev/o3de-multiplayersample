@@ -23,31 +23,30 @@ namespace MultiplayerSample
     NetworkAiComponentController::NetworkAiComponentController(NetworkAiComponent& parent)
         : NetworkAiComponentControllerBase(parent)
     {
-    }
-
-    void NetworkAiComponentController::OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
-    {
-        if (IsNetEntityRoleAutonomous() && mps_botMode)
+    	if (IsNetEntityRoleAutonomous() && mps_botMode)
         {
             SetEnabled(true);
         }
+	}
 
+    void NetworkAiComponentController::OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
+    {
         if (GetEnabled())
         {
             Multiplayer::LocalPredictionPlayerInputComponentController* playerInputController = GetLocalPredictionPlayerInputComponentController();
-            if (playerInputController != nullptr)
+            if (playerInputController != nullptr && !IsNetEntityRoleAutonomous())
             {
                 playerInputController->ForceEnableAutonomousUpdate();
             }
         }
-    }
+	}
 
     void NetworkAiComponentController::OnDeactivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
     {
         if (GetEnabled())
         {
             Multiplayer::LocalPredictionPlayerInputComponentController* playerInputController = GetLocalPredictionPlayerInputComponentController();
-            if (playerInputController != nullptr)
+            if (playerInputController != nullptr && !IsNetEntityRoleAutonomous())
             {
                 playerInputController->ForceDisableAutonomousUpdate();
             }
