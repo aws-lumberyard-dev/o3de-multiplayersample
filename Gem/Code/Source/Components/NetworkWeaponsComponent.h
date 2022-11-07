@@ -83,6 +83,7 @@ namespace MultiplayerSample
         friend class NetworkAiComponentController;
 
         void UpdateAI();
+        bool ShouldProcessInput() const;
 
         //! Update pump for player controlled weapons
         //! @param deltaTime the time in seconds since last tick
