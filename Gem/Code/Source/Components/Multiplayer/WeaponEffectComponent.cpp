@@ -5,6 +5,7 @@
  *
  */
 
+#include <LmbrCentral/Audio/AudioTriggerComponentBus.h>
 #include <PopcornFX/PopcornFXBus.h>
 #include <Source/Components/Multiplayer/WeaponEffectComponent.h>
 
@@ -64,6 +65,8 @@ namespace MultiplayerSample
 
             particle->Restart(true);
         }
+
+        LmbrCentral::AudioTriggerComponentRequestBus::Event(GetEntityId(), &LmbrCentral::AudioTriggerComponentRequestBus::Events::Play);
     }
 
 

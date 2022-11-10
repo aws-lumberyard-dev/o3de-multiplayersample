@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="12" SoundbankVersion="140">
+	<RootPaths>
+		<ProjectRoot>C:\git\o3de-multiplayersample\Sounds\wwise_project\</ProjectRoot>
+		<SourceFilesRoot>C:\git\o3de-multiplayersample\Sounds\wwise_project\.cache\Windows\</SourceFilesRoot>
+		<SoundBanksRoot>C:\git\o3de-multiplayersample\Sounds\wwise\</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>C:\git\o3de-multiplayersample\Sounds\wwise_project\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<StreamedFiles/>
+	<MediaFilesNotInAnyBank/>
+	<SoundBanks>
+		<SoundBank Id="1355168291" Language="SFX" Hash="3690994985">
+			<ObjectPath>Init</ObjectPath>
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+		</SoundBank>
+		<SoundBank Id="3140736671" Language="SFX" Hash="1054989063">
+			<ObjectPath>\SoundBanks\Default Work Unit\MultiplayerSample_SoundBank</ObjectPath>
+			<ShortName>MultiplayerSample_SoundBank</ShortName>
+			<Path>MultiplayerSample_SoundBank.bnk</Path>
+			<IncludedEvents>
+				<Event Id="850206754" Name="Play_Sound_Gun_Firing" ObjectPath="\Events\Default Work Unit\Play_Sound_Gun_Firing">
+					<IncludedMemoryFiles>
+						<File Id="970756583" Language="SFX">
+							<ShortName>AMZ_sfx_CHR_wpn_plasma_pistol_fire001.wav</ShortName>
+							<Path>SFX\AMZ_sfx_CHR_wpn_plasma_pistol_fire001_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1390826636" Name="Stop_Sound_Gun_Firing" ObjectPath="\Events\Default Work Unit\Stop_Sound_Gun_Firing"/>
+			</IncludedEvents>
+		</SoundBank>
+	</SoundBanks>
+</SoundBanksInfo>
