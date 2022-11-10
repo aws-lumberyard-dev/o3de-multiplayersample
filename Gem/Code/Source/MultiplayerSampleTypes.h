@@ -21,8 +21,9 @@ namespace MultiplayerSample
     constexpr AZStd::string_view EnergyBallArmorDamageSetting = "/MultiplayerSample/Settings/EnergyBall/ArmorDamage";
     constexpr AZStd::string_view EnergyCannonFiringPeriodSetting = "/MultiplayerSample/Settings/EnergyCannon/FiringPeriodMilliseconds";
 
-    using StickAxis = AzNetworking::QuantizedValues<1, 1, -1, 1>;
-    using MouseAxis = AzNetworking::QuantizedValues<1, 2, -1, 1>;
+    //! we use a similar -1,1 range so we can use same logic for stick and mouse where possible
+    using StickAxis = AzNetworking::QuantizedValues<1, 1, -1, 1>; // stick deltas are in -1 to 1 range
+    using MouseAxis = AzNetworking::QuantizedValues<1, 4, -1, 1>; // mouse deltas are in pixels so be sure to scale into -1,1 range 
 
     //! Various character animation states.
     enum class CharacterAnimState

@@ -13,6 +13,7 @@
     <ComponentRelation Constraint="Required" HasController="true" Name="NetworkCharacterComponent" Namespace="Multiplayer" Include="Multiplayer/Components/NetworkCharacterComponent.h" />
     <ComponentRelation Constraint="Required" HasController="true" Name="NetworkSimplePlayerCameraComponent" Namespace="MultiplayerSample" Include="Source/Components/NetworkSimplePlayerCameraComponent.h" />
     <ComponentRelation Constraint="Weak" HasController="true" Name="NetworkAiComponent" Namespace="MultiplayerSample" Include="Source/Components/NetworkAiComponent.h" />
+    <ComponentRelation Constraint="Required" HasController="true" Name="LocalPredictionPlayerInputComponent" Namespace="Multiplayer" Include="Multiplayer/Components/LocalPredictionPlayerInputComponent.h" />
 
     <Include File="Source/MultiplayerSampleTypes.h"/>
 

@@ -10,28 +10,14 @@
 #include <Source/AutoGen/NetworkPlayerMovementComponent.AutoComponent.h>
 #include <Source/Components/NetworkAiComponent.h>
 #include <StartingPointInput/InputEventNotificationBus.h>
+#include <AzCore/Component/TickBus.h>
 
 namespace MultiplayerSample
 {
-    // Input Event Ids for Player Controls
-    const StartingPointInput::InputEventNotificationId MoveFwdEventId("move_fwd");
-    const StartingPointInput::InputEventNotificationId MoveBackEventId("move_back");
-    const StartingPointInput::InputEventNotificationId MoveLeftEventId("move_left");
-    const StartingPointInput::InputEventNotificationId MoveRightEventId("move_right");
-
-    const StartingPointInput::InputEventNotificationId SprintEventId("sprint");
-    const StartingPointInput::InputEventNotificationId JumpEventId("jump");
-    const StartingPointInput::InputEventNotificationId CrouchEventId("crouch");
-
-    const StartingPointInput::InputEventNotificationId LookLeftRightEventId("lookLeftRight");
-    const StartingPointInput::InputEventNotificationId LookUpDownEventId("lookUpDown");
-
-    const StartingPointInput::InputEventNotificationId ZoomInEventId("zoomIn");
-    const StartingPointInput::InputEventNotificationId ZoomOutEventId("zoomOut");
-
     class NetworkPlayerMovementComponentController
         : public NetworkPlayerMovementComponentControllerBase
         , private StartingPointInput::InputEventNotificationBus::MultiHandler
+        , private AZ::TickBus::Handler
     {
     public:
         NetworkPlayerMovementComponentController(NetworkPlayerMovementComponent& parent);
@@ -46,6 +32,12 @@ namespace MultiplayerSample
         //! @}
     
     private:
+        //! AZ::TickBus interface
+        //! @{
+        void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
+        int GetTickOrder() override;
+        //! @}
+
         friend class NetworkAiComponentController;
 
         void UpdateVelocity(const NetworkPlayerMovementComponentNetworkInput& playerInput);
@@ -64,6 +56,12 @@ namespace MultiplayerSample
         AZ::ScheduledEvent m_updateAI;
         NetworkAiComponentController* m_networkAiComponentController = nullptr;
 
+        AZ::Quaternion m_currentOrientation;
+        AZ::Quaternion m_previousOrientation;
+
+        AZ::Vector3 m_currentVelocity;
+        AZ::Vector3 m_previousVelocity;
+
         // Technically these values should never migrate hosts since they are maintained by the autonomous client
         // But due to how the stress test chaos monkey operates, it puppets these values on the server to mimic a client
         // This means these values can and will migrate between hosts (and lose any stored state)
@@ -80,9 +78,30 @@ namespace MultiplayerSample
         bool m_leftDown = false;
         bool m_backwardDown = false;
         bool m_rightDown = false;
-        bool m_sprinting = false;
-        bool m_jumping = false;
         bool m_crouching = false;
+        bool m_jumping = false;
+        bool m_sprinting = false;
+
+        float m_forwardAcc = 0.f;
+        float m_backwardAcc = 0.f;
+        float m_leftAcc = 0.f;
+        float m_rightAcc = 0.f;
+
+        float m_inputTimeMs = 0.f;
+        float m_leftInputMs = 0.f;
+        float m_rightInputMs = 0.f;
+        float m_forwardInputMs = 0.f;
+        float m_backwardInputMs = 0.f;
+
+        // tracking state of buttons during the network tick so input is not lost
+        bool m_forwardWasDown = false;
+        bool m_leftWasDown = false;
+        bool m_backwardWasDown = false;
+        bool m_rightWasDown = false;
+        bool m_wasCrouching = false;
+        bool m_wasJumping = false;
+        bool m_wasSprinting = false;
+
         bool m_aiEnabled = false;
     };
 }

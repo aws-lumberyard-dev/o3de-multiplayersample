@@ -12,16 +12,40 @@
 #include <Source/Components/NetworkAnimationComponent.h>
 #include <Source/Components/NetworkSimplePlayerCameraComponent.h>
 #include <Multiplayer/Components/NetworkTransformComponent.h>
+#include <Multiplayer/Components/LocalPredictionPlayerInputComponent.h>
 #include <AzCore/Time/ITime.h>
 #include <AzFramework/Components/CameraBus.h>
 #include <AzFramework/Input/Buses/Requests/InputSystemCursorRequestBus.h>
 #include <AzFramework/Input/Devices/Mouse/InputDeviceMouse.h>
 
+#pragma optimize("", off)
 namespace MultiplayerSample
 {
-    AZ_CVAR(float, cl_WasdStickAccel, 5.0f, nullptr, AZ::ConsoleFunctorFlags::Null, "The linear acceleration to apply to WASD inputs to simulate analog stick controls");
-    AZ_CVAR(float, cl_AimStickScaleZ, 0.1f, nullptr, AZ::ConsoleFunctorFlags::Null, "The scaling to apply to aim and view adjustments");
-    AZ_CVAR(float, cl_AimStickScaleX, 0.05f, nullptr, AZ::ConsoleFunctorFlags::Null, "The scaling to apply to aim and view adjustments");
+    AZ_CVAR(float, cl_WasdStickAccel, 5.f, nullptr, AZ::ConsoleFunctorFlags::Null, "The linear acceleration to apply to WASD inputs to simulate analog stick controls");
+    AZ_CVAR(float, cl_AimStickScaleZ, 0.001f, nullptr, AZ::ConsoleFunctorFlags::Null, "The scaling to apply to yaw pitch adjustments");
+    AZ_CVAR(float, cl_AimStickScaleX, 0.001f, nullptr, AZ::ConsoleFunctorFlags::Null, "The scaling to apply to pitch view adjustments");
+#ifndef AZ_RELEASE_BUILD
+    AZ_CVAR(int, cl_AimDebugMode, 0, nullptr, AZ::ConsoleFunctorFlags::DontReplicate, "Aim debug mode");
+    AZ_CVAR(int, cl_MoveDebugMode, 0, nullptr, AZ::ConsoleFunctorFlags::DontReplicate, "Move debug mode");
+    AZ_CVAR(bool, cl_MoveBlendingEnabled, true, nullptr, AZ::ConsoleFunctorFlags::DontReplicate, "True if client should blend previous and current network tick movement");
+#endif
+
+    // Input Event Ids for Player Controls
+    const StartingPointInput::InputEventNotificationId MoveFwdEventId("move_fwd");
+    const StartingPointInput::InputEventNotificationId MoveBackEventId("move_back");
+    const StartingPointInput::InputEventNotificationId MoveLeftEventId("move_left");
+    const StartingPointInput::InputEventNotificationId MoveRightEventId("move_right");
+
+    const StartingPointInput::InputEventNotificationId SprintEventId("sprint");
+    const StartingPointInput::InputEventNotificationId JumpEventId("jump");
+    const StartingPointInput::InputEventNotificationId CrouchEventId("crouch");
+
+    const StartingPointInput::InputEventNotificationId LookLeftRightEventId("lookLeftRight");
+    const StartingPointInput::InputEventNotificationId LookUpDownEventId("lookUpDown");
+
+    const StartingPointInput::InputEventNotificationId ZoomInEventId("zoomIn");
+    const StartingPointInput::InputEventNotificationId ZoomOutEventId("zoomOut");
+
 
     NetworkPlayerMovementComponentController::NetworkPlayerMovementComponentController(NetworkPlayerMovementComponent& parent)
         : NetworkPlayerMovementComponentControllerBase(parent)
@@ -41,6 +65,7 @@ namespace MultiplayerSample
         }
         else if (IsNetEntityRoleAutonomous())
         {
+            AZ::TickBus::Handler::BusConnect();
             StartingPointInput::InputEventNotificationBus::MultiHandler::BusConnect(MoveFwdEventId);
             StartingPointInput::InputEventNotificationBus::MultiHandler::BusConnect(MoveBackEventId);
             StartingPointInput::InputEventNotificationBus::MultiHandler::BusConnect(MoveLeftEventId);
@@ -59,6 +84,7 @@ namespace MultiplayerSample
     {
         if (IsNetEntityRoleAutonomous() && !m_aiEnabled)
         {
+            AZ::TickBus::Handler::BusDisconnect();
             StartingPointInput::InputEventNotificationBus::MultiHandler::BusDisconnect(MoveFwdEventId);
             StartingPointInput::InputEventNotificationBus::MultiHandler::BusDisconnect(MoveBackEventId);
             StartingPointInput::InputEventNotificationBus::MultiHandler::BusDisconnect(MoveLeftEventId);
@@ -103,10 +129,16 @@ namespace MultiplayerSample
         // Movement axis
         // Since we're on a keyboard, this adds a touch of an acceleration curve to the keyboard inputs
         // This is so that tapping the keyboard moves the virtual stick less than just holding it down
-        m_forwardWeight = std::min<float>(m_forwardDown ? m_forwardWeight + cl_WasdStickAccel * deltaTime : 0.0f, 1.0f);
-        m_leftWeight = std::min<float>(m_leftDown ? m_leftWeight + cl_WasdStickAccel * deltaTime : 0.0f, 1.0f);
-        m_backwardWeight = std::min<float>(m_backwardDown ? m_backwardWeight + cl_WasdStickAccel * deltaTime : 0.0f, 1.0f);
-        m_rightWeight = std::min<float>(m_rightDown ? m_rightWeight + cl_WasdStickAccel * deltaTime : 0.0f, 1.0f);
+        m_forwardWeight = std::min<float>(m_forwardWasDown ? m_forwardWeight + cl_WasdStickAccel * deltaTime : 0.0f, 1.0f);
+        m_leftWeight = std::min<float>(m_leftWasDown ? m_leftWeight + cl_WasdStickAccel * deltaTime : 0.0f, 1.0f);
+        m_backwardWeight = std::min<float>(m_backwardWasDown ? m_backwardWeight + cl_WasdStickAccel * deltaTime : 0.0f, 1.0f);
+        m_rightWeight = std::min<float>(m_rightWasDown ? m_rightWeight + cl_WasdStickAccel * deltaTime : 0.0f, 1.0f);
+
+        // clear "was" state for each key that was released
+        m_forwardWasDown &= m_forwardDown;
+        m_backwardWasDown &= m_backwardDown;
+        m_leftWasDown &= m_leftDown;
+        m_rightWasDown &= m_rightDown;
 
         // Inputs for your own component always exist
         NetworkPlayerMovementComponentNetworkInput* playerInput = input.FindComponentInput<NetworkPlayerMovementComponentNetworkInput>();
@@ -114,18 +146,178 @@ namespace MultiplayerSample
         playerInput->m_forwardAxis = StickAxis(m_forwardWeight - m_backwardWeight);
         playerInput->m_strafeAxis = StickAxis(m_leftWeight - m_rightWeight);
 
+#ifndef AZ_RELEASE_BUILD
+        [[maybe_unused]] float elapsedTime = 0.f;
+        if (cl_AimDebugMode > 0)
+        {
+            AZ::ScriptTimePoint time;
+            AZ::TickRequestBus::BroadcastResult(time, &AZ::TickRequestBus::Events::GetTimeAtCurrentTick);
+            Multiplayer::LocalPredictionPlayerInputComponentController* playerInputController = GetLocalPredictionPlayerInputComponentController();
+            AZ_Assert(playerInputController, "Missing required LocalPredictionPlayerInputComponentController");
+
+            // the accumulator tells us how many ms we are ahead of the last network tick
+            // at this point the accumulator has updated so it should only contain the left over time
+            elapsedTime = aznumeric_cast<float>(playerInputController->GetMoveAccumulator());
+
+            if (cl_AimDebugMode == 2)
+            {
+                constexpr float speed = 10.f;
+                // do not use elapsedTime, input is supposed to be for deltaTime which is constant
+                // do not use deltaTime, that gets applied in ProcessInput
+                m_viewYaw = speed * deltaTime;
+            }
+        }
+#endif
+
         // View Axis
-        playerInput->m_viewYaw = MouseAxis(m_viewYaw);
-        playerInput->m_viewPitch = MouseAxis(m_viewPitch);
+        // apply aim stick scale here on client otherwise need to set values on both client and server
+        // TODO only use the amount of view yaw and pitch used in deltaTime
+        playerInput->m_viewYaw = MouseAxis(m_viewYaw * cl_AimStickScaleZ);
+        playerInput->m_viewPitch = MouseAxis(m_viewPitch * cl_AimStickScaleX);
+
+#ifndef AZ_RELEASE_BUILD
+        if (cl_AimDebugMode > 0)
+        {
+            AZLOG_INFO("$5 ClientInput deltaYaw: %f, playerInput->m_viewYaw: %f  time: %f, elapsed: %f", m_viewYaw, aznumeric_cast<float>(playerInput->m_viewYaw), elapsedTime)
+        }
+#endif
+
+        // reset accumulated yaw and pitch
+        m_viewYaw = 0.f;
+        m_viewPitch = 0.f;
 
         // Strafe input
         playerInput->m_sprint = m_sprinting;
         playerInput->m_jump = m_jumping;
         playerInput->m_crouch = m_crouching;
 
+#ifndef AZ_RELEASE_BUILD
+        int moveDebugMode = 0;
+        AZ::Interface<AZ::IConsole>::Get()->GetCvarValue("cl_MoveDebugMode", moveDebugMode);
+        if (moveDebugMode > 0)
+        {
+            AZLOG_INFO("$7 ClientInput f: %f, b: %f  l: %f, r: %f - sprint: %s", m_forwardWeight, m_backwardWeight, m_leftWeight, m_rightWeight, m_sprinting ? "true" : "false")
+        }
+#endif
+
         // Just a note for anyone who is super confused by this, ResetCount is a predictable network property, it gets set on the client
         // through correction packets
         playerInput->m_resetCount = GetNetworkTransformComponentController()->GetResetCount();
+    }
+
+    void NetworkPlayerMovementComponentController::OnTick(float deltaTime,[[maybe_unused]] AZ::ScriptTimePoint time)
+    {
+        if (!ShouldProcessInput())
+        {
+            return;
+        }
+
+        // LocalPredictionPlayerInputComponentController is listed as required
+        Multiplayer::LocalPredictionPlayerInputComponentController* playerInputController = GetLocalPredictionPlayerInputComponentController();
+        AZ_Assert(playerInputController, "Missing required LocalPredictionPlayerInputComponentController");
+
+        // the accumulator tells us how many ms we are ahead of the last network tick
+        const auto accumulator = playerInputController->GetMoveAccumulator();
+
+        // our tick order is just before the accumulator updates with deltaTime
+        const float elapsedTime = aznumeric_cast<float>(accumulator) + deltaTime;
+
+#ifndef AZ_RELEASE_BUILD
+        int moveDebugMode = 0;
+        AZ::Interface<AZ::IConsole>::Get()->GetCvarValue("cl_MoveDebugMode", moveDebugMode);
+        if (moveDebugMode == 2)
+        { 
+            m_rightDown = true;
+            m_rightWasDown = true;
+        }
+#endif
+
+        AZ::TimeMs inputRateMs;
+        AZ::Interface<AZ::IConsole>::Get()->GetCvarValue("cl_InputRateMS", inputRateMs);
+        const double clientInputRateSec = AZ::TimeMsToSecondsDouble(inputRateMs);
+
+        //! increment input time
+        m_inputTimeMs += deltaTime;
+        if (m_leftDown)
+        {
+            m_leftInputMs += deltaTime;
+            m_leftAcc += 1.0; // TODO will need actual stick values for joysticks
+        }
+        if (m_rightDown)
+        {
+            m_rightInputMs += deltaTime;
+            m_rightAcc += 1.0;
+        }
+        if (m_forwardDown)
+        {
+            m_forwardInputMs += deltaTime;
+            m_forwardAcc += 1.0;
+        }
+        if (m_backwardDown)
+        {
+            m_backwardInputMs += deltaTime;
+            m_backwardAcc += 1.0;
+        }
+
+#ifndef AZ_RELEASE_BUILD
+        if (cl_AimDebugMode == 2)
+        {
+            constexpr float speed = 10.f;
+            m_viewYaw = speed * elapsedTime;
+            m_viewPitch = 0.f;
+        }
+#endif
+        NetworkPlayerMovementComponentNetworkInput playerInput;
+        // run values through quantization (MouseAxis) to get the same quantized values on client
+        playerInput.m_viewYaw = MouseAxis(m_viewYaw * cl_AimStickScaleZ);
+        playerInput.m_viewPitch = MouseAxis(m_viewPitch * cl_AimStickScaleX);
+        playerInput.m_sprint = m_sprinting;
+        playerInput.m_jump = m_jumping;
+        playerInput.m_crouch = m_crouching;
+
+        AZ::Vector3 aimAngles = GetNetworkSimplePlayerCameraComponentController()->GetAimAngles();
+        if (cl_MoveBlendingEnabled)
+        {
+            // blend most recent movement inputs - will always lag  [cl_InputRateMS .. 2 * cl_InputRateMS]
+            auto percent = accumulator / clientInputRateSec;
+            auto orientation = m_previousOrientation.Slerp(m_currentOrientation, accumulator / clientInputRateSec);
+            
+        }
+        else
+        {
+            // predict movement
+            aimAngles.SetZ(NormalizeHeading(aimAngles.GetZ() - playerInput.m_viewYaw * elapsedTime));
+            aimAngles.SetX(NormalizeHeading(aimAngles.GetX() - playerInput.m_viewPitch * elapsedTime));
+            aimAngles.SetX(
+                NormalizeHeading(AZ::GetClamp(aimAngles.GetX(), -AZ::Constants::QuarterPi * 1.5f, AZ::Constants::QuarterPi * 1.5f)));
+            GetNetworkSimplePlayerCameraComponentController()->SetPredictedAimAngles(aimAngles);
+
+#ifndef AZ_RELEASE_BUILD
+            if (cl_AimDebugMode > 0)
+            {
+                AZLOG_INFO("$6    Movement OnTick deltaYaw: %f  normalizedYaw: %f elapsed: %f  delta: %f acc: %f", m_viewYaw, aimAngles.GetZ(), elapsedTime, deltaTime, accumulator)
+            }
+            if (moveDebugMode > 0)
+            {
+                AZLOG_INFO("$8 Movement OnTick f: %d, b: %d  l: %d, r: %d - sprint: %d", m_forwardDown ? 1 : 0, m_backwardDown ? 1 : 0, m_leftDown ? 1 : 0, m_rightDown ? 1 : 0, m_sprinting ? 1 : 0)
+            }
+#endif
+        }
+
+        const AZ::Quaternion newOrientation = AZ::Quaternion::CreateRotationZ(aimAngles.GetZ());
+        GetEntity()->GetTransform()->SetLocalRotationQuaternion(newOrientation);
+
+        // Update velocity
+        UpdateVelocity(playerInput);
+
+        GetNetworkCharacterComponentController()->TryMoveWithVelocity(GetVelocity(), deltaTime);
+    }
+
+    int NetworkPlayerMovementComponentController::GetTickOrder()
+    {
+        // tick right after the ClientInput() and ProcessInput() 
+        // (ClientInput/ProcessInput only tick when the accumulator exceeds the cl_InputRateMS value)
+        return AZ::TICK_ATTACHMENT + 1;
     }
 
     void NetworkPlayerMovementComponentController::ProcessInput(Multiplayer::NetworkInput& input, float deltaTime)
@@ -154,19 +346,52 @@ namespace MultiplayerSample
 
         // Update orientation
         AZ::Vector3 aimAngles = GetNetworkSimplePlayerCameraComponentController()->GetAimAngles();
-        aimAngles.SetZ(NormalizeHeading(aimAngles.GetZ() - playerInput->m_viewYaw * cl_AimStickScaleZ));
-        aimAngles.SetX(NormalizeHeading(aimAngles.GetX() - playerInput->m_viewPitch * cl_AimStickScaleX));
+        aimAngles.SetZ(NormalizeHeading(aimAngles.GetZ() - playerInput->m_viewYaw * deltaTime * (1.f/cl_AimStickScaleZ)));
+        aimAngles.SetX(NormalizeHeading(aimAngles.GetX() - playerInput->m_viewPitch * deltaTime * (1.f/cl_AimStickScaleX)));
         aimAngles.SetX(
-            NormalizeHeading(AZ::GetClamp(aimAngles.GetX(), -AZ::Constants::QuarterPi * 0.75f, AZ::Constants::QuarterPi * 0.75f)));
+            NormalizeHeading(AZ::GetClamp(aimAngles.GetX(), -AZ::Constants::QuarterPi * 1.5f, AZ::Constants::QuarterPi * 1.5f)));
         GetNetworkSimplePlayerCameraComponentController()->SetAimAngles(aimAngles);
+        //GetNetworkSimplePlayerCameraComponentController()->SetPredictedAimAngles(aimAngles);
 
-        const AZ::Quaternion newOrientation = AZ::Quaternion::CreateRotationZ(aimAngles.GetZ());
-        GetEntity()->GetTransform()->SetLocalRotationQuaternion(newOrientation);
+#ifndef AZ_RELEASE_BUILD
+        if (cl_AimDebugMode > 0)
+        {
+            AZLOG_INFO("ProcessInput deltaYaw: %f, absYaw: %f, deltaTime: %f", aznumeric_cast<float>(playerInput->m_viewYaw), aimAngles.GetZ(), deltaTime)
+        }
+        int moveDebugMode = 0;
+        AZ::Interface<AZ::IConsole>::Get()->GetCvarValue("cl_MoveDebugMode", moveDebugMode);
+        if (moveDebugMode > 0)
+        {
+            AZLOG_INFO("ProcessInput f: %d, b: %d  l: %d, r: %d - sprint: %d", m_forwardDown ? 1 : 0, m_backwardDown ? 1 : 0, m_leftDown ? 1 :0, m_rightDown ? 1: 0, m_sprinting ? 1 : 0)
+        }
+#endif
+
+        if (IsNetEntityRoleAutonomous())
+        { 
+            m_previousOrientation = GetEntity()->GetTransform()->GetLocalRotationQuaternion();
+            m_currentOrientation = AZ::Quaternion::CreateRotationZ(aimAngles.GetZ());
+
+            m_previousVelocity = GetVelocity();
+        }
+        else
+        {
+            const AZ::Quaternion newOrientation = AZ::Quaternion::CreateRotationZ(aimAngles.GetZ());
+            GetEntity()->GetTransform()->SetLocalRotationQuaternion(newOrientation);
+        }
+
 
         // Update velocity
         UpdateVelocity(*playerInput);
 
-        GetNetworkCharacterComponentController()->TryMoveWithVelocity(GetVelocity(), deltaTime);
+
+        if (IsNetEntityRoleAutonomous())
+        {
+            m_currentVelocity = GetVelocity();
+        }
+        else
+        {
+            GetNetworkCharacterComponentController()->TryMoveWithVelocity(GetVelocity(), deltaTime);
+        }
     }
 
     void NetworkPlayerMovementComponentController::UpdateVelocity(const NetworkPlayerMovementComponentNetworkInput& playerInput)
@@ -236,26 +461,32 @@ namespace MultiplayerSample
         else if (*inputId == MoveFwdEventId)
         {
             m_forwardDown = true;
+            m_forwardWasDown = true;
         }
         else if (*inputId == MoveBackEventId)
         {
             m_backwardDown = true;
+            m_backwardWasDown = true;
         }
         else if (*inputId == MoveLeftEventId)
         {
             m_leftDown = true;
+            m_leftWasDown = true;
         }
         else if (*inputId == MoveRightEventId)
         {
             m_rightDown = true;
+            m_rightWasDown = true;
         }
         else if (*inputId == SprintEventId)
         {
             m_sprinting = true;
+            m_wasSprinting = true;
         }
         else if (*inputId == JumpEventId)
         {
             m_jumping = true;
+            m_wasJumping = true;
         }
         else if (*inputId == CrouchEventId)
         {
@@ -263,11 +494,12 @@ namespace MultiplayerSample
         }
         else if (*inputId == LookLeftRightEventId)
         {
-            m_viewYaw = value;
+            m_viewYaw += value;
+            //AZLOG_INFO("yaw %f", value)
         }
         else if (*inputId == LookUpDownEventId)
         {
-            m_viewPitch = value;
+            m_viewPitch += value;
         }
     }
 
@@ -309,11 +541,11 @@ namespace MultiplayerSample
         }
         else if (*inputId == LookLeftRightEventId)
         {
-            m_viewYaw = value;
+            m_viewYaw += value;
         }
         else if (*inputId == LookUpDownEventId)
         {
-            m_viewPitch = value;
+            m_viewPitch += value;
         }
     }
 
@@ -327,11 +559,12 @@ namespace MultiplayerSample
         }
         else if (*inputId == LookLeftRightEventId)
         {
-            m_viewYaw = value;
+            //AZLOG_INFO("yaw %f", value)
+            m_viewYaw += value;
         }
         else if (*inputId == LookUpDownEventId)
         {
-            m_viewPitch = value;
+            m_viewPitch += value;
         }
     }
 
@@ -344,3 +577,4 @@ namespace MultiplayerSample
         }
     }
 } // namespace MultiplayerSample
+#pragma optimize("", on)
