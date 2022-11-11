@@ -25,14 +25,24 @@ namespace MultiplayerSample
             WeaponEffectComponentBase::GetRequiredServices(required);
             required.push_back(AZ_CRC("PopcornFXEmitterService"));
         }
-
-        void OnInit() override;
+        
         void OnActivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
         void OnDeactivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
-
-        void HandleRPC_ConfirmedHit(AzNetworking::IConnection* invokingConnection, const AZ::Vector3& hitPosition) override;
         
         void PlayParticleEffect(const AZ::Vector3& start, const AZ::Vector3& end);
+
+    private:
+        void OnWeaponActivate(const WeaponActivationInfo& info);
+        OnWeaponActivateEvent::Handler m_weaponActivateHandler{ [this](const WeaponActivationInfo& info)
+        {
+            OnWeaponActivate(info);
+        } };
+
+        void OnWeaponConfirmHit(const WeaponHitInfo& info);
+        OnWeaponConfirmHitEvent::Handler m_weaponConfirmHandler{ [this](const WeaponHitInfo& info)
+        {
+            OnWeaponConfirmHit(info);
+        } };
     };
 
     class WeaponEffectComponentController
@@ -45,22 +55,10 @@ namespace MultiplayerSample
         void OnDeactivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
 
     private:
-        void OnWeaponActivate(const WeaponActivationInfo& info);
-        OnWeaponActivateEvent::Handler m_weaponActivateHandler{ [this](const WeaponActivationInfo& info)
-        {
-            OnWeaponActivate(info);
-        } };
-
         void OnWeaponPredictHit(const WeaponHitInfo& info);
         OnWeaponPredictHitEvent::Handler m_weaponPredictHandler{ [this](const WeaponHitInfo& info)
         {
             OnWeaponPredictHit(info);
-        } };
-
-        void OnWeaponConfirmHit(const WeaponHitInfo& info);
-        OnWeaponConfirmHitEvent::Handler m_weaponConfirmHandler{ [this](const WeaponHitInfo& info)
-        {
-            OnWeaponConfirmHit(info);
         } };
     };
 }
