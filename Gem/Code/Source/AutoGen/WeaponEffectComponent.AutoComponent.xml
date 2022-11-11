@@ -9,8 +9,4 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 	<ComponentRelation Constraint="Required" HasController="true" Name="NetworkWeaponsComponent" Namespace="MultiplayerSample" Include="Source/Components/NetworkWeaponsComponent.h" />
-
-	<RemoteProcedure Name="RPC_ConfirmedHit" InvokeFrom="Authority" HandleOn="Client" IsPublic="true" IsReliable="true" GenerateEventBindings="false" Description="On confirmed weapon activation">
-        <Param Type="AZ::Vector3" Name="HitPosition" />
-    </RemoteProcedure>
 </Component>
