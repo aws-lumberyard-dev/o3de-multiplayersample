@@ -22,7 +22,7 @@
 
 namespace MultiplayerSample
 {
-    AZ_CVAR(bool, cl_WeaponsDrawDebug, true, nullptr, AZ::ConsoleFunctorFlags::Null, "If enabled, weapons will debug draw various important events");
+    AZ_CVAR(bool, cl_WeaponsDrawDebug, false, nullptr, AZ::ConsoleFunctorFlags::Null, "If enabled, weapons will debug draw various important events");
     AZ_CVAR(float, cl_WeaponsDrawDebugSize, 0.25f, nullptr, AZ::ConsoleFunctorFlags::Null, "The size of sphere to debug draw during weapon events");
     AZ_CVAR(float, cl_WeaponsDrawDebugDurationSec, 10.0f, nullptr, AZ::ConsoleFunctorFlags::Null, "The number of seconds to display debug draw data");
     AZ_CVAR(float, sv_WeaponsImpulseScalar, 750.0f, nullptr, AZ::ConsoleFunctorFlags::Null, "A fudge factor for imparting impulses on rigid bodies due to weapon hits");
@@ -111,6 +111,21 @@ namespace MultiplayerSample
         return m_weapons[aznumeric_cast<uint32_t>(weaponIndex)].get();
     }
 
+    void NetworkWeaponsComponent::AddOnWeaponActivateEventHandler(OnWeaponActivateEvent::Handler& handler)
+    {
+        handler.Connect(m_onWeaponActivateEvent);
+    }
+
+    void NetworkWeaponsComponent::AddOnWeaponPredictHitEventHandler(OnWeaponPredictHitEvent::Handler& handler)
+    {
+        handler.Connect(m_onWeaponPredictHitEvent);
+    }
+
+    void NetworkWeaponsComponent::AddOnWeaponConfirmHitEventHandler(OnWeaponConfirmHitEvent::Handler& handler)
+    {
+        handler.Connect(m_onWeaponConfirmHitEvent);
+    }
+
     void NetworkWeaponsComponent::OnWeaponActivate([[maybe_unused]] const WeaponActivationInfo& activationInfo)
     {
         // If we're replaying inputs then early out
@@ -118,6 +133,8 @@ namespace MultiplayerSample
         {
             return;
         }
+
+        m_onWeaponActivateEvent.Signal(activationInfo);
 
         if (cl_WeaponsDrawDebug && m_debugDraw)
         {
@@ -159,6 +176,8 @@ namespace MultiplayerSample
         {
             return;
         }
+
+        m_onWeaponPredictHitEvent.Signal(hitInfo);
 
         for (uint32_t i = 0; i < hitInfo.m_hitEvent.m_hitEntities.size(); ++i)
         {
@@ -225,6 +244,8 @@ namespace MultiplayerSample
                 }
             }
         }
+
+        m_onWeaponConfirmHitEvent.Signal(hitInfo);
 
         // If we're a simulated weapon, or if the weapon is not predictive, then issue material hit effects since the predicted callback above will not get triggered
         [[maybe_unused]] bool shouldIssueMaterialEffects = !HasController() || !hitInfo.m_weapon.GetParams().m_locallyPredicted;
@@ -329,6 +350,20 @@ namespace MultiplayerSample
         return systemCursorState != AzFramework::SystemCursorState::UnconstrainedAndVisible;
     }
 
+    AZ::Vector3 NetworkWeaponsComponent::GetCurrentShotStartPosition()
+    {
+        const uint32_t weaponIndexInt = 0;
+        const char* fireBoneName = GetFireBoneNames(weaponIndexInt).c_str();
+        const int32_t boneIdx = GetNetworkAnimationComponent()->GetBoneIdByName(fireBoneName);
+
+        AZ::Transform fireBoneTransform = AZ::Transform::CreateIdentity();
+        if (!GetNetworkAnimationComponent()->GetJointTransformById(boneIdx, fireBoneTransform))
+        {
+            AZLOG_WARN("Failed to get transform for fire bone joint Id %u", boneIdx);
+        }
+        return fireBoneTransform.GetTranslation();
+    }
+
     void NetworkWeaponsComponentController::CreateInput(Multiplayer::NetworkInput& input, [[maybe_unused]] float deltaTime)
     {
         if (!ShouldProcessInput())
@@ -345,18 +380,10 @@ namespace MultiplayerSample
         weaponInput->m_firing = m_weaponFiring;
 
         // All weapon indices point to the same bone so only send one instance
-        uint32_t weaponIndexInt = 0;
+        const uint32_t weaponIndexInt = 0;
         if (weaponInput->m_firing.GetBit(weaponIndexInt))
         {
-            const char* fireBoneName = GetFireBoneNames(weaponIndexInt).c_str();
-            int32_t boneIdx = GetNetworkAnimationComponentController()->GetParent().GetBoneIdByName(fireBoneName);
-
-            AZ::Transform fireBoneTransform;
-            if (!GetNetworkAnimationComponentController()->GetParent().GetJointTransformById(boneIdx, fireBoneTransform))
-            {
-                AZLOG_WARN("Failed to get transform for fire bone joint Id %u", boneIdx);
-            }
-            weaponInput->m_shotStartPosition = fireBoneTransform.GetTranslation();
+            weaponInput->m_shotStartPosition = GetParent().GetCurrentShotStartPosition();
         }
     }
 

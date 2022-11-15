@@ -40,8 +40,10 @@ namespace MultiplayerSample
 
         friend class NetworkAiComponentController;
 
-        void UpdateVelocity(const NetworkPlayerMovementComponentNetworkInput& playerInput);
+        void UpdateVelocity(const NetworkPlayerMovementComponentNetworkInput& playerInput, float deltaTime);
         float NormalizeHeading(float heading) const;
+
+        AZ::Vector3 GetSlopeHeading(float targetHeading, bool onGround) const;
 
         //! AZ::InputEventNotificationBus interface
         //! @{
@@ -103,5 +105,9 @@ namespace MultiplayerSample
         bool m_wasSprinting = false;
 
         bool m_aiEnabled = false;
+        bool m_wasOnGround = true;
+        float m_gravity = -9.81f;
+        float m_stepHeight = 0.1f;
+        float m_radius = 0.3f;
     };
 }
