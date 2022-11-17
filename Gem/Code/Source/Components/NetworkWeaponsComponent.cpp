@@ -16,6 +16,8 @@
 #include <AzCore/Component/TransformBus.h>
 #include <AzFramework/Physics/PhysicsScene.h>
 #include <AzFramework/Physics/Common/PhysicsSceneQueries.h>
+#include <AzFramework/Input/Buses/Requests/InputSystemCursorRequestBus.h>
+#include <AzFramework/Input/Devices/Mouse/InputDeviceMouse.h>
 #include <DebugDraw/DebugDrawBus.h>
 
 namespace MultiplayerSample
@@ -338,6 +340,16 @@ namespace MultiplayerSample
         }
     }
 
+    bool NetworkWeaponsComponentController::ShouldProcessInput() const
+    {
+        AzFramework::SystemCursorState systemCursorState{AzFramework::SystemCursorState::Unknown};
+        AzFramework::InputSystemCursorRequestBus::EventResult( systemCursorState, AzFramework::InputDeviceMouse::Id,
+            &AzFramework::InputSystemCursorRequests::GetSystemCursorState);
+
+        // only process input when the system cursor isn't unconstrainted and visible a.k.a console mode
+        return systemCursorState != AzFramework::SystemCursorState::UnconstrainedAndVisible;
+    }
+
     AZ::Vector3 NetworkWeaponsComponent::GetCurrentShotStartPosition()
     {
         const uint32_t weaponIndexInt = 0;
@@ -354,6 +366,13 @@ namespace MultiplayerSample
 
     void NetworkWeaponsComponentController::CreateInput(Multiplayer::NetworkInput& input, [[maybe_unused]] float deltaTime)
     {
+        if (!ShouldProcessInput())
+        {
+            m_weaponFiring = false;
+            return;
+        }
+
+            // clear our input  
         // Inputs for your own component always exist
         NetworkWeaponsComponentNetworkInput* weaponInput = input.FindComponentInput<NetworkWeaponsComponentNetworkInput>();
 
