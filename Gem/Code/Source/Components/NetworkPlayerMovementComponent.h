@@ -53,16 +53,22 @@ namespace MultiplayerSample
         //! @}
 
         void UpdateAI();
+        bool CreateInputImpl(Multiplayer::NetworkInput& input, float deltaTime, bool predicted);
+        void ProcessInputImpl(Multiplayer::NetworkInput& input, float deltaTime, bool predicted);
         bool ShouldProcessInput() const;
 
         AZ::ScheduledEvent m_updateAI;
         NetworkAiComponentController* m_networkAiComponentController = nullptr;
 
-        AZ::Quaternion m_currentOrientation;
-        AZ::Quaternion m_previousOrientation;
+        AZ::Vector3 m_aimAnglesDelta = AZ::Vector3::CreateZero();
+        AZ::Vector3 m_currentAimAngles = AZ::Vector3::CreateZero();
+        AZ::Vector3 m_previousAimAngles = AZ::Vector3::CreateZero();
+        AZ::Vector3 m_currentPosition = AZ::Vector3::CreateZero();
+        AZ::Vector3 m_previousPosition = AZ::Vector3::CreateZero();
+        bool m_previousPositionSet = false;
 
-        AZ::Vector3 m_currentVelocity;
-        AZ::Vector3 m_previousVelocity;
+        AZ::Vector3 m_previousExternalVelocity = AZ::Vector3::CreateZero();
+        AZ::Vector3 m_previousGeneratedVelocity = AZ::Vector3::CreateZero();
 
         // Technically these values should never migrate hosts since they are maintained by the autonomous client
         // But due to how the stress test chaos monkey operates, it puppets these values on the server to mimic a client

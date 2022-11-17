@@ -122,8 +122,10 @@ namespace MultiplayerSample
 
             SET_PERFORMANCE_STAT(CAMERA_YAW_STAT, GetCameraYaw())
 #else
-            const AZ::Quaternion targetYaw = AZ::Quaternion::CreateRotationZ(m_predictedAimAngles.GetZ());
-            const AZ::Quaternion targetRotation = targetYaw * AZ::Quaternion::CreateRotationX(m_predictedAimAngles.GetX());
+            //const AZ::Quaternion targetYaw = AZ::Quaternion::CreateRotationZ(m_predictedAimAngles.GetZ());
+            //const AZ::Quaternion targetRotation = targetYaw * AZ::Quaternion::CreateRotationX(m_predictedAimAngles.GetX());
+            const AZ::Quaternion targetYaw = AZ::Quaternion::CreateRotationZ(GetCameraYaw());
+            const AZ::Quaternion targetRotation = targetYaw * AZ::Quaternion::CreateRotationX(GetCameraPitch());
             AZ::Quaternion aimRotation = targetRotation;
 #endif
 
@@ -134,7 +136,8 @@ namespace MultiplayerSample
             {
                 // Track rate of change based on actual render time
                 // Track previous aimRotation
-                float currentBlendedYaw = m_predictedAimAngles.GetZ();
+                //float currentBlendedYaw = m_predictedAimAngles.GetZ();
+                float currentBlendedYaw = GetCameraYaw();
                 float blendedYawRate = (currentBlendedYaw - m_prevBlendedYaw) / deltaTime;
                 AZLOG_INFO("        Camera OnTick absYaw: %f, rate: %f", currentBlendedYaw, blendedYawRate)
                 m_prevBlendedYaw = currentBlendedYaw;

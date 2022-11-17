@@ -10059,7 +10059,7 @@
                     "Parent Entity": "Entity_[356758116574]",
                     "Transform Data": {
                         "Translate": [
-                            0.0,
+                            0.9271135330200195,
                             10.0,
                             0.0
                         ],
@@ -10669,7 +10669,7 @@
                     "Id": 7092071161962745685,
                     "Controller": {
                         "Configuration": {
-                            "EditorEntityId": 7870862829198950644
+                            "EditorEntityId": 16664232174251881138
                         }
                     }
                 },
