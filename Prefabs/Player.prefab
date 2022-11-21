@@ -401,6 +401,21 @@
                                 "$type": "AzFramework::ScriptPropertyNumber",
                                 "id": 23391511,
                                 "name": "death_state_index"
+                            },
+                            {
+                                "$type": "AzFramework::ScriptPropertyNumber",
+                                "id": 3656193794,
+                                "name": "hit_direction_index"
+                            },
+                            {
+                                "$type": "AzFramework::ScriptPropertyBoolean",
+                                "id": 713582873,
+                                "name": "stunned"
+                            },
+                            {
+                                "$type": "AzFramework::ScriptPropertyBoolean",
+                                "id": 1523721793,
+                                "name": "hit"
                             }
                         ]
                     }
