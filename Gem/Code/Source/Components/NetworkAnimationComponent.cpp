@@ -13,9 +13,14 @@
 #include <Integration/AnimationBus.h>
 #include <Integration/AnimGraphNetworkingBus.h>
 #include <AzCore/Component/TransformBus.h>
+#include <DebugDraw/DebugDrawBus.h>
 
 namespace MultiplayerSample
 {
+#ifndef AZ_RELEASE_BUILD
+    AZ_CVAR(bool, cl_drawAimTarget, false, nullptr, AZ::ConsoleFunctorFlags::DontReplicate, "When enabled draws a sphere at the character aim target.");
+#endif // AZ_RELEASE_BUILD
+
     void NetworkAnimationComponent::NetworkAnimationComponent::Reflect(AZ::ReflectContext* context)
     {
         AZ::SerializeContext* serializeContext = azrtti_cast<AZ::SerializeContext*>(context);
@@ -96,7 +101,6 @@ namespace MultiplayerSample
             constexpr bool isAuthoritative = true;
             m_networkRequests->CreateSnapshot(isAuthoritative);
         }
-        m_networkRequests->UpdateActorExternal(deltaTime);
 
         // velocity or movement direction are necessary for movement
         if (m_velocityParamId == InvalidParamIndex && m_movementDirectionParamId == InvalidParamIndex)
@@ -163,18 +167,29 @@ namespace MultiplayerSample
 
         if (m_aimTargetParamId != InvalidParamIndex)
         {
-            const AZ::Vector3 aimAngles = GetNetworkSimplePlayerCameraComponent()->GetAimAngles();
-            const AZ::Quaternion aimRotation = AZ::Quaternion::CreateRotationZ(aimAngles.GetZ()) * AZ::Quaternion::CreateRotationX(aimAngles.GetX());
-            const AZ::Transform worldTm = GetEntity()->GetTransform()->GetWorldTM();
-            // TODO: This should probably be a physx raycast out to some maxDistance
-            const AZ::Vector3 fwd = AZ::Vector3::CreateAxisY();
-            const AZ::Vector3 up = AZ::Vector3::CreateAxisZ();
             AZ::Vector3 baseCameraOffset;
             AZ::Interface<AZ::IConsole>::Get()->GetCvarValue("cl_cameraOffset", baseCameraOffset);
-            const AZ::Vector3 cameraOffset = aimRotation.TransformVector(baseCameraOffset);
-            const AZ::Vector3 aimTarget = worldTm.GetTranslation() + cameraOffset + aimRotation.TransformVector(fwd * 5.0f);
+            const AZ::Vector3 cameraOffset = AZ::Vector3(baseCameraOffset.GetX(), 0.f, baseCameraOffset.GetZ());
+
+            const AZ::Transform worldTm = GetEntity()->GetTransform()->GetWorldTM();
+            const AZ::Vector3 aimAngles = GetNetworkSimplePlayerCameraComponent()->GetAimAngles();
+            // use the player model forward but the aim pitch to get the smoothest motion 
+            // currently, aim angles is updated later in the frame causing a 1 frame jitter
+            const AZ::Quaternion aimRotation = worldTm.GetRotation() *AZ::Quaternion::CreateRotationX(aimAngles.GetX());
+            const AZ::Vector3 fwd = AZ::Vector3::CreateAxisY();
+            const AZ::Vector3 aimTarget = worldTm.GetTranslation() + worldTm.GetRotation().TransformVector(cameraOffset) + aimRotation.TransformVector(fwd * 5.f);
             m_animationGraph->SetParameterVector3(m_aimTargetParamId, aimTarget);
+
+#ifndef AZ_RELEASE_BUILD
+            if (cl_drawAimTarget)
+            {
+                if (auto debugDraw = DebugDraw::DebugDrawRequestBus::FindFirstHandler(); debugDraw != nullptr)
+                {
+                    debugDraw->DrawSphereAtLocation(aimTarget, 0.1f, AZ::Colors::Red, 0.f);
+                }
+            }
         }
+#endif // AZ_RELEASE_BUILD
 
         if (m_crouchParamId != InvalidParamIndex)
         {
@@ -223,6 +238,8 @@ namespace MultiplayerSample
             const bool dead = GetActiveAnimStates().GetBit(aznumeric_cast<uint32_t>(CharacterAnimState::Dying));
             m_animationGraph->SetParameterBool(m_deathParamId, dead);
         }
+
+        m_networkRequests->UpdateActorExternal(deltaTime);
     }
 
     void NetworkAnimationComponent::OnActorInstanceCreated([[maybe_unused]] EMotionFX::ActorInstance* actorInstance)

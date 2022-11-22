@@ -15,6 +15,7 @@
 namespace MultiplayerSample
 {
     AZ_CVAR(AZ::Vector3, cl_cameraOffset, AZ::Vector3(0.5f, -2.0f, 1.5f), nullptr, AZ::ConsoleFunctorFlags::Null, "Offset to use for the player camera");
+    AZ_CVAR(bool, cl_cameraBlendingEnabled, false, nullptr, AZ::ConsoleFunctorFlags::DontReplicate, "When active, blends the camera aim angles.");
 
     NetworkSimplePlayerCameraComponentController::NetworkSimplePlayerCameraComponentController(NetworkSimplePlayerCameraComponent& parent)
         : NetworkSimplePlayerCameraComponentControllerBase(parent)
@@ -83,17 +84,21 @@ namespace MultiplayerSample
         if (m_activeCameraEntity != nullptr && m_activeCameraEntity->GetState() == AZ::Entity::State::Active)
         {
             const AZ::Quaternion targetRotation = AZ::Quaternion::CreateRotationZ(GetCameraYaw()) * AZ::Quaternion::CreateRotationX(GetCameraPitch());
-            const float blendFactor = Multiplayer::GetMultiplayer()->GetCurrentBlendFactor();
-            
             AZ::Quaternion aimRotation = targetRotation;
-            if (!GetSyncAimImmediate() && !AZ::IsClose(blendFactor, 1.0f))
+
+            if (cl_cameraBlendingEnabled)
             {
-                const AZ::Quaternion prevRotation = AZ::Quaternion::CreateRotationZ(GetCameraYawPrevious()) * AZ::Quaternion::CreateRotationX(GetCameraPitchPrevious());
-                if (!prevRotation.IsClose(targetRotation))
+                const float blendFactor = Multiplayer::GetMultiplayer()->GetCurrentBlendFactor();
+                if (!GetSyncAimImmediate() && !AZ::IsClose(blendFactor, 1.0f))
                 {
-                    aimRotation = prevRotation.Slerp(targetRotation, blendFactor).GetNormalized();
+                    const AZ::Quaternion prevRotation = AZ::Quaternion::CreateRotationZ(GetCameraYawPrevious()) * AZ::Quaternion::CreateRotationX(GetCameraPitchPrevious());
+                    if (!prevRotation.IsClose(targetRotation))
+                    {
+                        aimRotation = prevRotation.Slerp(targetRotation, blendFactor).GetNormalized();
+                    }
                 }
             }
+
             const AZ::Vector3 targetTranslation = GetEntity()->GetTransform()->GetWorldTM().GetTranslation();
             const AZ::Vector3 cameraOffset = aimRotation.TransformVector(cl_cameraOffset);
             const AZ::Transform cameraTransform = AZ::Transform::CreateFromQuaternionAndTranslation(aimRotation, targetTranslation + cameraOffset);
