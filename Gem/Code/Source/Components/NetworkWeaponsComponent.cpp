@@ -29,7 +29,7 @@ namespace MultiplayerSample
     AZ_CVAR(float, sv_WeaponsStartPositionClampRange, 1.f, nullptr, AZ::ConsoleFunctorFlags::Null, "A fudge factor between the where the client and server say a shot started");
     AZ_CVAR(float, sv_WeaponsDotClamp, 0.35f, nullptr, AZ::ConsoleFunctorFlags::Null, "Acceptable dot product range for a shot between the camera raycast and weapon raycast.");
 
-	void NetworkWeaponsComponent::NetworkWeaponsComponent::Reflect(AZ::ReflectContext* context)
+    void NetworkWeaponsComponent::NetworkWeaponsComponent::Reflect(AZ::ReflectContext* context)
     {
         AZ::SerializeContext* serializeContext = azrtti_cast<AZ::SerializeContext*>(context);
         if (serializeContext)
@@ -309,7 +309,7 @@ namespace MultiplayerSample
 
     void NetworkWeaponsComponentController::OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
     {
-	    const NetworkAiComponent* networkAiComponent = GetParent().GetNetworkAiComponent();
+        const NetworkAiComponent* networkAiComponent = GetParent().GetNetworkAiComponent();
         m_aiEnabled = (networkAiComponent != nullptr) ? networkAiComponent->GetEnabled() : false;
         if (m_aiEnabled)
         {
