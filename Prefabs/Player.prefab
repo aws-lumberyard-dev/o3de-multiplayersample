@@ -133,6 +133,7 @@
                                 {}
                             ]
                         },
+                        "MaximumSlopeAngle": 45.0,
                         "StepHeight": 0.30000001192092896,
                         "ApplyMoveOnPhysicsTick": false,
                         "SlopeBehaviour": 1,
