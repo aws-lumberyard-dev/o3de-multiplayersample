@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  *
  */
-
+#include <AzCore/Math/Plane.h>
 #include <Source/Components/NetworkWeaponsComponent.h>
 
 #include <Source/Components/NetworkAiComponent.h>
