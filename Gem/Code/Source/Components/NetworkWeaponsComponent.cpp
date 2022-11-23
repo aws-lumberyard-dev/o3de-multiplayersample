@@ -372,7 +372,6 @@ namespace MultiplayerSample
             return;
         }
 
-            // clear our input  
         // Inputs for your own component always exist
         NetworkWeaponsComponentNetworkInput* weaponInput = input.FindComponentInput<NetworkWeaponsComponentNetworkInput>();
 
