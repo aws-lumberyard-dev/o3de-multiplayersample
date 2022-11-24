@@ -14,6 +14,8 @@
 #include <Multiplayer/Components/NetworkTransformComponent.h>
 #include <AzCore/Time/ITime.h>
 #include <AzFramework/Components/CameraBus.h>
+#include <AzFramework/Input/Buses/Requests/InputSystemCursorRequestBus.h>
+#include <AzFramework/Input/Devices/Mouse/InputDeviceMouse.h>
 #include <AzFramework/Physics/SystemBus.h>
 #include <AzFramework/Physics/PhysicsScene.h>
 #include <AzFramework/Physics/CharacterBus.h>
@@ -94,8 +96,33 @@ namespace MultiplayerSample
         }
     }
 
+    bool NetworkPlayerMovementComponentController::ShouldProcessInput() const
+    {
+        AzFramework::SystemCursorState systemCursorState{AzFramework::SystemCursorState::Unknown};
+        AzFramework::InputSystemCursorRequestBus::EventResult( systemCursorState, AzFramework::InputDeviceMouse::Id,
+            &AzFramework::InputSystemCursorRequests::GetSystemCursorState);
+
+        // only process input when the system cursor isn't unconstrainted and visible a.k.a console mode
+        return systemCursorState != AzFramework::SystemCursorState::UnconstrainedAndVisible;
+    }
+
     void NetworkPlayerMovementComponentController::CreateInput(Multiplayer::NetworkInput& input, float deltaTime)
     {
+        if (!ShouldProcessInput())
+        {
+            // clear our input  
+            m_forwardWeight = 0.f;
+            m_leftWeight = 0.f;
+            m_backwardWeight = 0.f;
+            m_rightWeight = 0.f;
+            m_viewYaw = 0.f;
+            m_viewPitch = 0.f;
+            m_sprinting = false;
+            m_jumping = false;
+            m_crouching = false;
+            return;
+        }
+
         // Movement axis
         // Since we're on a keyboard, this adds a touch of an acceleration curve to the keyboard inputs
         // This is so that tapping the keyboard moves the virtual stick less than just holding it down
@@ -150,26 +177,21 @@ namespace MultiplayerSample
 
         bool onGround = true;
         PhysX::CharacterGameplayRequestBus::EventResult(onGround, GetEntityId(), &PhysX::CharacterGameplayRequestBus::Events::IsOnGround);
-        if (onGround)
-        {
-            if (m_wasOnGround)
-            {
-                // the Landing anim state will automatically turn off
-                GetNetworkAnimationComponentController()->ModifyActiveAnimStates().SetBit( 
-                    aznumeric_cast<uint32_t>(CharacterAnimState::Landing), true);
-            }
 
-            GetNetworkAnimationComponentController()->ModifyActiveAnimStates().SetBit(
-                aznumeric_cast<uint32_t>(CharacterAnimState::Jumping), playerInput->m_jump);
-        }
+        // the Landing anim state will automatically turn off
+        GetNetworkAnimationComponentController()->ModifyActiveAnimStates().SetBit( 
+            aznumeric_cast<uint32_t>(CharacterAnimState::Landing), onGround && !m_wasOnGround);
 
+        // always set the jump state or you might get ghost jump animations
+        GetNetworkAnimationComponentController()->ModifyActiveAnimStates().SetBit(
+            aznumeric_cast<uint32_t>(CharacterAnimState::Jumping), playerInput->m_jump);
 
         // Update orientation
         AZ::Vector3 aimAngles = GetNetworkSimplePlayerCameraComponentController()->GetAimAngles();
         aimAngles.SetZ(NormalizeHeading(aimAngles.GetZ() - playerInput->m_viewYaw * cl_AimStickScaleZ * cl_MaxMouseDelta));
         aimAngles.SetX(NormalizeHeading(aimAngles.GetX() - playerInput->m_viewPitch * cl_AimStickScaleX * cl_MaxMouseDelta));
         aimAngles.SetX(
-            NormalizeHeading(AZ::GetClamp(aimAngles.GetX(), -AZ::Constants::QuarterPi * 0.75f, AZ::Constants::QuarterPi * 0.75f)));
+            NormalizeHeading(AZ::GetClamp(aimAngles.GetX(), -AZ::Constants::QuarterPi * 1.5f, AZ::Constants::QuarterPi * 1.5f)));
         GetNetworkSimplePlayerCameraComponentController()->SetAimAngles(aimAngles);
 
         const AZ::Quaternion newOrientation = AZ::Quaternion::CreateRotationZ(aimAngles.GetZ());
@@ -183,7 +205,7 @@ namespace MultiplayerSample
 
         // if we're not moving down on a platform and have a negative velocity we're falling
         GetNetworkAnimationComponentController()->ModifyActiveAnimStates().SetBit(
-            aznumeric_cast<uint32_t>(CharacterAnimState::Falling), !onGround && absoluteVelocity.GetZ() < 0.f);
+            aznumeric_cast<uint32_t>(CharacterAnimState::Falling), !onGround && !m_wasOnGround && absoluteVelocity.GetZ() < 0.f);
 
         GetNetworkCharacterComponentController()->TryMoveWithVelocity(absoluteVelocity, deltaTime);
 
