@@ -94,7 +94,7 @@ namespace MultiplayerSample
         const AZ::EntityId entityId = aznumeric_cast<AZ::EntityId>(busId.m_owner);
         Audio::AudioTriggerNotificationBus::MultiHandler::BusDisconnect(busId);
 
-        // Removed the prefab that played the sound trigger
+        // Remove the prefab that played the sound trigger
         const auto iterator = m_spawnedEffects.find(entityId);
         if (iterator != m_spawnedEffects.end())
         {
