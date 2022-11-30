@@ -111,10 +111,10 @@ namespace MultiplayerSample
             triggerName = m_soundTriggerNames[effectId].c_str();
         }
 
-        if (!triggerName)
+        if (!triggerName || strlen(triggerName) == 0)
         {
             const AZStd::string eventName(SoundEffectNamespace::ToString(effect));
-            AZ_WarningOnce("MultiplayerSample", triggerName != nullptr, "Audio trigger wasn't specified for effect [%s]", eventName.c_str());
+            AZ_WarningOnce("MultiplayerSample", false, "Audio trigger wasn't specified for effect [%s]", eventName.c_str());
             return;
         }
 

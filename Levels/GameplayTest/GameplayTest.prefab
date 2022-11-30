@@ -5573,8 +5573,7 @@
                     "$type": "GenericComponentWrapper",
                     "Id": 8106850883560113265,
                     "m_template": {
-                        "$type": "MultiplayerSample::GameplayEffectsComponent",
-                        "EnergyBallTrapBuildup": "Play_Sound_Gun_Firing"
+                        "$type": "MultiplayerSample::GameplayEffectsComponent"
                     }
                 },
                 "Component_[8376277465513176068]": {
