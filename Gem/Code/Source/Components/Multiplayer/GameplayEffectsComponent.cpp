@@ -10,6 +10,9 @@
 #include <LmbrCentral/Audio/AudioTriggerComponentBus.h>
 #include <Source/Components/Multiplayer/GameplayEffectsComponent.h>
 
+AZ_CVAR(bool, mps_enableMissingAudioTriggerWarnings, false, nullptr, AZ::ConsoleFunctorFlags::Null,
+    "Reports warnings whenever a game effect is missing an audio trigger defined in Game Playe Effects component.");
+
 namespace MultiplayerSample
 {
     void GameplayEffectsComponent::Reflect(AZ::ReflectContext* context)
@@ -113,8 +116,11 @@ namespace MultiplayerSample
 
         if (!triggerName || strlen(triggerName) == 0)
         {
-            const AZStd::string eventName(SoundEffectNamespace::ToString(effect));
-            AZ_WarningOnce("MultiplayerSample", false, "Audio trigger wasn't specified for effect [%s]", eventName.c_str());
+            if (mps_enableMissingAudioTriggerWarnings)
+            {
+                const AZStd::string eventName(SoundEffectNamespace::ToString(effect));
+                AZ_Warning("MultiplayerSample", false, "Audio trigger wasn't specified for effect [%s] on GameplayEffectsComponent", eventName.c_str());
+            }
             return;
         }
 
