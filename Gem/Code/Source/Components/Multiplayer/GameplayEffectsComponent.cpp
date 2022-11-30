@@ -104,8 +104,22 @@ namespace MultiplayerSample
 
     void GameplayEffectsComponent::SpawnEffect(SoundEffect effect, const AZ::Vector3& position)
     {
+        const char* triggerName = nullptr;
+        const AZStd::size_t effectId = aznumeric_cast<AZStd::size_t>(effect);
+        if (effectId < m_soundTriggerNames.size())
+        {
+            triggerName = m_soundTriggerNames[effectId].c_str();
+        }
+
+        if (!triggerName)
+        {
+            const AZStd::string eventName(SoundEffectNamespace::ToString(effect));
+            AZ_WarningOnce("MultiplayerSample", triggerName != nullptr, "Audio trigger wasn't specified for effect [%s]", eventName.c_str());
+            return;
+        }
+
         PrefabCallbacks callbacks;
-        callbacks.m_onActivateCallback = [this, effect](
+        callbacks.m_onActivateCallback = [this, triggerName](
             AZStd::shared_ptr<AzFramework::EntitySpawnTicket>&& ticket,
             [[maybe_unused]] AzFramework::SpawnableConstEntityContainerView view)
         {            
@@ -115,13 +129,9 @@ namespace MultiplayerSample
                     LmbrCentral::AudioTriggerComponentRequestBus::FindFirstHandler(entity->GetId());
                 if (audioTrigger)
                 {
-                    const AZStd::size_t effectId = aznumeric_cast<AZStd::size_t>(effect);
-                    if (effectId < m_soundTriggerNames.size())
-                    {
-                        Audio::AudioTriggerNotificationBus::MultiHandler::BusConnect(Audio::TriggerNotificationIdType{ entity->GetId() });
-                        m_spawnedEffects.emplace(entity->GetId(), move(ticket));
-                        audioTrigger->ExecuteTrigger(m_soundTriggerNames[effectId].c_str());
-                    }
+                    Audio::AudioTriggerNotificationBus::MultiHandler::BusConnect(Audio::TriggerNotificationIdType{ entity->GetId() });
+                    m_spawnedEffects.emplace(entity->GetId(), move(ticket));
+                    audioTrigger->ExecuteTrigger(triggerName);
                     break;
                 }
             }
