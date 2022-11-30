@@ -365,8 +365,8 @@
                     "Id": 7492029015899717881,
                     "m_template": {
                         "$type": "MultiplayerSample::NetworkStressTestComponent",
-                        "AutoSpawnIntervalMs": 500,
-                        "MaxSpawns": 1
+                        "Enabled": false,
+                        "AutoSpawnIntervalMs": -1
                     }
                 }
             }
@@ -5573,7 +5573,12 @@
                     "$type": "GenericComponentWrapper",
                     "Id": 8106850883560113265,
                     "m_template": {
-                        "$type": "MultiplayerSample::GameplayEffectsComponent"
+                        "$type": "MultiplayerSample::GameplayEffectsComponent",
+                        "GemPickup": "Play_Gem_Pickup",
+                        "RoundStart": "Play_Round_Begin",
+                        "RoundEnd": "Play_Round_End",
+                        "LaserPistolImpact": "Play_Laser_Gun_Impact",
+                        "EnergyBallTrapImpact": "Play_Laser_Gun_Impact"
                     }
                 },
                 "Component_[8376277465513176068]": {
