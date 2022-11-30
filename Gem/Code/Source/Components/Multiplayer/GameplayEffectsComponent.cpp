@@ -28,6 +28,11 @@ namespace MultiplayerSample
 
     void GameplayEffectsComponent::OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
     {
+        if (IsNetEntityRoleClient())
+        {
+            LocalOnlyGameplayEffectsNotificationBus::Handler::BusConnect();
+        }
+
         m_soundTriggerNames.clear();
         m_soundTriggerNames.resize(SoundEffectNamespace::SoundEffectCount);
         
@@ -68,6 +73,7 @@ namespace MultiplayerSample
     void GameplayEffectsComponent::OnDeactivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
     {
         Audio::AudioTriggerNotificationBus::MultiHandler::BusDisconnect();
+        LocalOnlyGameplayEffectsNotificationBus::Handler::BusDisconnect();
     }
 
     void GameplayEffectsComponent::HandleRPC_OnEffect([[maybe_unused]] AzNetworking::IConnection* invokingConnection,
@@ -103,6 +109,16 @@ namespace MultiplayerSample
         {
             m_spawnedEffects.erase(iterator);
         }
+    }
+
+    void GameplayEffectsComponent::OnPositionalEffect(SoundEffect effect, const AZ::Vector3& position)
+    {
+        HandleRPC_OnPositionalEffect(nullptr, effect, position);
+    }
+
+    void GameplayEffectsComponent::OnEffect(SoundEffect effect)
+    {
+        HandleRPC_OnEffect(nullptr, effect);
     }
 
     void GameplayEffectsComponent::SpawnEffect(SoundEffect effect, const AZ::Vector3& position)
