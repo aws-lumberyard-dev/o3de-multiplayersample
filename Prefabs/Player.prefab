@@ -96,14 +96,15 @@
                     "Id": 11996978980717063697,
                     "m_template": {
                         "$type": "MultiplayerSample::NetworkAnimationComponent",
-                        "VelocityParamName": "movement_direction",
-                        "AimTargetParamName": "target_position",
-                        "CrouchParamName": "crouch",
+                        "MovementDirectionParamName": "movement_direction",
+                        "MovementSpeedParamName": "movement_speed",
+                        "AimTargetParamName": "aim_target",
+                        "CrouchParamName": "crouching",
                         "AimingParamName": "aiming",
-                        "ShootParamName": "shoot",
-                        "JumpParamName": "jump",
-                        "FallParamName": "fall",
-                        "LandParamName": "land",
+                        "ShootParamName": "attacking",
+                        "JumpParamName": "jumping",
+                        "FallParamName": "falling",
+                        "LandParamName": "landing",
                         "HitParamName": "hit",
                         "DeathParamName": "death_state_index"
                     }
@@ -132,12 +133,16 @@
                                 {}
                             ]
                         },
-                        "ApplyMoveOnPhysicsTick": false
+                        "MaximumSlopeAngle": 45.0,
+                        "StepHeight": 0.30000001192092896,
+                        "ApplyMoveOnPhysicsTick": false,
+                        "SlopeBehaviour": 1,
+                        "ScaleCoeff": 0.8999999761581421
                     },
                     "ShapeConfig": {
                         "Capsule": {
-                            "Height": 2.0,
-                            "Radius": 0.5
+                            "Height": 1.7999999523162842,
+                            "Radius": 0.30000001192092896
                         }
                     }
                 },
@@ -160,6 +165,16 @@
                     "$type": "EditorOnlyEntityComponent",
                     "Id": 17057124452563381137
                 },
+                "Component_[17263204639576784355]": {
+                    "$type": "EditorAudioTriggerComponent",
+                    "Id": 17263204639576784355,
+                    "Play Trigger": {
+                        "controlName": "Play_Sound_Gun_Firing"
+                    },
+                    "Stop Trigger": {
+                        "controlName": "Stop_Sound_Gun_Firing"
+                    }
+                },
                 "Component_[17993245065130330388]": {
                     "$type": "EditorDisabledCompositionComponent",
                     "Id": 17993245065130330388
@@ -169,6 +184,139 @@
                     "Id": 1825823955420198768,
                     "m_template": {
                         "$type": "MultiplayerSample::PlayerKnockbackEffectComponent"
+                    }
+                },
+                "Component_[1987329644401848864]": {
+                    "$type": "PopcornFXEmitterEditorComponent",
+                    "Id": 1987329644401848864,
+                    "ParticleSystem": {
+                        "assetId": {
+                            "guid": "{4AB84876-46BB-56C9-9276-E29296924243}"
+                        },
+                        "assetHint": "popcornfx/library/straight_shot_effect.pkfx"
+                    },
+                    "PrewarmTime": 0.0,
+                    "AttributeList": {
+                        "Attributes": [
+                            {
+                                "Name": "Start",
+                                "Type": 33
+                            },
+                            {
+                                "Name": "End",
+                                "Type": 33
+                            },
+                            {
+                                "Name": "Trace_Color",
+                                "Type": 34
+                            },
+                            {
+                                "Name": "GlobalScale",
+                                "Type": 31
+                            },
+                            {
+                                "Name": "Core_Size",
+                                "Type": 31
+                            },
+                            {
+                                "Name": "Brightness_Global",
+                                "Type": 31
+                            },
+                            {
+                                "Name": "Brightness_Core",
+                                "Type": 31
+                            },
+                            {
+                                "Name": "Light_Range",
+                                "Type": 31
+                            },
+                            {
+                                "Name": "Light_Intensity",
+                                "Type": 31
+                            },
+                            {
+                                "Name": "Color",
+                                "Type": 34
+                            },
+                            {
+                                "Name": "Sparks_SpawnCount",
+                                "Type": 31
+                            },
+                            {
+                                "Name": "Hue_Var",
+                                "Type": 31
+                            },
+                            {
+                                "Name": "Brightness_Sparks",
+                                "Type": 31
+                            }
+                        ],
+                        "AttributesRawData": "AAAAAAAAAIAAAAAAAAAAAAAAAAAAAEBAAAAAAAAAAABzuVw/0QZCP/CAcT0AAIA/AAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAACBBAAAAAAAAAAAAAAAAAADIQgAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAc7lcP9EGQj/wgHE9AACAPwAAoEIAAAAAAAAAAAAAAADNzEw9AAAAAAAAAAAAAAAAAAAgQQAAAAAAAAAAAAAAAA=="
+                    },
+                    "EditorAttributeList": {
+                        "AttributeCategories": [
+                            {
+                                "Attributes": [
+                                    {},
+                                    {
+                                        "ValueFY": 3.0
+                                    },
+                                    {
+                                        "Color": [
+                                            0.8622047305107117,
+                                            0.7579165101051331,
+                                            0.05896085500717163
+                                        ]
+                                    },
+                                    {
+                                        "ValueFX": 2.0
+                                    },
+                                    {
+                                        "ValueFX": 2.0
+                                    },
+                                    {
+                                        "ValueFX": 80.0
+                                    }
+                                ]
+                            },
+                            {
+                                "Attributes": [
+                                    {
+                                        "ValueFX": 10.0
+                                    },
+                                    {
+                                        "ValueFX": 100.0
+                                    },
+                                    {
+                                        "ValueFX": 10.0
+                                    }
+                                ]
+                            },
+                            {
+                                "Attributes": [
+                                    {
+                                        "Color": [
+                                            0.8622047305107117,
+                                            0.7579165101051331,
+                                            0.05896085500717163
+                                        ]
+                                    },
+                                    {
+                                        "ValueFX": 0.05000000074505806
+                                    }
+                                ]
+                            },
+                            {
+                                "Attributes": [
+                                    {
+                                        "ValueFX": 2.0
+                                    },
+                                    {
+                                        "ValueFX": 1.0
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 },
                 "Component_[2596368806843971783]": {
@@ -201,91 +349,54 @@
                     "Id": 4186588317358117667,
                     "AnimGraphAsset": {
                         "assetId": {
-                            "guid": "{46F677B6-0C57-50DE-BA38-2CC3079FDFC9}"
+                            "guid": "{BC61EACA-A8E6-5436-AE96-EF52288EB574}"
                         },
-                        "assetHint": "burt/humanoidcharacter.animgraph"
+                        "assetHint": "mixamo/ybot/ybot.animgraph"
                     },
                     "MotionSetAsset": {
                         "assetId": {
-                            "guid": "{0FA6D069-A122-57F5-BF54-A66AC8BE58A5}"
+                            "guid": "{A703856B-7290-5458-B7D8-7589EBD4F538}"
                         },
-                        "assetHint": "burt/burt.motionset"
+                        "assetHint": "mixamo/ybot/ybot.motionset"
                     },
-                    "ActiveMotionSetName": "BURTMotionSet",
+                    "ActiveMotionSetName": "YBotMotionSet",
                     "ParameterDefaults": {
                         "Parameters": [
                             {
-                                "$type": "AzFramework::ScriptPropertyNumber",
-                                "id": 958518102,
-                                "name": "desired_angle"
-                            },
-                            {
-                                "$type": "AzFramework::ScriptPropertyNumber",
-                                "id": 182703473,
-                                "name": "slope_angle"
-                            },
-                            {
-                                "$type": "AzFramework::ScriptPropertyBoolean",
-                                "id": 2155279128,
-                                "name": "crouch"
-                            },
-                            {
                                 "$type": "AzFramework::ScriptPropertyBoolean",
                                 "id": 1084884419,
-                                "name": "aiming"
-                            },
-                            {
-                                "$type": "AzFramework::ScriptPropertyBoolean",
-                                "id": 1883569342,
-                                "name": "shoot"
+                                "name": "aiming",
+                                "value": true
                             },
                             {
                                 "$type": "AzFramework::ScriptPropertyNumber",
-                                "id": 1720552084,
-                                "name": "lateral_adjustment",
-                                "value": 0.03500000014901161
-                            },
-                            {
-                                "$type": "AzFramework::ScriptPropertyNumber",
-                                "id": 819414243,
-                                "name": "height_adjustment",
-                                "value": -0.05000000074505806
-                            },
-                            {
-                                "$type": "AzFramework::ScriptPropertyNumber",
-                                "id": 2672514538,
-                                "name": "forward_adjustment"
+                                "id": 4070320611,
+                                "name": "movement_speed"
                             },
                             {
                                 "$type": "AzFramework::ScriptPropertyBoolean",
-                                "id": 2813527574,
-                                "name": "jump"
+                                "id": 2356543930,
+                                "name": "jumping"
                             },
                             {
                                 "$type": "AzFramework::ScriptPropertyBoolean",
-                                "id": 4216381196,
-                                "name": "fall"
+                                "id": 60754182,
+                                "name": "attacking"
                             },
                             {
                                 "$type": "AzFramework::ScriptPropertyBoolean",
-                                "id": 2818627032,
-                                "name": "land"
-                            },
-                            {
-                                "$type": "AzFramework::ScriptPropertyNumber",
-                                "id": 2553848132,
-                                "name": "land_type_index",
-                                "value": 1.0
+                                "id": 70061904,
+                                "name": "crouching"
                             },
                             {
                                 "$type": "AzFramework::ScriptPropertyBoolean",
-                                "id": 1523721793,
-                                "name": "hit"
+                                "id": 4097764052,
+                                "name": "falling"
                             },
                             {
-                                "$type": "AzFramework::ScriptPropertyNumber",
-                                "id": 4154523292,
-                                "name": "hit_axis_index"
+                                "$type": "AzFramework::ScriptPropertyBoolean",
+                                "id": 4013608469,
+                                "name": "landing"
                             },
                             {
                                 "$type": "AzFramework::ScriptPropertyNumber",
@@ -293,35 +404,29 @@
                                 "name": "death_state_index"
                             },
                             {
-                                "$type": "AzFramework::ScriptPropertyBoolean",
-                                "id": 2469366193,
-                                "name": "adjust_hip",
-                                "value": true
+                                "$type": "AzFramework::ScriptPropertyNumber",
+                                "id": 3656193794,
+                                "name": "hit_direction_index"
                             },
                             {
                                 "$type": "AzFramework::ScriptPropertyBoolean",
-                                "id": 671657505,
-                                "name": "lock_feet",
-                                "value": true
+                                "id": 713582873,
+                                "name": "stunned"
                             },
                             {
                                 "$type": "AzFramework::ScriptPropertyBoolean",
-                                "id": 3470154576,
-                                "name": "foot_ik_weight",
-                                "value": true
-                            },
-                            {
-                                "$type": "AzFramework::ScriptPropertyBoolean",
-                                "id": 1891303514,
-                                "name": "victory"
-                            },
-                            {
-                                "$type": "AzFramework::ScriptPropertyBoolean",
-                                "id": 420668671,
-                                "name": "game_entry",
-                                "value": true
+                                "id": 1523721793,
+                                "name": "hit"
                             }
                         ]
+                    }
+                },
+                "Component_[4325721995654492049]": {
+                    "$type": "EditorCharacterGameplayComponent",
+                    "Id": 4325721995654492049,
+                    "GameplayConfig": {
+                        "GravityMultiplier": 0.0,
+                        "GroundDetectionBoxHeight": 0.05000000074505806
                     }
                 },
                 "Component_[5250619091527933772]": {
@@ -336,22 +441,13 @@
                     "Id": 5329091026602047821,
                     "ActorAsset": {
                         "assetId": {
-                            "guid": "{85A4DFBC-18C2-5D1B-8066-F82FBF31E794}",
-                            "subId": 526701631
+                            "guid": "{49D8DCD0-7383-5AC7-8A87-CE6267605407}",
+                            "subId": 196688939
                         },
                         "loadBehavior": "QueueLoad",
-                        "assetHint": "burt/burtactor.actor"
+                        "assetHint": "mixamo/ybot/ybot.actor"
                     },
                     "MaterialPerLOD": [
-                        {
-                            "AssetPath": "burt/burtactor.mtl"
-                        },
-                        {
-                            "AssetPath": "burt/burtactor.mtl"
-                        },
-                        {
-                            "AssetPath": "burt/burtactor.mtl"
-                        },
                         {
                             "AssetPath": "burt/burtactor.mtl"
                         }
@@ -365,7 +461,9 @@
                     "$type": "GenericComponentWrapper",
                     "Id": 5387953310772448141,
                     "m_template": {
-                        "$type": "MultiplayerSample::NetworkPlayerMovementComponent"
+                        "$type": "MultiplayerSample::NetworkPlayerMovementComponent",
+                        "SprintSpeed": 6.0,
+                        "JumpVelocity": 8.0
                     }
                 },
                 "Component_[6252367322126438780]": {
@@ -373,6 +471,13 @@
                     "Id": 6252367322126438780,
                     "m_template": {
                         "$type": "Multiplayer::NetworkTransformComponent"
+                    }
+                },
+                "Component_[695007936360450055]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 695007936360450055,
+                    "m_template": {
+                        "$type": "MultiplayerSample::WeaponEffectComponent"
                     }
                 },
                 "Component_[7398251875150394377]": {
@@ -443,8 +548,8 @@
                             }
                         ],
                         "FireBoneNames": [
-                            "RightShoulder",
-                            "RightShoulder"
+                            "mixamorig:RightHand",
+                            "mixamorig:RightHand"
                         ]
                     }
                 },
@@ -469,6 +574,13 @@
                                 }
                             ]
                         }
+                    }
+                },
+                "Component_[9435594912102554786]": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 9435594912102554786,
+                    "m_template": {
+                        "$type": "AudioProxyComponent"
                     }
                 }
             }

@@ -24,6 +24,10 @@ namespace MultiplayerSample
     const WeaponIndex PrimaryWeaponIndex   = WeaponIndex{ 0 };
     const WeaponIndex SecondaryWeaponIndex = WeaponIndex{ 1 };
 
+    using OnWeaponActivateEvent = AZ::Event<const WeaponActivationInfo&>;
+    using OnWeaponPredictHitEvent = AZ::Event<const WeaponHitInfo&>;
+    using OnWeaponConfirmHitEvent = AZ::Event<const WeaponHitInfo&>;
+
     class NetworkWeaponsComponent
         : public NetworkWeaponsComponentBase
         , private WeaponListener
@@ -43,6 +47,12 @@ namespace MultiplayerSample
         void ActivateWeaponWithParams(WeaponIndex weaponIndex, WeaponState& weaponState, const FireParams& fireParams, bool validateActivations);
 
         IWeapon* GetWeapon(WeaponIndex weaponIndex) const;
+
+        void AddOnWeaponActivateEventHandler(OnWeaponActivateEvent::Handler& handler);
+        void AddOnWeaponPredictHitEventHandler(OnWeaponPredictHitEvent::Handler& handler);
+        void AddOnWeaponConfirmHitEventHandler(OnWeaponConfirmHitEvent::Handler& handler);
+
+        AZ::Vector3 GetCurrentShotStartPosition();
 
     private:
         //! WeaponListener interface
@@ -64,6 +74,10 @@ namespace MultiplayerSample
         AZStd::array<int32_t, MaxWeaponsPerComponent> m_fireBoneJointIds;
 
         DebugDraw::DebugDrawRequests* m_debugDraw = nullptr;
+
+        OnWeaponActivateEvent m_onWeaponActivateEvent;
+        OnWeaponPredictHitEvent m_onWeaponPredictHitEvent;
+        OnWeaponConfirmHitEvent m_onWeaponConfirmHitEvent;
     };
 
     class NetworkWeaponsComponentController
@@ -83,6 +97,7 @@ namespace MultiplayerSample
         friend class NetworkAiComponentController;
 
         void UpdateAI();
+        bool ShouldProcessInput() const;
 
         //! Update pump for player controlled weapons
         //! @param deltaTime the time in seconds since last tick
@@ -107,7 +122,8 @@ namespace MultiplayerSample
         // This means these values can and will migrate between hosts (and lose any stored state)
         // We will need to consider moving these values to Authority to Server network properties if the design doesn't change
         bool m_aiEnabled = false;
-        bool m_weaponDrawn = false;
+        bool m_weaponDrawn = true;
+        bool m_weaponDrawnChanged = false;
         WeaponActivationBitset m_weaponFiring;
     };
 }

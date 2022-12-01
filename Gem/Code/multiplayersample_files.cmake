@@ -6,6 +6,7 @@
 #
 
 set(FILES
+    Include/GameplayEffectsNotificationBus.h
     Include/PlayerKnockbackBus.h
     Include/MatchPlayerCoinsBus.h
     Include/NetworkPrefabSpawnerInterface.h
@@ -42,6 +43,7 @@ set(FILES
     Source/AutoGen/PlayerCoinCollectorComponent.AutoComponent.xml
     Source/AutoGen/PlayerIdentityComponent.AutoComponent.xml
     Source/AutoGen/PlayerKnockbackEffectComponent.AutoComponent.xml
+    Source/AutoGen/WeaponEffectComponent.AutoComponent.xml
 
     Source/Components/ExampleFilteredEntityComponent.h
     Source/Components/ExampleFilteredEntityComponent.cpp
@@ -89,6 +91,10 @@ set(FILES
     Source/Components/UI/UiPlayerArmorComponent.cpp
     Source/Components/UI/UiPlayerArmorComponent.h
 
+    Source/AutoGen/GameplayEffectsComponent.AutoComponent.xml
+    Source/Components/Multiplayer/GameplayEffectsComponent.cpp
+    Source/Components/Multiplayer/GameplayEffectsComponent.h
+
     Source/Components/Multiplayer/GemComponent.cpp
     Source/Components/Multiplayer/GemComponent.h
     Source/Components/Multiplayer/GemSpawnerComponent.cpp
@@ -107,6 +113,8 @@ set(FILES
     Source/Components/Multiplayer/EnergyBallComponent.h
     Source/Components/Multiplayer/EnergyCannonComponent.cpp
     Source/Components/Multiplayer/EnergyCannonComponent.h
+    Source/Components/Multiplayer/WeaponEffectComponent.cpp
+    Source/Components/Multiplayer/WeaponEffectComponent.h
 
     Source/GameState/GameStateMatchEnded.h
     Source/GameState/GameStateMatchEnded.cpp
