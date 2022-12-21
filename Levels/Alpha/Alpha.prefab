@@ -24290,7 +24290,14 @@
                 "Component_[17794639845029481355]": {
                     "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
                     "Id": 17794639845029481355,
-                    "Parent Entity": "Entity_[959209163037059]"
+                    "Parent Entity": "Entity_[959209163037059]",
+                    "Transform Data": {
+                        "Translate": [
+                            0.0,
+                            0.0,
+                            -300.0
+                        ]
+                    }
                 },
                 "Component_[17822647489610734478]": {
                     "$type": "EditorEntityIconComponent",
