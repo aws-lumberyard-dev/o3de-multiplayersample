@@ -16,6 +16,7 @@ set(ENABLED_GEMS
     SceneProcessing
     GraphCanvas
     Multiplayer
+    Multiplayer_ScriptCanvas
     AudioSystem
     AudioEngineWwise
     Camera
@@ -34,7 +35,6 @@ set(ENABLED_GEMS
     GraphModel
     LandscapeCanvas
     NvCloth
-    Blast
     Maestro
     TextureAtlas
     LmbrCentral
