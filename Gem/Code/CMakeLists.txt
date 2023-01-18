@@ -27,6 +27,7 @@ ly_add_target(
             Gem::StartingPointInput
             Gem::EMotionFXStaticLib
             Gem::PhysX
+            Gem::PopcornFX.Static
             Gem::Multiplayer.Client
         PRIVATE
             Gem::LmbrCentral.Static
@@ -94,6 +95,7 @@ ly_add_target(
             Gem::StartingPointInput
             Gem::EMotionFXStaticLib
             Gem::PhysX
+            Gem::PopcornFX.Static
             Gem::Multiplayer
         PRIVATE
             Gem::LmbrCentral.Static
@@ -188,6 +190,7 @@ if(PAL_TRAIT_BUILD_UNIFIED_SUPPORTED)
     set_property(GLOBAL APPEND PROPERTY LY_LAUNCHER_UNIFIED_PROJECTS MultiplayerSample)
 endif()
 
-set_property(TARGET MultiplayerSample APPEND PROPERTY GAMELAUNCHER_ADDITIONAL_VS_DEBUGGER_COMMAND_ARGUMENTS "--console-command-file=\"launch_client.cfg\"")
-set_property(TARGET MultiplayerSample APPEND PROPERTY SERVERLAUNCHER_ADDITIONAL_VS_DEBUGGER_COMMAND_ARGUMENTS "--console-command-file=\"launch_server.cfg\"")
-set_property(TARGET MultiplayerSample APPEND PROPERTY UNIFIEDLAUNCHER_ADDITIONAL_VS_DEBUGGER_COMMAND_ARGUMENTS "--console-command-file=\"launch_server.cfg\"")
+set_property(TARGET MultiplayerSample APPEND PROPERTY GAMELAUNCHER_ADDITIONAL_VS_DEBUGGER_COMMAND_ARGUMENTS "--console-command-file=\"client.cfg\"")
+set_property(TARGET MultiplayerSample APPEND PROPERTY SERVERLAUNCHER_ADDITIONAL_VS_DEBUGGER_COMMAND_ARGUMENTS "--console-command-file=\"server.cfg\"")
+set_property(TARGET MultiplayerSample APPEND PROPERTY UNIFIEDLAUNCHER_ADDITIONAL_VS_DEBUGGER_COMMAND_ARGUMENTS "--console-command-file=\"server.cfg\"")
+

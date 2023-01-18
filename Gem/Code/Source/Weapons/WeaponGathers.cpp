@@ -145,6 +145,7 @@ namespace MultiplayerSample
             if (((outResults.size() > 0) && !gatherParams.m_multiHit) || (travelDistance.GetLengthSq() > maxTravelDistanceSq))
             {
                 result = ShotResult::ShouldTerminate;
+#if AZ_TRAIT_CLIENT
                 if (bg_DrawPhysicsRaycasts && !outResults.empty())
                 {
                     DebugDraw::DebugDrawRequestBus::Broadcast
@@ -156,6 +157,7 @@ namespace MultiplayerSample
                         /*duration=*/10.0f
                     );
                 }
+#endif
                 break;
             }
 

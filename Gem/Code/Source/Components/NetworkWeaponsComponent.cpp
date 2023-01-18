@@ -14,6 +14,11 @@
 #include <Source/Components/NetworkSimplePlayerCameraComponent.h>
 #include <Source/Weapons/BaseWeapon.h>
 #include <AzCore/Component/TransformBus.h>
+#include <AzFramework/Physics/PhysicsScene.h>
+#include <AzFramework/Physics/Common/PhysicsSceneQueries.h>
+#include <AzFramework/Input/Buses/Requests/InputSystemCursorRequestBus.h>
+#include <AzFramework/Input/Devices/Mouse/InputDeviceMouse.h>
+
 
 #if AZ_TRAIT_CLIENT
 #include <DebugDraw/DebugDrawBus.h>
@@ -121,6 +126,9 @@ namespace MultiplayerSample
             return;
         }
 
+        m_onWeaponActivateEvent.Signal(activationInfo);
+
+
 #if AZ_TRAIT_CLIENT
         if (cl_WeaponsDrawDebug && m_debugDraw)
         {
@@ -168,10 +176,9 @@ namespace MultiplayerSample
 
         for (uint32_t i = 0; i < hitInfo.m_hitEvent.m_hitEntities.size(); ++i)
         {
-            const HitEntity& hitEntity = hitInfo.m_hitEvent.m_hitEntities[i];
 
 #if AZ_TRAIT_CLIENT
-            if (cl_WeaponsDrawDebug && m_debugDraw)
+	        if (cl_WeaponsDrawDebug && m_debugDraw)
             {
                 m_debugDraw->DrawSphereAtLocation
                 (
@@ -201,6 +208,7 @@ namespace MultiplayerSample
 #if AZ_TRAIT_SERVER
         if (IsNetEntityRoleAuthority())
         {
+#if AZ_TRAIT_SERVER
             for (const HitEntity& hitEntity : hitInfo.m_hitEvent.m_hitEntities)
             {
                 Multiplayer::ConstNetworkEntityHandle entityHandle = Multiplayer::GetMultiplayer()->GetNetworkEntityManager()->GetEntity(hitEntity.m_hitNetEntityId);
@@ -234,6 +242,7 @@ namespace MultiplayerSample
                     }
                 }
             }
+#endif
         }
 #endif
 
@@ -242,10 +251,10 @@ namespace MultiplayerSample
 
         for (uint32_t i = 0; i < hitInfo.m_hitEvent.m_hitEntities.size(); ++i)
         {
-            const HitEntity& hitEntity = hitInfo.m_hitEvent.m_hitEntities[i];
 
 #if AZ_TRAIT_CLIENT
-            if (cl_WeaponsDrawDebug && m_debugDraw)
+	        if (cl_WeaponsDrawDebug && m_debugDraw)
+
             {
                 m_debugDraw->DrawSphereAtLocation
                 (
