@@ -101,8 +101,8 @@ namespace MultiplayerSample
 
         if (m_networkRequests->HasSnapshot() == false)
         {
-            constexpr bool isAuthoritative = true;
-            m_networkRequests->CreateSnapshot(isAuthoritative);
+            // AnimGraph is not ready, wait for OnAnimGraphInstanceCreated
+            return;
         }
 
         // velocity or movement direction are necessary for movement
