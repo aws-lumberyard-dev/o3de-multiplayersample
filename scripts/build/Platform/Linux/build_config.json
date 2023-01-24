@@ -12,6 +12,9 @@
       "default",
       "mps-periodic-incremental-daily"
     ],
+    "PIPELINE_ENV": {
+      "S3SIS_UPLOAD_PARAMS": "--label linux_mps_profile_latest"
+    },
     "COMMAND": "build_linux.sh",
     "PARAMETERS": {
       "CONFIGURATION": "profile",

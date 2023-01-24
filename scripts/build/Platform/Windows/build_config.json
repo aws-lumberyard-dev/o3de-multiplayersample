@@ -12,6 +12,9 @@
       "default",
       "mps-periodic-incremental-daily"
     ],
+    "PIPELINE_ENV": {
+      "S3SIS_UPLOAD_PARAMS": "--label latest"
+    },
     "COMMAND": "build_windows.cmd",
     "PARAMETERS": {
       "CONFIGURATION": "profile",
