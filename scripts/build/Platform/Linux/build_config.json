@@ -9,8 +9,20 @@
   },
   "mps_profile": {
     "TAGS": [
-      "default",
-      "mps-periodic-incremental-daily"
+      "default"
+    ],
+    "COMMAND": "build_linux.sh",
+    "PARAMETERS": {
+      "CONFIGURATION": "profile",
+      "OUTPUT_DIRECTORY": "build/linux",
+      "CMAKE_OPTIONS": "-G 'Ninja Multi-Config' -DLY_PARALLEL_LINK_JOBS=4",
+      "CMAKE_TARGET": "Editor MultiplayerSample.GameLauncher MultiplayerSample.ServerLauncher",
+      "CMAKE_LY_PROJECTS": "MultiplayerSample"
+    }
+  },
+  "mps_profile_periodic": {
+    "TAGS": [
+      "periodic-clean-daily-internal"
     ],
     "PIPELINE_ENV": {
       "S3SIS_UPLOAD_PARAMS": "--label linux_mps_profile_latest"

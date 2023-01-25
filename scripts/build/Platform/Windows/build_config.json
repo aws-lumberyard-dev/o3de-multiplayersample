@@ -9,11 +9,24 @@
   },
   "mps_profile": {
     "TAGS": [
-      "default",
-      "mps-periodic-incremental-daily"
+      "default"
+    ],
+    "COMMAND": "build_windows.cmd",
+    "PARAMETERS": {
+      "CONFIGURATION": "profile",
+      "OUTPUT_DIRECTORY": "build\\windows",
+      "CMAKE_OPTIONS": "-DCMAKE_SYSTEM_VERSION=10.0 -DLY_TEST_IMPACT_INSTRUMENTATION_BIN=%TEST_IMPACT_WIN_BINARY%",
+      "CMAKE_TARGET": "Editor MultiplayerSample.GameLauncher MultiplayerSample.ServerLauncher",
+      "CMAKE_NATIVE_BUILD_ARGS": "/m /nologo",
+      "CMAKE_LY_PROJECTS": "MultiplayerSample"
+    }
+  },
+  "mps_profile_periodic": {
+    "TAGS": [
+      "periodic-clean-daily-internal"
     ],
     "PIPELINE_ENV": {
-      "S3SIS_UPLOAD_PARAMS": "--label latest"
+      "S3SIS_UPLOAD_PARAMS": "--label windows_mps_profile_latest"
     },
     "COMMAND": "build_windows.cmd",
     "PARAMETERS": {
