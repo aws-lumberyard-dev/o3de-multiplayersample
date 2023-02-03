@@ -24,9 +24,7 @@
                 "$type": "EditorEntitySortComponent",
                 "Id": 14126657869720434043,
                 "Child Entity Order": [
-                    "Entity_[1176639161715]",
-                    "Entity_[18655635772474]",
-                    "Entity_[18659930739770]"
+                    "Entity_[1176639161715]"
                 ]
             },
             "Component_[15230859088967841193]": {
@@ -539,11 +537,12 @@
                         "Configuration": {
                             "CubemapAsset": {
                                 "assetId": {
-                                    "guid": "{3D2505EE-B764-59AA-9CDF-08AD52C4B563}",
+                                    "guid": "{58284D2C-28A2-58DE-B5D1-118FA5D5F1C9}",
                                     "subId": 1000
                                 },
-                                "assetHint": "skies/starmap_2020_leveled_lowcontrast_iblskyboxcm.exr.streamingimage"
-                            }
+                                "assetHint": "skies/starmap_2020_leveled_iblskyboxcm.exr.streamingimage"
+                            },
+                            "Exposure": 6.0
                         }
                     }
                 },
@@ -558,34 +557,36 @@
                         "Configuration": {
                             "diffuseImageAsset": {
                                 "assetId": {
-                                    "guid": "{3D2505EE-B764-59AA-9CDF-08AD52C4B563}",
+                                    "guid": "{E55DE22E-531E-58A7-8FF6-D60462D3A469}",
                                     "subId": 3000
                                 },
-                                "assetHint": "skies/starmap_2020_leveled_lowcontrast_iblskyboxcm_ibldiffuse.exr.streamingimage"
+                                "assetHint": "cubemapcaptures/test-5-diffuse-capture__31d178d4-0414-4c80-96d2-69ca5b720b0f__ibldiffusecm.dds.streamingimage"
                             },
                             "specularImageAsset": {
                                 "assetId": {
-                                    "guid": "{3D2505EE-B764-59AA-9CDF-08AD52C4B563}",
+                                    "guid": "{B7524E5F-37F2-5E08-AD42-311D69E341E0}",
                                     "subId": 2000
                                 },
-                                "assetHint": "skies/starmap_2020_leveled_lowcontrast_iblskyboxcm_iblspecular.exr.streamingimage"
-                            }
+                                "assetHint": "cubemapcaptures/test-5-specular-capture__9cc373ae-fd5c-482a-896d-6a2400c83d8a__iblspecularcm256.dds.streamingimage"
+                            },
+                            "exposure": 6.0
                         }
                     },
                     "diffuseImageAsset": {
                         "assetId": {
-                            "guid": "{3D2505EE-B764-59AA-9CDF-08AD52C4B563}",
+                            "guid": "{E55DE22E-531E-58A7-8FF6-D60462D3A469}",
                             "subId": 3000
                         },
-                        "assetHint": "skies/starmap_2020_leveled_lowcontrast_iblskyboxcm_ibldiffuse.exr.streamingimage"
+                        "assetHint": "cubemapcaptures/test-5-diffuse-capture__31d178d4-0414-4c80-96d2-69ca5b720b0f__ibldiffusecm.dds.streamingimage"
                     },
                     "specularImageAsset": {
                         "assetId": {
-                            "guid": "{3D2505EE-B764-59AA-9CDF-08AD52C4B563}",
+                            "guid": "{B7524E5F-37F2-5E08-AD42-311D69E341E0}",
                             "subId": 2000
                         },
-                        "assetHint": "skies/starmap_2020_leveled_lowcontrast_iblskyboxcm_iblspecular.exr.streamingimage"
-                    }
+                        "assetHint": "cubemapcaptures/test-5-specular-capture__9cc373ae-fd5c-482a-896d-6a2400c83d8a__iblspecularcm256.dds.streamingimage"
+                    },
+                    "exposure": 6.0
                 },
                 "Component_[14994774102579326069]": {
                     "$type": "EditorDisabledCompositionComponent",
@@ -619,111 +620,6 @@
                 "Component_[931091830724002070]": {
                     "$type": "EditorInspectorComponent",
                     "Id": 931091830724002070
-                }
-            }
-        },
-        "Entity_[18655635772474]": {
-            "Id": "Entity_[18655635772474]",
-            "Name": "Test-5-diffuse-capture",
-            "Components": {
-                "Component_[10818929181302902151]": {
-                    "$type": "EditorEntityIconComponent",
-                    "Id": 10818929181302902151
-                },
-                "Component_[13785140113900133237]": {
-                    "$type": "EditorOnlyEntityComponent",
-                    "Id": 13785140113900133237
-                },
-                "Component_[13963110884621844300]": {
-                    "$type": "EditorInspectorComponent",
-                    "Id": 13963110884621844300
-                },
-                "Component_[15000547071587368992]": {
-                    "$type": "AZ::Render::EditorCubeMapCaptureComponent",
-                    "Id": 15000547071587368992,
-                    "Controller": {
-                        "Configuration": {
-                            "CaptureType": 1,
-                            "RelativePath": "CubeMapCaptures/Test-5-diffuse-capture__31D178D4-0414-4C80-96D2-69CA5B720B0F__ibldiffusecm.dds"
-                        }
-                    }
-                },
-                "Component_[15830196849380213294]": {
-                    "$type": "EditorDisabledCompositionComponent",
-                    "Id": 15830196849380213294
-                },
-                "Component_[16631575227327165079]": {
-                    "$type": "EditorLockComponent",
-                    "Id": 16631575227327165079
-                },
-                "Component_[1764865840840981997]": {
-                    "$type": "EditorPendingCompositionComponent",
-                    "Id": 1764865840840981997
-                },
-                "Component_[4405283478018087022]": {
-                    "$type": "EditorEntitySortComponent",
-                    "Id": 4405283478018087022
-                },
-                "Component_[8117962465898376460]": {
-                    "$type": "EditorVisibilityComponent",
-                    "Id": 8117962465898376460
-                },
-                "Component_[88355089566474064]": {
-                    "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
-                    "Id": 88355089566474064,
-                    "Parent Entity": "Entity_[1146574390643]"
-                }
-            }
-        },
-        "Entity_[18659930739770]": {
-            "Id": "Entity_[18659930739770]",
-            "Name": "Test-5-specular-capture",
-            "Components": {
-                "Component_[10888303615154516450]": {
-                    "$type": "EditorDisabledCompositionComponent",
-                    "Id": 10888303615154516450
-                },
-                "Component_[12890741785080681317]": {
-                    "$type": "EditorEntityIconComponent",
-                    "Id": 12890741785080681317
-                },
-                "Component_[13300206598306123920]": {
-                    "$type": "EditorOnlyEntityComponent",
-                    "Id": 13300206598306123920
-                },
-                "Component_[16386665282483893682]": {
-                    "$type": "AZ::Render::EditorCubeMapCaptureComponent",
-                    "Id": 16386665282483893682,
-                    "Controller": {
-                        "Configuration": {
-                            "RelativePath": "CubeMapCaptures/Test-5-specular-capture__9CC373AE-FD5C-482A-896D-6A2400C83D8A__iblspecularcm256.dds"
-                        }
-                    }
-                },
-                "Component_[16468075626194948145]": {
-                    "$type": "EditorLockComponent",
-                    "Id": 16468075626194948145
-                },
-                "Component_[3114427359311063677]": {
-                    "$type": "EditorEntitySortComponent",
-                    "Id": 3114427359311063677
-                },
-                "Component_[3372623508738553201]": {
-                    "$type": "{27F1E1A1-8D9D-4C3B-BD3A-AFB9762449C0} TransformComponent",
-                    "Id": 3372623508738553201,
-                    "Parent Entity": "Entity_[1146574390643]"
-                },
-                "Component_[4138027456349973782]": {
-                    "$type": "EditorVisibilityComponent",
-                    "Id": 4138027456349973782
-                },
-                "Component_[9635571951580466949]": {
-                    "$type": "EditorPendingCompositionComponent",
-                    "Id": 9635571951580466949
-                },
-                "Component_[9636357435660299549]": {
-                    "$type": "EditorInspectorComponent",
-                    "Id": 9636357435660299549
                 }
             }
         }
