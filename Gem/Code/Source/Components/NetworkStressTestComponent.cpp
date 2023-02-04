@@ -42,7 +42,14 @@ namespace MultiplayerSample
         , m_autoSpawnTimer([this]() { HandleSpawnAiEntity(); }, AZ::Name("StressTestSpawner Event"))
 #endif
     {
-        ;
+        m_isServer = false;
+        m_quantity = 1;
+        m_fireIntervalMinMs = 100.f;
+        m_fireIntervalMaxMs = 10000.f;
+        m_actionIntervalMinMs = 500.f;
+        m_actionIntervalMaxMs = 10000.f;
+        m_seed = 0;
+        m_teamID = 0;
     }
 
     void NetworkStressTestComponentController::OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
