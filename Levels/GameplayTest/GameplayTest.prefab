@@ -7469,10 +7469,6 @@
             "Id": "Entity_[412839637138]",
             "Name": "Ground",
             "Components": {
-                "Component_[13978660823001526861]": {
-                    "$type": "EditorStaticRigidBodyComponent",
-                    "Id": 13978660823001526861
-                },
                 "Component_[14576502551830180300]": {
                     "$type": "EditorColliderComponent",
                     "Id": 14576502551830180300,
@@ -7511,6 +7507,10 @@
                 "Component_[15524201486796047970]": {
                     "$type": "EditorEntityIconComponent",
                     "Id": 15524201486796047970
+                },
+                "Component_[15563592687652415170]": {
+                    "$type": "EditorStaticRigidBodyComponent",
+                    "Id": 15563592687652415170
                 },
                 "Component_[15840258338216491819]": {
                     "$type": "EditorEntitySortComponent",
@@ -8195,6 +8195,10 @@
                     "$type": "EditorPendingCompositionComponent",
                     "Id": 13545070526863732984
                 },
+                "Component_[18002960556734053395]": {
+                    "$type": "EditorStaticRigidBodyComponent",
+                    "Id": 18002960556734053395
+                },
                 "Component_[2917092960552172245]": {
                     "$type": "EditorVisibilityComponent",
                     "Id": 2917092960552172245
@@ -8202,10 +8206,6 @@
                 "Component_[314388126526494153]": {
                     "$type": "EditorLockComponent",
                     "Id": 314388126526494153
-                },
-                "Component_[3184154808274359768]": {
-                    "$type": "EditorStaticRigidBodyComponent",
-                    "Id": 3184154808274359768
                 },
                 "Component_[4556394461817145286]": {
                     "$type": "EditorShapeColliderComponent",

@@ -110,6 +110,10 @@
                     "$type": "EditorVisibilityComponent",
                     "Id": 10945492519241377600
                 },
+                "Component_[12157480449819822148]": {
+                    "$type": "EditorStaticRigidBodyComponent",
+                    "Id": 12157480449819822148
+                },
                 "Component_[12714035445540607731]": {
                     "$type": "EditorOnlyEntityComponent",
                     "Id": 12714035445540607731
@@ -197,10 +201,6 @@
                         "$type": "NetworkTeleportComponent",
                         "Destination": "Entity_[59349873378397]"
                     }
-                },
-                "Component_[741486691161590945]": {
-                    "$type": "EditorStaticRigidBodyComponent",
-                    "Id": 741486691161590945
                 },
                 "Component_[9083664918289908248]": {
                     "$type": "EditorEntitySortComponent",
