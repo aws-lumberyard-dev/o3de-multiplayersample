@@ -28,7 +28,8 @@
                 "Child Entity Order": [
                     "Entity_[60274689909647]",
                     "Entity_[767186398073361]",
-                    "Entity_[34368826042616]"
+                    "Entity_[34368826042616]",
+                    "Instance_[34598614059403]/ContainerEntity"
                 ]
             },
             "Component_[15230859088967841193]": {
@@ -28518,6 +28519,31 @@
                     "op": "replace",
                     "path": "/ContainerEntity/Components/Component_[5383665612827889585]/Transform Data/Translate/2",
                     "value": -6.0
+                }
+            ]
+        },
+        "Instance_[34598614059403]": {
+            "Source": "Prefabs/In-Game_Menu.prefab",
+            "Patches": [
+                {
+                    "op": "replace",
+                    "path": "/ContainerEntity/Components/Component_[14705142480132192566]/Parent Entity",
+                    "value": "../Entity_[1146574390643]"
+                },
+                {
+                    "op": "replace",
+                    "path": "/ContainerEntity/Components/Component_[14705142480132192566]/Transform Data/Translate/0",
+                    "value": -28.287839889526367
+                },
+                {
+                    "op": "replace",
+                    "path": "/ContainerEntity/Components/Component_[14705142480132192566]/Transform Data/Translate/1",
+                    "value": -20.440736770629883
+                },
+                {
+                    "op": "replace",
+                    "path": "/ContainerEntity/Components/Component_[14705142480132192566]/Transform Data/Translate/2",
+                    "value": 17.10445785522461
                 }
             ]
         },
