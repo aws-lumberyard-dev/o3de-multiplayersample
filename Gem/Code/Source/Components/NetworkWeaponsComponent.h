@@ -85,7 +85,7 @@ namespace MultiplayerSample
         AZ::ScheduledEvent m_tickSimulatedWeapons{[this]()
         {
             OnTickSimulatedWeapons(AZ::TimeMsToSeconds(m_tickSimulatedWeapons.TimeInQueueMs()));
-        }, AZ::Name("TickSimualtedWeapons")};
+        }, AZ::Name("TickSimulatedWeapons")};
     };
 
     class NetworkWeaponsComponentController
