@@ -67,6 +67,7 @@ namespace MultiplayerSample
         void OnWeaponConfirmHit(const WeaponHitInfo& hitInfo);
 
         void OnUpdateActivationCounts(int32_t index, uint8_t value);
+        void OnTickSimulatedWeapons(float seconds);
 
         using WeaponPointer = AZStd::unique_ptr<IWeapon>;
         AZStd::array<WeaponPointer, MaxWeaponsPerComponent> m_weapons;
@@ -81,7 +82,6 @@ namespace MultiplayerSample
         OnWeaponPredictHitEvent m_onWeaponPredictHitEvent;
         OnWeaponConfirmHitEvent m_onWeaponConfirmHitEvent;
 
-        void OnTickSimulatedWeapons(float seconds);
         AZ::ScheduledEvent m_tickSimulatedWeapons{[this]()
         {
             OnTickSimulatedWeapons(AZ::TimeMsToSeconds(m_tickSimulatedWeapons.TimeInQueueMs()));
