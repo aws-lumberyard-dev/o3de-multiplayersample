@@ -33,7 +33,6 @@ namespace MultiplayerSample
             // Tick on every frame.
             m_clientAnimationEvent.Enqueue(AZ::Time::ZeroTimeMs, true);
 
-            Physics::RigidBodyRequestBus::Event(GetEntityId(), &Physics::RigidBodyRequestBus::Events::DisablePhysics);
             // Physical bodies take time to enable after entity activation, so sign up for physics activation and disable it
             Physics::RigidBodyNotificationBus::Handler::BusConnect(GetEntityId());
         }
@@ -48,6 +47,10 @@ namespace MultiplayerSample
 
     void GemComponent::OnPhysicsEnabled([[maybe_unused]] const AZ::EntityId& entityId)
     {
+        // @entityId should be this entity since we signed up for it when calling
+        //    Physics::RigidBodyNotificationBus::Handler::BusConnect
+
+        Physics::RigidBodyNotificationBus::Handler::BusDisconnect();
         Physics::RigidBodyRequestBus::Event(GetEntityId(), &Physics::RigidBodyRequestBus::Events::DisablePhysics);
     }
 
