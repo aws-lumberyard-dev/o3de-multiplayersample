@@ -8,7 +8,7 @@
                             "LayerNames": [
                                 "Default",
                                 "HitVolumes",
-                                "CharacterBodies",
+                                {},
                                 {},
                                 {},
                                 {},
