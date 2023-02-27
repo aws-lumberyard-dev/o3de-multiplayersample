@@ -106,11 +106,13 @@ endif()
 # the first package that returns PACKAGE_VERSION_COMPATIBLE 
 set(O3DE_MOST_COMPATIBLE_ENGINE_PATH "")
 set(O3DE_MOST_COMPATIBLE_ENGINE_VERSION "")
+set(O3DE_HAS_OLDER_ENGINES false)
 foreach(manifest_engine_path IN LISTS O3DE_ENGINE_PATHS) 
     # Does this engine have a config version cmake file?
     cmake_path(SET version_cmake_path "${manifest_engine_path}/cmake/o3deConfigVersion.cmake")
     if(NOT EXISTS "${version_cmake_path}") 
         message(VERBOSE "Ignoring '${manifest_engine_path}' because no config version cmake file was found at '${version_cmake_path}'")
+        set(O3DE_HAS_OLDER_ENGINES true)
         continue()
     endif()
 
@@ -143,6 +145,12 @@ if(O3DE_MOST_COMPATIBLE_ENGINE_PATH)
 endif()
 
 # No compatible engine was found.
+if(O3DE_HAS_OLDER_ENGINES)
+    message(STATUS "Unable to find a compatible engine but engines were found that do not support compatibility checks.  Falling back to older EngineFinder logic.")
+    include(cmake/EngineFinder_O3DE_2210.cmake)
+    return()
+endif()
+
 # Read the 'engine' field in project.json or user/project.json for more helpful messages 
 if(user_project_json)
     string(JSON user_project_engine ERROR_VARIABLE json_error GET ${user_project_json} engine)
