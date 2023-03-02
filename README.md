@@ -30,7 +30,7 @@ Note: Theres no penalty for respawn if you are knocked off the level or use the 
 * Look around: use mouse
 * Fire primary: `left mouse button`
 * See scoreboard: Hold `tab`
-* Open game menu: `ESC`
+* Open game menu: `esc`
 * Draw/holster active weapon: `E`
 
 To be implemented:
@@ -212,7 +212,7 @@ This project ships with several levels, the ones of note are:
 3. StartMenu - An example menu to enable joining, hosting and connecting to servers.
 4. MultiplayerScriptingSample - An example of Multiplayer and scripting.
 
-Other levels in project are there for testing, performance evaluation purposes and can be ignored.
+Other levels in the project are there for testing or performance evaluation purposes and can be ignored.
 
 ## More Information
 * [O3DE Networking](https://o3de.org/docs/user-guide/networking/)
