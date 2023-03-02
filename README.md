@@ -1,6 +1,6 @@
 # MultiplayerSample Project
 
-A simple third-person multiplayer sample for O3DE. Its lazer tag in space!
+A simple third-person multiplayer sample for O3DE. It's lazer tag in space!
 
 > **_NOTE:_** For Linux, see the Linux specific setup in [README_LINUX](./README_LINUX.md).
 
