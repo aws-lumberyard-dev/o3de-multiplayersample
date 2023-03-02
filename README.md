@@ -1,37 +1,38 @@
 # MultiplayerSample Project
 
-A simple third-person multiplayer sample for O3DE. It's lazer tag in space!
+A third-person multiplayer game sample for O3DE. 
 
 > **_NOTE:_** For Linux, see the Linux specific setup in [README_LINUX](./README_LINUX.md).
 
 ## Gameplay Overview
-This game sample has players competing to hit the highest score to win. Played over a series of rounds, each round brings greater opportunity for rewards but at higher risks.  
+This game sample has players competing to hit the highest score to win. Played over a series of rounds, each round brings greater opportunity for rewards but at higher risks.  Players race to collect gems scattered all over the level.
 
-Additionally, players have a fixed amount of energy shields to protect them. Shooting other players damages their shields and getting hit damages your shields. Once your shields are depleted, you will respawn but at the cost of some of your collected gems.
+Additionally, players have energy shields to protect them. Shooting other player damages their shields and getting hit damages your shields. Once your shields are depleted, you will respawn but at the cost of some of your collected gems.
 
 Do you risk it all to win? 
 
 Game features:
-* 3rd-person shooting
-* A configurable number of rounds; defaults to 3
-* Different gem spawning patterns per round to drive exploration
-* Support for 1 to 15 players (goal is to raise performance to support 25 players per level)
-* Rich sounds and VFX support
-* Teleporters to aid exploration
-* Many points of extensibility
+* 3rd-person character setup.
+* Shooting with laser pistols.
+* A configurable number of rounds; defaults to 3.
+* Configurable gem spawning patterns per round to drive exploration.
+* Support for 1 to 15 players (goal is to raise performance to support 25 players per level).
+* Rich sounds and VFX support.
+* Teleporters to aid exploration.
+* Many points of extensibility.
 
-Note: Theres no penalty for respawn if you are knocked off the level or use the teleporters
+Note: There's no penalty for respawn if you are knocked off the level or use the teleporters.
 
 ### Player Controls
 
-* Move using: `WASD` 
+* Move using: `w,a,s,d` 
 * Sprint: Hold `shift`
 * Jump: `space` 
 * Look around: use mouse
 * Fire primary: `left mouse button`
 * See scoreboard: Hold `tab`
 * Open game menu: `esc`
-* Draw/holster active weapon: `E`
+* Draw/holster active weapon: `e`
 
 To be implemented:
 * Fire secondary weapon: `right mouse button`
