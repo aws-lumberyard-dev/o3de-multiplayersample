@@ -29,7 +29,7 @@ Note: There's no penalty for respawn if you are knocked off the level or use the
 * Sprint: Hold `shift`
 * Jump: `space` 
 * Look around: use mouse
-* Fire primary: `left mouse button`
+* Fire primary weapon: `left mouse button`
 * See scoreboard: Hold `tab`
 * Open game menu: `esc`
 * Draw/holster active weapon: `e`
