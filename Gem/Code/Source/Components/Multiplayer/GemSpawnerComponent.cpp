@@ -209,14 +209,14 @@ namespace MultiplayerSample
                     {
                         gemController->SetRandomPeriodOffset(GetNetworkRandomComponentController()->GetRandomInt() % 1000);
                         gemController->SetGemScoreValue(spawnable->m_scoreValue);
-                        gemController->SetGemSpawnerController(this, ticketId);
+                        gemController->SetGemSpawnerController(this);
                     }
                 }
             }
 
             // Save the gem spawn ticket, otherwise the gem will immediately despawn due to the ticket's destruction.
             // Also track the root entity id so that we can move the gem out of sight while waiting for it to despawn when removing gems.
-            m_spawnedGems.insert(AZStd::make_pair(ticketId, SpawnedGem{ AZStd::move(ticket), rootEntityId }));
+            m_spawnedGems.insert(AZStd::make_pair(ticketId, AZStd::move(ticket)));
         };
 
         GetParent().GetNetworkPrefabSpawnerComponent()->SpawnPrefabAsset(
@@ -226,10 +226,10 @@ namespace MultiplayerSample
 
     void GemSpawnerComponentController::RemoveGems()
     {
-        for (const auto& [ticketId, gem] : m_spawnedGems)
+        for (const auto& [ticketId, ticket] : m_spawnedGems)
         {
             // Destroy all the entities for each gem.
-            AzFramework::SpawnableEntitiesInterface::Get()->DespawnAllEntities(*gem.m_ticket);
+            AzFramework::SpawnableEntitiesInterface::Get()->DespawnAllEntities(*ticket);
         }
 
         m_spawnedGems.clear();
@@ -241,7 +241,7 @@ namespace MultiplayerSample
 
         if (gemIterator != m_spawnedGems.end())
         {
-            AzFramework::SpawnableEntitiesInterface::Get()->DespawnAllEntities(*gemIterator->second.m_ticket);
+            AzFramework::SpawnableEntitiesInterface::Get()->DespawnAllEntities(*gemIterator->second);
             m_spawnedGems.erase(gemIterator);
         }
     }

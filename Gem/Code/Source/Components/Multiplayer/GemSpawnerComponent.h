@@ -46,14 +46,8 @@ namespace MultiplayerSample
         void SpawnGem(const AZ::Vector3& location, const AZ::Crc32& type);
         void RemoveGems();
 #endif
-
-        struct SpawnedGem
-        {
-            AZStd::shared_ptr<AzFramework::EntitySpawnTicket> m_ticket;
-            AZ::EntityId m_gemEntityId;
-        };
-
-        AZStd::unordered_map<AzFramework::EntitySpawnTicket::Id, SpawnedGem> m_spawnedGems;
+        
+        AZStd::unordered_map<AzFramework::EntitySpawnTicket::Id, AZStd::shared_ptr<AzFramework::EntitySpawnTicket>> m_spawnedGems;
 
         struct GemSpawnEntry
         {

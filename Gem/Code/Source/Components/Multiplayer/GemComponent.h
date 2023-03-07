@@ -65,13 +65,12 @@ namespace MultiplayerSample
         void OnDeactivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
 
 #if AZ_TRAIT_SERVER
-        void SetGemSpawnerController(GemSpawnerComponentController* controller, AzFramework::EntitySpawnTicket::Id gemTicketId);
+        void SetGemSpawnerController(GemSpawnerComponentController* controller);
 
         void HandleRPC_CollectedByPlayer(AzNetworking::IConnection* invokingConnection) override;
 
     private:
         GemSpawnerComponentController* m_controller = nullptr;
-        AzFramework::EntitySpawnTicket::Id m_gemTicketId;
 #endif
     };
 }

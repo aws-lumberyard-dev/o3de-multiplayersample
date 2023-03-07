@@ -91,15 +91,14 @@ namespace MultiplayerSample
     {
         if (m_controller)
         {
-            m_controller->RemoveGem(m_gemTicketId);
+            m_controller->RemoveGem(GetEntity()->GetEntitySpawnTicketId());
             m_controller = nullptr;
         }
     }
 
-    void GemComponentController::SetGemSpawnerController(GemSpawnerComponentController* controller, AzFramework::EntitySpawnTicket::Id gemTicketId)
+    void GemComponentController::SetGemSpawnerController(GemSpawnerComponentController* controller)
     {
         m_controller = controller;
-        m_gemTicketId = gemTicketId;
     }
 #endif
 }
