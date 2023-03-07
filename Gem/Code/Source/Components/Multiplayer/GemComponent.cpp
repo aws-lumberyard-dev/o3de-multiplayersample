@@ -92,6 +92,7 @@ namespace MultiplayerSample
         if (m_controller)
         {
             m_controller->RemoveGem(m_gemTicketId);
+            m_controller = nullptr;
         }
     }
 
