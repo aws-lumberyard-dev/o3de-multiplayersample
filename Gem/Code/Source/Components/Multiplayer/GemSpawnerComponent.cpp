@@ -192,17 +192,9 @@ namespace MultiplayerSample
             }
 
             const auto ticketId = ticket->GetId();
-            AZ::EntityId rootEntityId;
 
             for (const AZ::Entity* entity : view)
             {
-                // Keep track of the root entity of the spawnable so that we can move the gem out of sight when waiting for it to
-                // despawn on gem removals.
-                if (entity->GetTransform()->GetParent() == nullptr)
-                {
-                    rootEntityId = entity->GetId();
-                }
-
                 if (GemComponent* gem = entity->FindComponent<GemComponent>())
                 {
                     if (GemComponentController* gemController = static_cast<GemComponentController*>(gem->GetController()))
