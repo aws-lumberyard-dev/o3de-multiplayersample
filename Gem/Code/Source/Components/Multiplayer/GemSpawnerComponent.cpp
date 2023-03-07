@@ -234,7 +234,6 @@ namespace MultiplayerSample
 
         m_spawnedGems.clear();
     }
-#endif
     
     void GemSpawnerComponentController::RemoveGem(AzFramework::EntitySpawnTicket::Id gemTicketId)
     {
@@ -246,6 +245,7 @@ namespace MultiplayerSample
             m_spawnedGems.erase(gemIterator);
         }
     }
+#endif
 
     AZ::Crc32 GemSpawnerComponentController::ChooseGemType(AZStd::vector<GemSpawnEntry>& gemSpawnList, const LmbrCentral::Tags& tags)
     {
