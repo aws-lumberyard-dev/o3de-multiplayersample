@@ -218,10 +218,10 @@ namespace MultiplayerSample
 
     void GemSpawnerComponentController::RemoveGems()
     {
-        for (const auto& [ticketId, ticket] : m_spawnedGems)
+        for (const auto& pair : m_spawnedGems)
         {
             // Destroy all the entities for each gem.
-            AzFramework::SpawnableEntitiesInterface::Get()->DespawnAllEntities(*ticket);
+            AzFramework::SpawnableEntitiesInterface::Get()->DespawnAllEntities(*pair.second);
         }
 
         m_spawnedGems.clear();
