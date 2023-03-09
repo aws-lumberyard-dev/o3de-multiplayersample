@@ -28,6 +28,8 @@ namespace MultiplayerSample
     AZ_CVAR(float, cl_WeaponsDrawDebugSize, 0.25f, nullptr, AZ::ConsoleFunctorFlags::Null, "The size of sphere to debug draw during weapon events");
     AZ_CVAR(float, cl_WeaponsDrawDebugDurationSec, 10.0f, nullptr, AZ::ConsoleFunctorFlags::Null, "The number of seconds to display debug draw data");
     AZ_CVAR(float, sv_WeaponsImpulseScalar, 750.0f, nullptr, AZ::ConsoleFunctorFlags::Null, "A fudge factor for imparting impulses on rigid bodies due to weapon hits");
+
+    AZ_CVAR(float, sv_WeaponsStartPoisitionClampEnabled, false, nullptr, AZ::ConsoleFunctorFlags::Null, "If true, origins of shots is corrected by the server making them server-authorittative.");
     AZ_CVAR(float, sv_WeaponsStartPositionClampRange, 1.f, nullptr, AZ::ConsoleFunctorFlags::Null, "A fudge factor between the where the client and server say a shot started");
     AZ_CVAR(float, sv_WeaponsDotClamp, 0.35f, nullptr, AZ::ConsoleFunctorFlags::Null, "Acceptable dot product range for a shot between the camera raycast and weapon raycast.");
 
@@ -448,11 +450,14 @@ namespace MultiplayerSample
                     AZLOG_WARN("Failed to get transform for fire bone joint Id %u", boneIdx);
                 }
 
-                // Validate the proposed start position is reasonably close to the related bone
-                if ((fireBoneTransform.GetTranslation() - weaponInput->m_shotStartPosition).GetLength() > sv_WeaponsStartPositionClampRange)
+                if (sv_WeaponsStartPoisitionClampEnabled)
                 {
-                    weaponInput->m_shotStartPosition = fireBoneTransform.GetTranslation();
-                    AZLOG_WARN("Shot origin was outside of clamp range, resetting to bone position");
+                    // Validate the proposed start position is reasonably close to the related bone
+                    if ((fireBoneTransform.GetTranslation() - weaponInput->m_shotStartPosition).GetLength() > sv_WeaponsStartPositionClampRange)
+                    {
+                        weaponInput->m_shotStartPosition = fireBoneTransform.GetTranslation();
+                        AZLOG_WARN("Shot origin was outside of clamp range, resetting to bone position");
+                    }
                 }
 
                 // Setup a default aim target
