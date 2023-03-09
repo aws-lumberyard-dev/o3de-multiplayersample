@@ -149,7 +149,9 @@ namespace MultiplayerSample
             AZ::Transform::CreateFromQuaternionAndTranslation(eventData.m_initialTransform.GetRotation(), eventData.m_targetPosition),
             eventData.m_shooterId,
             Multiplayer::InvalidNetEntityId,
-            HitEntities()
+            HitEntities(),
+            eventData.m_tracePoints,
+            eventData.m_terminatesAt
         };
 
         for (auto gatherResult : gatherResults)

@@ -16,10 +16,12 @@
 #include <DebugDraw/DebugDrawBus.h>
 #endif
 
+#pragma optimize("", off)
+
 namespace MultiplayerSample
 {
     AZ_CVAR(uint32_t, bg_MultitraceNumTraceSegments, 3, nullptr, AZ::ConsoleFunctorFlags::Null, "The number of segments to use when performing multitrace casts");
-    AZ_CVAR(bool, bg_DrawPhysicsRaycasts, false, nullptr, AZ::ConsoleFunctorFlags::Null, "If enabled, will debug draw physics raycasts");
+    AZ_CVAR(bool, bg_DrawPhysicsRaycasts, true, nullptr, AZ::ConsoleFunctorFlags::Null, "If enabled, will debug draw physics raycasts");
 
     IntersectFilter::IntersectFilter
     (
@@ -120,6 +122,10 @@ namespace MultiplayerSample
             AZ::Vector3 travelDistance = (segmentStepOffset * nextSegmentStartTime); // Total distance our shot has traveled as of this cast, ignoring arc-length due to gravity
             AZ::Vector3 nextSegmentPosition = inOutActiveShot.m_initialTransform.GetTranslation() + travelDistance + (gravity * 0.5f * nextSegmentStartTime * nextSegmentStartTime);
 
+#if AZ_TRAIT_SERVER
+            inOutActiveShot.m_tracePoints.push_back(nextSegmentPosition);
+#endif
+
             const AZ::Transform currSegTransform = AZ::Transform::CreateLookAt(currSegmentPosition, nextSegmentPosition);
             const AZ::Vector3 segSweep = nextSegmentPosition - currSegmentPosition;
 
@@ -158,7 +164,14 @@ namespace MultiplayerSample
                     );
                 }
 #endif
+
+#if AZ_TRAIT_SERVER
+                if (!outResults.empty())
+                {
+                    inOutActiveShot.m_terminatesAt = outResults.front().m_position;
+                }
                 break;
+#endif
             }
 
             currSegmentStartTime = nextSegmentStartTime;
@@ -169,3 +182,5 @@ namespace MultiplayerSample
         return result;
     }
 }
+
+#pragma optimize("", on)

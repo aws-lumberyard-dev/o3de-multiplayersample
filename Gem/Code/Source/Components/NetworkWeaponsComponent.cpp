@@ -22,6 +22,8 @@
 #include <DebugDraw/DebugDrawBus.h>
 #endif
 
+#pragma optimize("", off)
+
 namespace MultiplayerSample
 {
     AZ_CVAR(bool, cl_WeaponsDrawDebug, false, nullptr, AZ::ConsoleFunctorFlags::Null, "If enabled, weapons will debug draw various important events");
@@ -287,6 +289,29 @@ namespace MultiplayerSample
                 hitEntity.m_hitPosition.GetZ()
             );
         }
+
+#if AZ_TRAIT_CLIENT
+        if (!hitInfo.m_hitEvent.m_tracePoints.empty())
+        {
+            for (AZStd::size_t traceIndex = 1; traceIndex < hitInfo.m_hitEvent.m_tracePoints.size(); ++traceIndex)
+            {
+                m_debugDraw->DrawLineLocationToLocation(
+                    hitInfo.m_hitEvent.m_tracePoints[traceIndex-1],
+                    hitInfo.m_hitEvent.m_tracePoints[traceIndex], AZ::Colors::Blue, cl_WeaponsDrawDebugDurationSec);
+            }
+        }
+
+        if (!hitInfo.m_hitEvent.m_terminatesAt.IsZero())
+        {
+            m_debugDraw->DrawSphereAtLocation
+            (
+                hitInfo.m_hitEvent.m_terminatesAt,
+                cl_WeaponsDrawDebugSize,
+                AZ::Colors::Blue,
+                cl_WeaponsDrawDebugDurationSec
+            );
+        }
+#endif
     }
 
     void NetworkWeaponsComponent::OnUpdateActivationCounts(int32_t index, uint8_t value)
@@ -442,7 +467,7 @@ namespace MultiplayerSample
                 const char* fireBoneName = GetFireBoneNames(weaponIndexInt).c_str();
                 int32_t boneIdx = GetNetworkAnimationComponentController()->GetParent().GetBoneIdByName(fireBoneName);
 
-                AZ::Transform fireBoneTransform;
+                AZ::Transform fireBoneTransform = AZ::Transform::CreateIdentity();
                 if (!GetNetworkAnimationComponentController()->GetParent().GetJointTransformById(boneIdx, fireBoneTransform))
                 {
                     AZLOG_WARN("Failed to get transform for fire bone joint Id %u", boneIdx);
@@ -453,6 +478,7 @@ namespace MultiplayerSample
                 {
                     weaponInput->m_shotStartPosition = fireBoneTransform.GetTranslation();
                     AZLOG_WARN("Shot origin was outside of clamp range, resetting to bone position");
+                    //AZLOG_WARN("Shot origin was outside of clamp range");
                 }
 
                 // Setup a default aim target
@@ -624,3 +650,5 @@ namespace MultiplayerSample
 #endif
     }
 } // namespace MultiplayerSample
+
+#pragma optimize("", on)

@@ -154,6 +154,9 @@ namespace MultiplayerSample
         AZ::Vector3 m_targetPosition;     // Target location of the activate event
         LifetimeSec m_lifetimeSeconds;    // The number of seconds this shot has been alive for
 
+        AZStd::vector<AZ::Vector3> m_tracePoints;
+        AZ::Vector3 m_terminatesAt = AZ::Vector3::CreateZero();
+
         bool operator!=(const ActiveShot& rhs) const;
         bool Serialize(AzNetworking::ISerializer& serializer);
     };
@@ -179,6 +182,9 @@ namespace MultiplayerSample
         Multiplayer::NetEntityId m_shooterId = Multiplayer::InvalidNetEntityId;    // NetEntityId of the shooter
         Multiplayer::NetEntityId m_projectileId = Multiplayer::InvalidNetEntityId; // NetEntityId of the projectile, or InvalidNetEntityId if a trace weapon
 
+        AZStd::vector<AZ::Vector3> m_tracePoints;
+        AZ::Vector3 m_terminatesAt = AZ::Vector3::CreateZero();
+
         bool Serialize(AzNetworking::ISerializer& serializer);
     };
 
@@ -199,6 +205,9 @@ namespace MultiplayerSample
         Multiplayer::NetEntityId m_shooterNetEntityId    = Multiplayer::InvalidNetEntityId; // Entity Id of the shooter
         Multiplayer::NetEntityId m_projectileNetEntityId = Multiplayer::InvalidNetEntityId; // Entity Id of the projectile, InvalidNetEntityId if this was a trace weapon hit
         HitEntities m_hitEntities; // Information about the entities that were hit
+
+        AZStd::vector<AZ::Vector3> m_tracePoints;
+        AZ::Vector3 m_terminatesAt = AZ::Vector3::CreateZero();
 
         bool Serialize(AzNetworking::ISerializer& serializer);
     };

@@ -67,34 +67,36 @@ namespace MultiplayerSample
 
     bool NetworkMatchComponent::IsPlayerActionAllowed() const
     {
-        // Disable player actions between rounds (rest period)
-        if (GetRoundTime() <= 0 && GetRoundRestTimeRemaining() > 0)
-        {
-            return false;
-        }
-
-        #if AZ_TRAIT_CLIENT
-            // Don't allow player movement if the system cursor is visible
-            AzFramework::SystemCursorState systemCursorState{ AzFramework::SystemCursorState::Unknown };
-            AzFramework::InputSystemCursorRequestBus::EventResult(systemCursorState, AzFramework::InputDeviceMouse::Id,
-                &AzFramework::InputSystemCursorRequests::GetSystemCursorState);
-            if ((systemCursorState == AzFramework::SystemCursorState::UnconstrainedAndVisible) ||
-                (systemCursorState == AzFramework::SystemCursorState::ConstrainedAndVisible))
-            {
-                return false;
-            }
-
-            // Don't allow player movement if the UI cursor is visible
-            bool isCursorVisible = false;
-            UiCursorBus::BroadcastResult(isCursorVisible, &UiCursorInterface::IsUiCursorVisible);
-            if (isCursorVisible)
-            {
-                return false;
-            }
-
-        #endif
-
         return true;
+
+        //// Disable player actions between rounds (rest period)
+        //if (GetRoundTime() <= 0 && GetRoundRestTimeRemaining() > 0)
+        //{
+        //    return false;
+        //}
+
+        //#if AZ_TRAIT_CLIENT
+        //    // Don't allow player movement if the system cursor is visible
+        //    AzFramework::SystemCursorState systemCursorState{ AzFramework::SystemCursorState::Unknown };
+        //    AzFramework::InputSystemCursorRequestBus::EventResult(systemCursorState, AzFramework::InputDeviceMouse::Id,
+        //        &AzFramework::InputSystemCursorRequests::GetSystemCursorState);
+        //    if ((systemCursorState == AzFramework::SystemCursorState::UnconstrainedAndVisible) ||
+        //        (systemCursorState == AzFramework::SystemCursorState::ConstrainedAndVisible))
+        //    {
+        //        return false;
+        //    }
+
+        //    // Don't allow player movement if the UI cursor is visible
+        //    bool isCursorVisible = false;
+        //    UiCursorBus::BroadcastResult(isCursorVisible, &UiCursorInterface::IsUiCursorVisible);
+        //    if (isCursorVisible)
+        //    {
+        //        return false;
+        //    }
+
+        //#endif
+
+        //return true;
     }
 
 #if AZ_TRAIT_SERVER

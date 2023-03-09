@@ -355,9 +355,14 @@ namespace MultiplayerSample
 
     bool HitEvent::Serialize(AzNetworking::ISerializer& serializer)
     {
-        return serializer.Serialize(m_hitTransform, "HitTransform")
+        bool result = serializer.Serialize(m_hitTransform, "HitTransform")
             && serializer.Serialize(m_shooterNetEntityId, "ShooterNetEntityId")
             && serializer.Serialize(m_hitEntities, "HitEntities");
+
+        result |= serializer.Serialize(m_tracePoints, "TracePoints");
+        result |= serializer.Serialize(m_terminatesAt, "TerminatesAt");
+
+        return result;
     }
 
     bool FireParams::operator!=(const FireParams& rhs) const

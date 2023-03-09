@@ -27,7 +27,7 @@ namespace MultiplayerSample
         {
             m_weaponListener.OnWeaponActivate(WeaponActivationInfo(*this, eventData));
 
-            const bool isMultiSegmented = (m_weaponParams.m_gatherParams.m_travelSpeed > 0.0f);
+            const bool isMultiSegmented = (m_weaponParams.m_gatherParams.m_travelSpeed > 0.0f);            
 
             IntersectResults gatherResults;
             if (isMultiSegmented)
@@ -62,7 +62,9 @@ namespace MultiplayerSample
             // If expired, dispatch hit events, swap and pop
             if (result == ShotResult::ShouldTerminate)
             {
-                ActivateEvent eventData{ activeShot.m_initialTransform, activeShot.m_targetPosition, Multiplayer::InvalidNetEntityId, Multiplayer::InvalidNetEntityId };
+                ActivateEvent eventData{ activeShot.m_initialTransform, activeShot.m_targetPosition,
+                    Multiplayer::InvalidNetEntityId, Multiplayer::InvalidNetEntityId,
+                    activeShot.m_tracePoints, activeShot.m_terminatesAt };
                 DispatchHitEvents(gatherResults, eventData, m_gatheredNetEntityIds);
 
                 weaponState.m_activeShots[i] = weaponState.m_activeShots[numActiveShots - 1];
