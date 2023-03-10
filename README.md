@@ -4,7 +4,7 @@
 
 A third-person multiplayer game sample for O3DE, where robots battle one another for dominance in a multi-tiered, under-construction, Starbase
 
-> **_NOTE:_** For Linux, see the [specific setup guide](./README_LINUX.md).
+> **_NOTE:_** For Linux, see the [specific setup guide](README_LINUX.md).
 
 ## Gameplay Overview
 This game sample has players competing to hit the highest score to win. Played over a series of rounds, each round brings greater opportunity for rewards but at higher risks.  Players race to collect gems scattered all over the level.
