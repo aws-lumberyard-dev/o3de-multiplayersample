@@ -224,7 +224,7 @@ Other levels in the project are there for testing or performance evaluation purp
 
 O3DE cannot work without the help and input from as many of its community members as possible. You do not need anyone’s permission to get involved and contribute to the project. The #sig-network channel on O3DE Discord is a great place to begin getting involved.
 
-You can fix existing [issues](https://github.com/o3de/o3de-multiplayersample/issues) or backlog features or [make requests](https://github.com/o3de/o3de-multiplayersample/issues/new/choose) or proposals for new features.
+You can report issues, fix known [issues](https://github.com/o3de/o3de-multiplayersample/issues or tackle backlogged features. In addition you can make [make requests](https://github.com/o3de/o3de-multiplayersample/issues/new/choose) and proposals for new features or extensions.
 
 ## Documentation
 
