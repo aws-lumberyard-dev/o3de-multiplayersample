@@ -13,10 +13,17 @@
 #include <Integration/AnimationBus.h>
 #include <Integration/AnimGraphNetworkingBus.h>
 #include <AzCore/Component/TransformBus.h>
+#include <AzCore/Math/MathStringConversions.h>
+
+#include "EMotionFX/Source/ActorInstance.h"
+#include "EMotionFX/Source/AnimGraphInstance.h"
+#include "EMotionFX/Source/TransformData.h"
 
 #if AZ_TRAIT_CLIENT
 #include <DebugDraw/DebugDrawBus.h>
 #endif
+
+#pragma optimize("", off)
 
 namespace MultiplayerSample
 {
@@ -67,7 +74,10 @@ namespace MultiplayerSample
     {
         if (m_actorRequests != nullptr)
         {
-            return static_cast<int32_t>(m_actorRequests->GetJointIndexByName(boneName));
+            if (m_actorRequests->GetActorInstance())
+            {
+                return static_cast<int32_t>(m_actorRequests->GetJointIndexByName(boneName));
+            }
         }
         return InvalidBoneId;
     }
@@ -88,12 +98,28 @@ namespace MultiplayerSample
         {
             return false;
         }
-        outJointTransform = m_actorRequests->GetJointTransform(jointId, EMotionFX::Integration::Space::WorldSpace);
-        return true;
+
+        if (const EMotionFX::ActorInstance* actorInstance = m_actorRequests->GetActorInstance())
+        {
+            if (const EMotionFX::TransformData* transformData = actorInstance->GetTransformData())
+            {
+                if (const EMotionFX::Pose* pose = transformData->GetCurrentPose())
+                {
+                    const AZ::Vector3& bonePos = pose->GetWorldSpaceTransform(jointId).m_position;
+                    const AZ::Quaternion& boneQuaternion = pose->GetWorldSpaceTransform(jointId).m_rotation;
+                    outJointTransform = AZ::Transform::CreateFromQuaternionAndTranslation(boneQuaternion, bonePos);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     void NetworkAnimationComponent::OnPreRender(float deltaTime)
     {
+        //AZ_Printf(__FUNCTION__, "");
+
         if (m_animationGraph == nullptr || m_networkRequests == nullptr)
         {
             return;
@@ -239,6 +265,23 @@ namespace MultiplayerSample
         }
 
         m_networkRequests->UpdateActorExternal(deltaTime);
+
+        if (m_animationGraph &&
+            m_animationGraph->GetAnimGraphInstance() &&
+            m_animationGraph->GetAnimGraphInstance()->GetActorInstance())
+        {
+            const auto tm = m_animationGraph->GetAnimGraphInstance()->GetActorInstance()->GetParentWorldSpaceTransform();
+            AZ_Printf(__FUNCTION__, "anim root is @ [%s]", AZStd::to_string(tm.m_position).c_str());
+        }
+
+#if AZ_TRAIT_CLIENT
+        DebugDraw::DebugDrawRequestBus::Broadcast(&DebugDraw::DebugDrawRequestBus::Events::DrawSphereAtLocation,
+            GetShootingHandPosition(), 0.1f, AZ::Colors::Yellow, 5.f);
+
+        const int counter = aznumeric_cast<int>(AZ::TimeMsToSeconds(AZ::GetRealElapsedTimeMs()));
+        DebugDraw::DebugDrawRequestBus::Broadcast(&DebugDraw::DebugDrawRequestBus::Events::DrawTextAtLocation,
+            GetShootingHandPosition(), AZStd::string::format("%d", counter), AZ::Colors::Yellow, 5.f);
+#endif
     }
 
     void NetworkAnimationComponent::OnActorInstanceCreated([[maybe_unused]] EMotionFX::ActorInstance* actorInstance)
@@ -262,4 +305,45 @@ namespace MultiplayerSample
             m_actorRequests->EnableInstanceUpdate(false);
         }
     }
+
+
+    NetworkAnimationComponentController::NetworkAnimationComponentController(NetworkAnimationComponent& parent)
+        : NetworkAnimationComponentControllerBase(parent)
+    {
+    }
+
+    void NetworkAnimationComponentController::OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
+    {
+        if (IsNetEntityRoleAuthority())
+        {
+            m_debugTick.Enqueue(AZ::Time::ZeroTimeMs, true);
+        }
+    }
+
+    void NetworkAnimationComponentController::OnDeactivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
+    {
+        m_debugTick.RemoveFromQueue();
+    }
+
+    void NetworkAnimationComponentController::OnDebugTick()
+    {
+#if AZ_TRAIT_SERVER
+        if (GetParent().m_actorRequests)
+        {
+            const char* fireBoneName = GetTrackBoneName().c_str();
+            const int32_t boneIdx = GetParent().GetBoneIdByName(fireBoneName);
+
+            if (boneIdx != InvalidBoneId)
+            {
+                AZ::Transform fireBoneTransform = AZ::Transform::CreateIdentity();
+                if (GetParent().GetJointTransformById(boneIdx, fireBoneTransform))
+                {
+                    SetShootingHandPosition(fireBoneTransform.GetTranslation());
+                }
+            }
+        }
+#endif
+    }
 }
+
+#pragma optimize("", on)

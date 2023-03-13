@@ -90,6 +90,7 @@
                     "Id": 11996978980717063697,
                     "m_template": {
                         "$type": "MultiplayerSample::NetworkAnimationComponent",
+                        "TrackBoneName": "mixamorig:RightHand",
                         "MovementDirectionParamName": "movement_direction",
                         "MovementSpeedParamName": "movement_speed",
                         "AimTargetParamName": "aim_target",
@@ -235,15 +236,50 @@
                                 "Type": 31
                             },
                             {
-                                "Name": "Start",
+                                "Name": "Hit Position",
                                 "Type": 33
                             },
                             {
-                                "Name": "End",
+                                "Name": "Start Position",
                                 "Type": 33
                             }
                         ],
-                        "AttributesRawData": "AAAAADjVQj/+7WU/AACAPwAAgD8AAAAAAAAAAAAAAAD+7WU/ZePSPgAAAAAAAIA/AABIQgAAAAAAAAAAAAAAADMzsz4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+                        "AttributesRawData": "AAAAADjVQj/+7WU/AACAPwAAgD8AAAAAAAAAAAAAAAD+7WU/ZePSPgAAAAAAAIA/AABIQgAAAAAAAAAAAAAAADMzsz4AAAAAAAAAAAAAAAAAAAAAAACgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+                    },
+                    "EditorAttributeList": {
+                        "AttributeCategories": [
+                            {
+                                "Attributes": [
+                                    {
+                                        "Color": [
+                                            0.0,
+                                            0.7610659599304199,
+                                            0.8981627225875854
+                                        ]
+                                    },
+                                    {
+                                        "ValueFX": 1.0
+                                    },
+                                    {
+                                        "Color": [
+                                            0.8981627225875854,
+                                            0.4118911325931549,
+                                            0.0
+                                        ]
+                                    },
+                                    {
+                                        "ValueFX": 50.0
+                                    },
+                                    {
+                                        "ValueFX": 0.3499999940395355
+                                    },
+                                    {
+                                        "ValueFY": 5.0
+                                    },
+                                    {}
+                                ]
+                            }
+                        ]
                     }
                 },
                 "Component_[2596368806843971783]": {

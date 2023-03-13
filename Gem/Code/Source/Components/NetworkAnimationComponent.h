@@ -34,6 +34,7 @@ namespace MultiplayerSample
         , private EMotionFX::Integration::ActorComponentNotificationBus::Handler
         , private EMotionFX::Integration::AnimGraphComponentNotificationBus::Handler
     {
+        friend class NetworkAnimationComponentController;
     public:
         AZ_MULTIPLAYER_COMPONENT(MultiplayerSample::NetworkAnimationComponent, s_networkAnimationComponentConcreteUuid, MultiplayerSample::NetworkAnimationComponentBase);
 
@@ -83,5 +84,22 @@ namespace MultiplayerSample
         size_t m_landParamId = InvalidParamIndex;
         size_t m_hitParamId = InvalidParamIndex;
         size_t m_deathParamId = InvalidParamIndex;
+    };
+
+    class NetworkAnimationComponentController
+        : public NetworkAnimationComponentControllerBase
+    {
+    public:
+        explicit NetworkAnimationComponentController(NetworkAnimationComponent& parent);
+
+        void OnActivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
+        void OnDeactivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
+
+    private:
+        void OnDebugTick();
+        AZ::ScheduledEvent m_debugTick{ [this]()
+        {
+            OnDebugTick();
+        }, AZ::Name("NetworkAnimationComponentController")};
     };
 }
