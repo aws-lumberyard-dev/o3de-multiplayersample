@@ -21,7 +21,7 @@
 namespace MultiplayerSample
 {
     AZ_CVAR(uint32_t, bg_MultitraceNumTraceSegments, 3, nullptr, AZ::ConsoleFunctorFlags::Null, "The number of segments to use when performing multitrace casts");
-    AZ_CVAR(bool, bg_DrawPhysicsRaycasts, true, nullptr, AZ::ConsoleFunctorFlags::Null, "If enabled, will debug draw physics raycasts");
+    AZ_CVAR(bool, bg_DrawPhysicsRaycasts, false, nullptr, AZ::ConsoleFunctorFlags::Null, "If enabled, will debug draw physics raycasts");
 
     IntersectFilter::IntersectFilter
     (
@@ -123,7 +123,10 @@ namespace MultiplayerSample
             AZ::Vector3 nextSegmentPosition = inOutActiveShot.m_initialTransform.GetTranslation() + travelDistance + (gravity * 0.5f * nextSegmentStartTime * nextSegmentStartTime);
 
 #if AZ_TRAIT_SERVER
-            inOutActiveShot.m_tracePoints.push_back(nextSegmentPosition);
+            if (bg_DrawPhysicsRaycasts) // Collect the traces calculated by the server
+            {
+                inOutActiveShot.m_tracePoints.push_back(nextSegmentPosition);
+            }
 #endif
 
             const AZ::Transform currSegTransform = AZ::Transform::CreateLookAt(currSegmentPosition, nextSegmentPosition);
@@ -166,12 +169,15 @@ namespace MultiplayerSample
 #endif
 
 #if AZ_TRAIT_SERVER
-                if (!outResults.empty())
+                if (bg_DrawPhysicsRaycasts)
                 {
-                    inOutActiveShot.m_terminatesAt = outResults.front().m_position;
+                    if (!outResults.empty()) // collect the end of the shot as calculated by the server
+                    {
+                        inOutActiveShot.m_terminatesAt = outResults.front().m_position;
+                    }
                 }
-                break;
 #endif
+                break;
             }
 
             currSegmentStartTime = nextSegmentStartTime;

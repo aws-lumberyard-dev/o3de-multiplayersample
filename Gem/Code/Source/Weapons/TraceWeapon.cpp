@@ -27,7 +27,7 @@ namespace MultiplayerSample
         {
             m_weaponListener.OnWeaponActivate(WeaponActivationInfo(*this, eventData));
 
-            const bool isMultiSegmented = (m_weaponParams.m_gatherParams.m_travelSpeed > 0.0f);            
+            const bool isMultiSegmented = (m_weaponParams.m_gatherParams.m_travelSpeed > 0.0f);
 
             IntersectResults gatherResults;
             if (isMultiSegmented)

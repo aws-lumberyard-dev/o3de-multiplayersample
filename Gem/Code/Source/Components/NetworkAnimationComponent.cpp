@@ -29,9 +29,10 @@ namespace MultiplayerSample
 {
 #ifndef AZ_RELEASE_BUILD
     AZ_CVAR(bool, cl_drawAimTarget, false, nullptr, AZ::ConsoleFunctorFlags::DontReplicate, "When enabled draws a sphere at the character aim target.");
+    AZ_CVAR(bool, bg_drawShootingBoneServerPosition, false, nullptr, AZ::ConsoleFunctorFlags::DontReplicate, "When enabled draws the position of the shooting bone as calculated by the server.");
 #endif // AZ_RELEASE_BUILD
 
-    void NetworkAnimationComponent::NetworkAnimationComponent::Reflect(AZ::ReflectContext* context)
+    void NetworkAnimationComponent::Reflect(AZ::ReflectContext* context)
     {
         AZ::SerializeContext* serializeContext = azrtti_cast<AZ::SerializeContext*>(context);
         if (serializeContext)
@@ -274,13 +275,14 @@ namespace MultiplayerSample
             AZ_Printf(__FUNCTION__, "anim root is @ [%s]", AZStd::to_string(tm.m_position).c_str());
         }
 
+#ifndef AZ_RELEASE_BUILD
 #if AZ_TRAIT_CLIENT
-        DebugDraw::DebugDrawRequestBus::Broadcast(&DebugDraw::DebugDrawRequestBus::Events::DrawSphereAtLocation,
-            GetShootingHandPosition(), 0.1f, AZ::Colors::Yellow, 5.f);
-
-        const int counter = aznumeric_cast<int>(AZ::TimeMsToSeconds(AZ::GetRealElapsedTimeMs()));
-        DebugDraw::DebugDrawRequestBus::Broadcast(&DebugDraw::DebugDrawRequestBus::Events::DrawTextAtLocation,
-            GetShootingHandPosition(), AZStd::string::format("%d", counter), AZ::Colors::Yellow, 5.f);
+        if (bg_drawShootingBoneServerPosition)
+        {
+            DebugDraw::DebugDrawRequestBus::Broadcast(&DebugDraw::DebugDrawRequestBus::Events::DrawSphereAtLocation,
+                GetShootingHandPosition(), 0.1f, AZ::Colors::Yellow, 3.f);
+        }
+#endif
 #endif
     }
 
@@ -314,7 +316,7 @@ namespace MultiplayerSample
 
     void NetworkAnimationComponentController::OnActivate([[maybe_unused]] Multiplayer::EntityIsMigrating entityIsMigrating)
     {
-        if (IsNetEntityRoleAuthority())
+        if (IsNetEntityRoleAuthority() && bg_drawShootingBoneServerPosition)
         {
             m_debugTick.Enqueue(AZ::Time::ZeroTimeMs, true);
         }
@@ -327,8 +329,9 @@ namespace MultiplayerSample
 
     void NetworkAnimationComponentController::OnDebugTick()
     {
+#ifndef AZ_RELEASE_BUILD
 #if AZ_TRAIT_SERVER
-        if (GetParent().m_actorRequests)
+        if (bg_drawShootingBoneServerPosition && GetParent().m_actorRequests)
         {
             const char* fireBoneName = GetTrackBoneName().c_str();
             const int32_t boneIdx = GetParent().GetBoneIdByName(fireBoneName);
@@ -342,6 +345,7 @@ namespace MultiplayerSample
                 }
             }
         }
+#endif
 #endif
     }
 }

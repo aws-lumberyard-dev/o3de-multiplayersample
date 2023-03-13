@@ -291,25 +291,31 @@ namespace MultiplayerSample
         }
 
 #if AZ_TRAIT_CLIENT
-        if (!hitInfo.m_hitEvent.m_tracePoints.empty())
+        if (cl_WeaponsDrawDebug && m_debugDraw)
         {
-            for (AZStd::size_t traceIndex = 1; traceIndex < hitInfo.m_hitEvent.m_tracePoints.size(); ++traceIndex)
+            // Draw traces as confirmed by the server
+            if (!hitInfo.m_hitEvent.m_tracePoints.empty())
             {
-                m_debugDraw->DrawLineLocationToLocation(
-                    hitInfo.m_hitEvent.m_tracePoints[traceIndex-1],
-                    hitInfo.m_hitEvent.m_tracePoints[traceIndex], AZ::Colors::Blue, cl_WeaponsDrawDebugDurationSec);
-            }
-        }
+                m_debugDraw->DrawTextAtLocation(hitInfo.m_hitEvent.m_tracePoints.front(), "sv", AZ::Colors::Blue, cl_WeaponsDrawDebugDurationSec);
 
-        if (!hitInfo.m_hitEvent.m_terminatesAt.IsZero())
-        {
-            m_debugDraw->DrawSphereAtLocation
-            (
-                hitInfo.m_hitEvent.m_terminatesAt,
-                cl_WeaponsDrawDebugSize,
-                AZ::Colors::Blue,
-                cl_WeaponsDrawDebugDurationSec
-            );
+                for (AZStd::size_t traceIndex = 1; traceIndex < hitInfo.m_hitEvent.m_tracePoints.size(); ++traceIndex)
+                {
+                    m_debugDraw->DrawLineLocationToLocation(
+                        hitInfo.m_hitEvent.m_tracePoints[traceIndex - 1],
+                        hitInfo.m_hitEvent.m_tracePoints[traceIndex], 
+                        AZ::Colors::Blue, 
+                        cl_WeaponsDrawDebugDurationSec);
+                }
+            }
+
+            if (!hitInfo.m_hitEvent.m_terminatesAt.IsZero())
+            {
+                m_debugDraw->DrawSphereAtLocation(
+                    hitInfo.m_hitEvent.m_terminatesAt,
+                    cl_WeaponsDrawDebugSize,
+                    AZ::Colors::Blue,
+                    cl_WeaponsDrawDebugDurationSec);
+            }
         }
 #endif
     }
@@ -478,7 +484,6 @@ namespace MultiplayerSample
                 {
                     weaponInput->m_shotStartPosition = fireBoneTransform.GetTranslation();
                     AZLOG_WARN("Shot origin was outside of clamp range, resetting to bone position");
-                    //AZLOG_WARN("Shot origin was outside of clamp range");
                 }
 
                 // Setup a default aim target

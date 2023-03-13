@@ -154,7 +154,9 @@ namespace MultiplayerSample
         AZ::Vector3 m_targetPosition;     // Target location of the activate event
         LifetimeSec m_lifetimeSeconds;    // The number of seconds this shot has been alive for
 
+        //! optional trace points as calculated by the server, when @bg_DrawPhysicsRaycasts is enabled
         AZStd::vector<AZ::Vector3> m_tracePoints;
+        //! optional termination point of the event as calculated by the server, when @bg_DrawPhysicsRaycasts is enabled
         AZ::Vector3 m_terminatesAt = AZ::Vector3::CreateZero();
 
         bool operator!=(const ActiveShot& rhs) const;
@@ -182,7 +184,9 @@ namespace MultiplayerSample
         Multiplayer::NetEntityId m_shooterId = Multiplayer::InvalidNetEntityId;    // NetEntityId of the shooter
         Multiplayer::NetEntityId m_projectileId = Multiplayer::InvalidNetEntityId; // NetEntityId of the projectile, or InvalidNetEntityId if a trace weapon
 
+        //! optional trace points as calculated by the server, when @bg_DrawPhysicsRaycasts is enabled
         AZStd::vector<AZ::Vector3> m_tracePoints;
+        //! optional termination point of the event as calculated by the server, when @bg_DrawPhysicsRaycasts is enabled
         AZ::Vector3 m_terminatesAt = AZ::Vector3::CreateZero();
 
         bool Serialize(AzNetworking::ISerializer& serializer);
@@ -206,7 +210,9 @@ namespace MultiplayerSample
         Multiplayer::NetEntityId m_projectileNetEntityId = Multiplayer::InvalidNetEntityId; // Entity Id of the projectile, InvalidNetEntityId if this was a trace weapon hit
         HitEntities m_hitEntities; // Information about the entities that were hit
 
+        //! optional trace points as calculated by the server, when @bg_DrawPhysicsRaycasts is enabled
         AZStd::vector<AZ::Vector3> m_tracePoints;
+        //! optional termination point of the event as calculated by the server, when @bg_DrawPhysicsRaycasts is enabled
         AZ::Vector3 m_terminatesAt = AZ::Vector3::CreateZero();
 
         bool Serialize(AzNetworking::ISerializer& serializer);
