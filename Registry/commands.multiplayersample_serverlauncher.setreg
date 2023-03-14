@@ -1,0 +1,15 @@
+{
+    "Amazon":
+    {
+        "AzCore":
+        {
+            "Runtime":
+            {
+                "ConsoleCommands":
+                {
+                    "sv_useGameLiftServer": "true"
+                } 
+            } 
+        } 
+    } 
+}

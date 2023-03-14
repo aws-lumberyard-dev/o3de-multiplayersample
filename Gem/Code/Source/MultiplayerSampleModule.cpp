@@ -19,6 +19,9 @@
     #include <Components/UI/UiMatchPlayerCoinCountsComponent.h>
     #include <Components/UI/UiRestBetweenRoundsComponent.h>
 #endif
+#if AZ_TRAIT_SERVER  && !AZ_TRAIT_CLIENT
+    #include <Source/MultiplayerSampleAWSGameLiftServerSystemComponent.h>
+#endif
 
 #include <Source/AutoGen/AutoComponentTypes.h>
 
@@ -47,7 +50,10 @@ namespace MultiplayerSample
                     UiGameOverComponent::CreateDescriptor(),
                     UiPlayerArmorComponent::CreateDescriptor(),
                     UiMatchPlayerCoinCountsComponent::CreateDescriptor(),
-                    UiRestBetweenRoundsComponent::CreateDescriptor()
+                    UiRestBetweenRoundsComponent::CreateDescriptor(),
+                #endif
+                #if AZ_TRAIT_SERVER && !AZ_TRAIT_CLIENT
+                    MultiplayerSampleAWSGameLiftServerSystemComponent::CreateDescriptor(),
                 #endif
             });
 
@@ -61,6 +67,9 @@ namespace MultiplayerSample
         {
             return AZ::ComponentTypeList{
                 azrtti_typeid<MultiplayerSampleSystemComponent>(),
+                #if AZ_TRAIT_SERVER && !AZ_TRAIT_CLIENT
+                    azrtti_typeid<MultiplayerSampleAWSGameLiftServerSystemComponent>(),
+                #endif
             };
         }
     };
