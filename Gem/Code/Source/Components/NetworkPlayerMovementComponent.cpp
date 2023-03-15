@@ -196,8 +196,8 @@ namespace MultiplayerSample
 
         // Track timers for how recently it's been since the player was on the ground and how recently they pressed the jump button.
         // These will be compared against "slop factors" to allow for a little bit of leniency in jumping to make it feel more reactive.
-        SetSecondsSinceOnGround(onGround ? 0.0f : (GetSecondsSinceOnGround() + deltaTime));
-        SetSecondsSinceJumpRequest(playerInput->m_jump ? 0.0f : (GetSecondsSinceJumpRequest() + deltaTime));
+        SetMsSinceOnGround(onGround ? AZ::Time::ZeroTimeMs : (GetMsSinceOnGround() + AZ::SecondsToTimeMs(deltaTime)));
+        SetMsSinceJumpRequest(playerInput->m_jump ? AZ::Time::ZeroTimeMs : (GetMsSinceJumpRequest() + AZ::SecondsToTimeMs(deltaTime)));
 
         // Update orientation
         AZ::Vector3 aimAngles = GetNetworkSimplePlayerCameraComponentController()->GetAimAngles();
@@ -227,7 +227,7 @@ namespace MultiplayerSample
         // if we land too quickly.
         if (jumpTriggered)
         {
-            SetSecondsSinceJumpRequest(GetJumpPressQueuedSeconds());
+            SetMsSinceJumpRequest(AZ::SecondsToTimeMs(GetJumpPressQueuedSeconds()));
         }
 
         GetNetworkAnimationComponentController()->ModifyActiveAnimStates().SetBit(
@@ -257,8 +257,8 @@ namespace MultiplayerSample
         AZ::Vector3 velocityFromExternalSources = GetVelocityFromExternalSources(); // non-player generated (jump pads, explosions etc.)
         AZ::Vector3 selfGeneratedVelocity = GetSelfGeneratedVelocity(); // player generated
 
-        const float secondsSinceOnGround = GetSecondsSinceOnGround();
-        const float secondsSinceJumpRequest = GetSecondsSinceJumpRequest();
+        const float secondsSinceOnGround = AZ::TimeMsToSeconds(GetMsSinceOnGround());
+        const float secondsSinceJumpRequest = AZ::TimeMsToSeconds(GetMsSinceJumpRequest());
 
         const bool onGround = GetOnGround();
 
