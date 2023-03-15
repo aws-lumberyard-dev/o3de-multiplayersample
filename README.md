@@ -123,7 +123,7 @@ The final step will print out warnings that the compatibility check for Multipla
 
 #### Option #2 - Use Project Manager
 
-If you've already built the O3DE engine, use the O3DE project manager to open existing project.
+If you've already built the O3DE engine, use the O3DE project manager to open an existing project.
 
 1. Find `o3de.exe` under `c:/path/to/o3de/build/bin/profile/o3de.exe`.
 2. (Optional) If MultiplayerSample is not in the "My Projects" view, then click the "New Project..." drop down and select "Open Existing Project".
