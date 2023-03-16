@@ -58,7 +58,10 @@ namespace MultiplayerSample
     {
         if (const NetworkMatchComponent* netMatchComponent = AZ::Interface<NetworkMatchComponent>::Get())
         {
-            m_roundNumberText = AZStd::string::format("%d of %d", round, netMatchComponent->GetTotalRounds());
+            // Display the current round number.
+            // The end of match can push the round count over the max round count, so cap it.
+            const uint16_t totalRounds = netMatchComponent->GetTotalRounds();
+            m_roundNumberText = AZStd::string::format("%d of %d", AZStd::min(round, totalRounds), totalRounds);
             UiTextBus::Event(m_roundNumberUi, &UiTextBus::Events::SetText, m_roundNumberText);
         }
     }
