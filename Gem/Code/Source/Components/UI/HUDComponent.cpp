@@ -75,7 +75,7 @@ namespace MultiplayerSample
         UiTextBus::Event(m_roundTimerUi, &UiTextBus::Events::SetText, m_roundTimerText);
 
         // Display a countdown of custom UI when the round is close to finishing
-        if (seconds.count() > 0 && seconds.count() <= 10)
+        if (duration.count() > 0 && duration.count() <= 10)
         {
             UiElementBus::Event(m_roundSecondsRemainingUiParent, &UiElementBus::Events::SetIsEnabled, true);
 
@@ -83,7 +83,7 @@ namespace MultiplayerSample
             UiElementBus::EventResult(uiSecondsRemainingUIElements, m_roundSecondsRemainingUiParent, &UiElementBus::Events::GetChildEntityIds);
             for (int i = 0; i < uiSecondsRemainingUIElements.size(); ++i)
             {
-                UiElementBus::Event(uiSecondsRemainingUIElements[i], &UiElementBus::Events::SetIsEnabled, i == aznumeric_cast<int>(seconds.count()));
+                UiElementBus::Event(uiSecondsRemainingUIElements[i], &UiElementBus::Events::SetIsEnabled, i == aznumeric_cast<int>(duration.count()));
             }
         }
         else
