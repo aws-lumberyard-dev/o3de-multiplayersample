@@ -37,25 +37,20 @@ namespace MultiplayerSample
 
     void MultiplayerSampleAWSGameLiftServerSystemComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
-        required.push_back(AZ_CRC_CE("NetworkingService"));
         required.push_back(AZ_CRC_CE("MultiplayerService"));
         required.push_back(AZ_CRC_CE("AWSGameLiftServerService"));
     }
 
-    void MultiplayerSampleAWSGameLiftServerSystemComponent::GetDependentServices(AZ::ComponentDescriptor::DependencyArrayType& dependent)
+    void MultiplayerSampleAWSGameLiftServerSystemComponent::GetDependentServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& dependent)
     {
-        AZ_UNUSED(dependent);
     }
 
     void MultiplayerSampleAWSGameLiftServerSystemComponent::Init()
     {
-        ;
     }
 
     void MultiplayerSampleAWSGameLiftServerSystemComponent::Activate()
     {
-        AZ_Info("MultiplayerSampleAWSGameLiftServerSystemComponent", "Activated!\n");
-
         Multiplayer::SessionNotificationBus::Handler::BusConnect();
 
         AWSGameLift::AWSGameLiftServerRequestBus::Broadcast(
@@ -69,14 +64,15 @@ namespace MultiplayerSample
 
     bool MultiplayerSampleAWSGameLiftServerSystemComponent::OnSessionHealthCheck()
     {
-        // TODO: any game stats or conditions we should check?
+        // Add here: additional checks against game stats or other conditions, if needed, to determine session health.
+        // For now, sufficient to return true so Amazon GameLift knows server process is responsive.
         return true;
     }
 
-    bool MultiplayerSampleAWSGameLiftServerSystemComponent::OnCreateSessionBegin(const Multiplayer::SessionConfig& sessionConfig)
+    bool MultiplayerSampleAWSGameLiftServerSystemComponent::OnCreateSessionBegin([[maybe_unused]] const Multiplayer::SessionConfig& sessionConfig)
     {
-        // TODO: any game state we should update?
-        AZ_UNUSED(sessionConfig);
+        // Add here: additional logic, if needed, to ready server process for hosting a session.
+        // For now, sufficient to return true so Amazon GameLift knows server process is responsive.
         return true;
     }
 }
