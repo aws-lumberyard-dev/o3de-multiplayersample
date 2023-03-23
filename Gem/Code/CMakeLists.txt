@@ -54,7 +54,7 @@ ly_add_target(
     FILES_CMAKE
         multiplayersample_autogen_files.cmake
         multiplayersample_files.cmake
-        multiplayersample_dedicated_server_files.cmake
+        multiplayersample_gamelift_server_files.cmake
         ${pal_dir}/multiplayersample_${PAL_PLATFORM_NAME_LOWERCASE}_files.cmake
     INCLUDE_DIRECTORIES
         PRIVATE
