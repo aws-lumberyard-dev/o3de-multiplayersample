@@ -7,6 +7,8 @@
 
 #include "MultiplayerSampleAWSGameLiftServerSystemComponent.h"
 
+#include <AzCore/Console/IConsole.h>
+#include <AzCore/Interface/Interface.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
@@ -52,6 +54,7 @@ namespace MultiplayerSample
     void MultiplayerSampleAWSGameLiftServerSystemComponent::Activate()
     {
         Multiplayer::SessionNotificationBus::Handler::BusConnect();
+        AzFramework::LevelLoadBlockerBus::Handler::BusConnect();
 
         AWSGameLift::AWSGameLiftServerRequestBus::Broadcast(
             &AWSGameLift::AWSGameLiftServerRequestBus::Events::NotifyGameLiftProcessReady);
@@ -60,6 +63,7 @@ namespace MultiplayerSample
     void MultiplayerSampleAWSGameLiftServerSystemComponent::Deactivate()
     {
         Multiplayer::SessionNotificationBus::Handler::BusDisconnect();
+        AzFramework::LevelLoadBlockerBus::Handler::BusDisconnect();
     }
 
     bool MultiplayerSampleAWSGameLiftServerSystemComponent::OnSessionHealthCheck()
@@ -72,7 +76,31 @@ namespace MultiplayerSample
     bool MultiplayerSampleAWSGameLiftServerSystemComponent::OnCreateSessionBegin([[maybe_unused]] const Multiplayer::SessionConfig& sessionConfig)
     {
         // Add here: additional logic, if needed, to ready server process for hosting a session.
-        // For now, sufficient to return true so Amazon GameLift knows server process is responsive.
+
+        AzFramework::LevelLoadBlockerBus::Handler::BusDisconnect();
+
+        const char* level = m_loadedLevelName ? m_loadedLevelName : "Levels/NewStarbase/NewStarbase.spawnable";
+
+        AZ_Info("MultiplayerSampleAWSGameLiftServerSystemComponent", "Attempting to load level: '%s'", level);
+
+        auto loadLevelCommand = AZStd::string::format("LoadLevel %s", level);
+        AZ::Interface<AZ::IConsole>::Get()->PerformCommand(loadLevelCommand.c_str());
+
+        return true;
+    }
+
+    bool MultiplayerSampleAWSGameLiftServerSystemComponent::ShouldBlockLevelLoading(const char* levelName)
+    {
+        m_loadedLevelName = levelName;
+        if (levelName)
+        {
+            AZ_Info("MultiplayerSampleAWSGameLiftServerSystemComponent", "Interrupted load of level: '%s'", levelName);
+        }
+        else
+        {
+            AZ_Info("MultiplayerSampleAWSGameLiftServerSystemComponent", "Interrupted level load, but no level provided!");
+        }
+        
         return true;
     }
 }
