@@ -79,12 +79,17 @@ namespace MultiplayerSample
 
         AzFramework::LevelLoadBlockerBus::Handler::BusDisconnect();
 
-        const char* level = m_loadedLevelName ? m_loadedLevelName : "Levels/NewStarbase/NewStarbase.spawnable";
+        if (m_loadedLevelName)
+        {
+            AZ_Info("MultiplayerSampleAWSGameLiftServerSystemComponent", "Attempting to load level: '%s'", m_loadedLevelName);
 
-        AZ_Info("MultiplayerSampleAWSGameLiftServerSystemComponent", "Attempting to load level: '%s'", level);
-
-        auto loadLevelCommand = AZStd::string::format("LoadLevel %s", level);
-        AZ::Interface<AZ::IConsole>::Get()->PerformCommand(loadLevelCommand.c_str());
+            auto loadLevelCommand = AZStd::string::format("LoadLevel %s", m_loadedLevelName);
+            AZ::Interface<AZ::IConsole>::Get()->PerformCommand(loadLevelCommand.c_str());
+        }
+        else
+        {
+            AZ_Info("MultiplayerSampleAWSGameLiftServerSystemComponent", "No level was previously loaded, skipping call to LoadLevel.");
+        }
 
         return true;
     }
