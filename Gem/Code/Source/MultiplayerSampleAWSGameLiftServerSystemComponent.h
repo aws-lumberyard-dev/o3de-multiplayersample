@@ -46,6 +46,6 @@ namespace MultiplayerSample
         // AzFramework::LevelLoadBlockerBus::Handler overrides
         bool ShouldBlockLevelLoading(const char* levelName) override;
 
-        const char* m_loadedLevelName;
+        AZStd::string m_loadedLevelName = "";
     };
 }

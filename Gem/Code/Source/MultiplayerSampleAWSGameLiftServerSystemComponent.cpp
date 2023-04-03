@@ -79,11 +79,11 @@ namespace MultiplayerSample
 
         AzFramework::LevelLoadBlockerBus::Handler::BusDisconnect();
 
-        if (m_loadedLevelName)
+        if (m_loadedLevelName != "")
         {
-            AZ_Info("MultiplayerSampleAWSGameLiftServerSystemComponent", "Session requested by Amazon GameLift. Attempting to load level: '%s'", m_loadedLevelName);
+            AZ_Info("MultiplayerSampleAWSGameLiftServerSystemComponent", "Session requested by Amazon GameLift. Attempting to load level: '%s'", m_loadedLevelName.c_str());
 
-            auto loadLevelCommand = AZStd::string::format("LoadLevel %s", m_loadedLevelName);
+            auto loadLevelCommand = AZStd::string::format("LoadLevel %s", m_loadedLevelName.c_str());
             AZ::Interface<AZ::IConsole>::Get()->PerformCommand(loadLevelCommand.c_str());
         }
         else
