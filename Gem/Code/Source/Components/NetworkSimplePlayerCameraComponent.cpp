@@ -57,7 +57,10 @@ namespace MultiplayerSample
                 AZ::EntityId activeCameraId;
                 Camera::CameraSystemRequestBus::BroadcastResult(activeCameraId, &Camera::CameraSystemRequestBus::Events::GetActiveCamera);
                 m_activeCameraEntity = AZ::Interface<AZ::ComponentApplicationRequests>::Get()->FindEntity(activeCameraId);
-                Camera::CameraRequestBus::EventResult(m_originalFov, m_activeCameraEntity->GetId(), &Camera::CameraRequestBus::Events::GetFovDegrees);
+                if (m_activeCameraEntity)
+                {
+                    Camera::CameraRequestBus::EventResult(m_originalFov, m_activeCameraEntity->GetId(), &Camera::CameraRequestBus::Events::GetFovDegrees);
+                }
                 m_currentFov = m_originalFov;
             }
         }

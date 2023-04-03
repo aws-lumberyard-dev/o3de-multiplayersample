@@ -11,7 +11,7 @@
 #include <AzCore/RTTI/BehaviorContext.h>
 
 #if AZ_TRAIT_CLIENT
-#   include <PopcornFX/PopcornFXBus.h>
+//#   include <PopcornFX/PopcornFXBus.h>
 #endif
 
 namespace MultiplayerSample

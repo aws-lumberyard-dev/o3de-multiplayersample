@@ -9,8 +9,10 @@
 #include <Source/Effects/GameEffect.h>
 #include <AzCore/Console/IConsole.h>
 
+#if defined(ENABLE_POPCORNFX)
 #if AZ_TRAIT_CLIENT
 #   include <PopcornFX/PopcornFXBus.h>
+#endif
 #endif
 
 namespace MultiplayerSample
@@ -34,8 +36,10 @@ namespace MultiplayerSample
                 editContext->Class<GameEffect>("GameEffect", "A single game effect, consisting of a particle effect and a sound trigger pair")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &GameEffect::m_particleAssetId, "ParticleAsset", "The particle effect to play upon effect trigger")
+#if defined(ENABLE_POPCORNFX)
 #if AZ_TRAIT_CLIENT
                         ->Attribute(AZ_CRC_CE("SupportedAssetTypes"), []() { return AZStd::vector<AZ::Data::AssetType>({ PopcornFX::AssetTypeId }); })
+#endif
 #endif
                     ->DataElement(AZ::Edit::UIHandlers::Default, &GameEffect::m_audioTrigger, "AudioTrigger", "The audio trigger name of the sound to play upon effect trigger")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &GameEffect::m_effectOffset, "EffectOffset", "The offset to apply when triggering an effect");
@@ -46,11 +50,13 @@ namespace MultiplayerSample
     GameEffect::~GameEffect()
     {
 #if AZ_TRAIT_CLIENT
+#if defined(ENABLE_POPCORNFX)
         if (m_popcornFx != nullptr)
         {
             m_popcornFx->DestroyEffect(m_emitter);
             m_emitter = nullptr;
         }
+#endif
 
         if (m_audioSystem != nullptr)
         {
@@ -67,14 +73,18 @@ namespace MultiplayerSample
     void GameEffect::Initialize()
     {
 #if AZ_TRAIT_CLIENT
+#if defined(ENABLE_POPCORNFX)
         m_popcornFx = PopcornFX::PopcornFXRequestBus::FindFirstHandler();
+#endif
         m_audioSystem = AZ::Interface<Audio::IAudioSystem>::Get();
 
+#if defined(ENABLE_POPCORNFX)
         if (m_popcornFx != nullptr)
         {
             const PopcornFX::SpawnParams params = PopcornFX::SpawnParams(true, false, AZ::Transform::CreateIdentity());
             m_emitter = m_popcornFx->SpawnEffectById(m_particleAssetId, params);
         }
+#endif
 
         if (m_audioSystem != nullptr)
         {
@@ -89,6 +99,7 @@ namespace MultiplayerSample
     bool GameEffect::SetAttribute([[maybe_unused]] const char* attributeName, [[maybe_unused]] float value) const
     {
 #if AZ_TRAIT_CLIENT
+#if defined(ENABLE_POPCORNFX)
         if (m_popcornFx != nullptr)
         {
             int32_t attrId = m_popcornFx->EffectGetAttributeId(m_emitter, attributeName);
@@ -98,12 +109,14 @@ namespace MultiplayerSample
             }
         }
 #endif
+#endif
         return false;
     }
 
     bool GameEffect::SetAttribute([[maybe_unused]] const char* attributeName, [[maybe_unused]] const AZ::Vector2& value) const
     {
 #if AZ_TRAIT_CLIENT
+#if defined(ENABLE_POPCORNFX)
         if (m_popcornFx != nullptr)
         {
             int32_t attrId = m_popcornFx->EffectGetAttributeId(m_emitter, attributeName);
@@ -113,12 +126,14 @@ namespace MultiplayerSample
             }
         }
 #endif
+#endif
         return false;
     }
 
     bool GameEffect::SetAttribute([[maybe_unused]] const char* attributeName, [[maybe_unused]] const AZ::Vector3& value) const
     {
 #if AZ_TRAIT_CLIENT
+#if defined(ENABLE_POPCORNFX)
         if (m_popcornFx != nullptr)
         {
             int32_t attrId = m_popcornFx->EffectGetAttributeId(m_emitter, attributeName);
@@ -128,12 +143,14 @@ namespace MultiplayerSample
             }
         }
 #endif
+#endif
         return false;
     }
 
     bool GameEffect::SetAttribute([[maybe_unused]] const char* attributeName, [[maybe_unused]] const AZ::Vector4& value) const
     {
 #if AZ_TRAIT_CLIENT
+#if defined(ENABLE_POPCORNFX)
         if (m_popcornFx != nullptr)
         {
             int32_t attrId = m_popcornFx->EffectGetAttributeId(m_emitter, attributeName);
@@ -142,6 +159,7 @@ namespace MultiplayerSample
                 return m_popcornFx->EffectSetAttributeAsFloat4(m_emitter, attrId, value);
             }
         }
+#endif
 #endif
         return false;
     }
@@ -152,6 +170,7 @@ namespace MultiplayerSample
         const AZ::Vector3 offsetPosition = transform.GetTranslation() + m_effectOffset;
         AZ::Transform transformOffset = transform;
         transformOffset.SetTranslation(offsetPosition);
+#if defined(ENABLE_POPCORNFX)
         if (m_emitter != nullptr)
         {
             if (PopcornFX::PopcornFXRequests* popcornFx = PopcornFX::PopcornFXRequestBus::FindFirstHandler())
@@ -160,6 +179,7 @@ namespace MultiplayerSample
                 popcornFx->EffectRestart(m_emitter, cl_KillEffectOnRestart);
             }
         }
+#endif
 
         if ((m_audioProxy != nullptr) && (m_audioTriggerId != INVALID_AUDIO_CONTROL_ID))
         {

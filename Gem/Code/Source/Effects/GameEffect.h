@@ -15,6 +15,8 @@
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/Math/Transform.h>
 
+//#define ENABLE_POPCORNFX
+
 #if AZ_TRAIT_CLIENT
 #   include <IAudioSystem.h>
 #endif
@@ -62,11 +64,15 @@ namespace MultiplayerSample
         AZ::Vector3 m_effectOffset = AZ::Vector3::CreateZero(); // The offset to use when triggering an effect
 
 #if AZ_TRAIT_CLIENT
+#if defined(ENABLE_POPCORNFX)
         PopcornFX::StandaloneEmitter* m_emitter = nullptr;
+#endif
         Audio::IAudioProxy* m_audioProxy = nullptr;
         Audio::TATLIDType m_audioTriggerId = INVALID_AUDIO_CONTROL_ID;
 
+#if defined(ENABLE_POPCORNFX)
         PopcornFX::PopcornFXRequests* m_popcornFx = nullptr;
+#endif
         Audio::IAudioSystem* m_audioSystem = nullptr;
 #endif
     };
