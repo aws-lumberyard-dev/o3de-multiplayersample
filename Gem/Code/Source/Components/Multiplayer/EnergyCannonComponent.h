@@ -23,7 +23,7 @@ namespace MultiplayerSample
         void OnDeactivate(Multiplayer::EntityIsMigrating entityIsMigrating) override;
 
 #if AZ_TRAIT_CLIENT
-        void HandleRPC_BallLaunched(AzNetworking::IConnection* invokingConnection) override;
+        void HandleRPC_TriggerBuildup(AzNetworking::IConnection* invokingConnection) override;
 #endif
 
     private:
@@ -41,11 +41,23 @@ namespace MultiplayerSample
 
 #if AZ_TRAIT_SERVER
     private:
+        void OnTriggerBuildup();
+        AZ::ScheduledEvent m_triggerBuildupEvent{ [this]()
+        {
+            OnTriggerBuildup();
+        }, AZ::Name("BuildupEnergyCannon") };
+
         void OnFireEnergyBall();
         AZ::ScheduledEvent m_firingEvent{[this]()
         {
             OnFireEnergyBall();
-        }, AZ::Name("EnergyCannonComponentController")};
+        }, AZ::Name("FireEnergyCannon")};
+
+        void OnKillEnergyBall();
+        AZ::ScheduledEvent m_killEvent{ [this]()
+        {
+            OnKillEnergyBall();
+        }, AZ::Name("KillEnergyBall") };
 #endif
     };
 }
