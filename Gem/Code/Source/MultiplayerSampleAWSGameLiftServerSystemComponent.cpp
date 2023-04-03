@@ -81,14 +81,16 @@ namespace MultiplayerSample
 
         if (m_loadedLevelName)
         {
-            AZ_Info("MultiplayerSampleAWSGameLiftServerSystemComponent", "Attempting to load level: '%s'", m_loadedLevelName);
+            AZ_Info("MultiplayerSampleAWSGameLiftServerSystemComponent", "Session requested by Amazon GameLift. Attempting to load level: '%s'", m_loadedLevelName);
 
             auto loadLevelCommand = AZStd::string::format("LoadLevel %s", m_loadedLevelName);
             AZ::Interface<AZ::IConsole>::Get()->PerformCommand(loadLevelCommand.c_str());
         }
         else
         {
-            AZ_Info("MultiplayerSampleAWSGameLiftServerSystemComponent", "No level was previously loaded, skipping call to LoadLevel.");
+            AZ_Info(
+                "MultiplayerSampleAWSGameLiftServerSystemComponent",
+                "Session requested by Amazon GameLift. Make sure to load into a multiplayer level before players join.");
         }
 
         return true;
