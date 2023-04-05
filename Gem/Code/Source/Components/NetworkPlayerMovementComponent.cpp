@@ -47,6 +47,8 @@ namespace MultiplayerSample
     AZ_CVAR(bool, mps_botMode, false, nullptr, AZ::ConsoleFunctorFlags::Null, "If true, enable bot (AI) mode for client.");
     AZ_CVAR(float, mps_botMinInterval, 500.0f, nullptr, AZ::ConsoleFunctorFlags::Null, "The minimum amount of time between bot control updates");
     AZ_CVAR(float, mps_botMaxInterval, 9500.0f, nullptr, AZ::ConsoleFunctorFlags::Null, "The maximum amount of time between bot control updates");
+    
+    AZ_CVAR_EXTERNED(bool, cl_observerCameraMode);
 #endif
 
     NetworkPlayerMovementComponentController::NetworkPlayerMovementComponentController(NetworkPlayerMovementComponent& parent)
@@ -135,6 +137,13 @@ namespace MultiplayerSample
 
     void NetworkPlayerMovementComponentController::CreateInput(Multiplayer::NetworkInput& input, float deltaTime)
     {
+#if AZ_TRAIT_CLIENT
+        if (cl_observerCameraMode)
+        {
+            return;
+        }
+#endif
+        
         // Inputs for your own component always exist
         NetworkPlayerMovementComponentNetworkInput* playerInput = input.FindComponentInput<NetworkPlayerMovementComponentNetworkInput>();
 

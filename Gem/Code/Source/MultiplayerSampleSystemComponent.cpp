@@ -26,6 +26,8 @@ namespace MultiplayerSample
 {
     using namespace AzNetworking;
 
+    AZ_CVAR_EXTERNED(bool, cl_observerCameraMode);
+
     void MultiplayerSampleSystemComponent::Reflect(AZ::ReflectContext* context)
     {
         ReflectWeaponEnums(context);
@@ -68,6 +70,14 @@ namespace MultiplayerSample
             addGeneral(behaviorContext->Method(
                 "GetRenderSceneIdByName", &MultiplayerSampleSystemComponent::GetRenderSceneIdByName, nullptr,
                 "Gets an RPI scene ID based on the name of the AzFramework Scene."));
+
+            behaviorContext->Class<MultiplayerSampleSystemComponent>("MultiplayerSampleSystemComponent")
+                ->Attribute(AZ::Script::Attributes::Module, "multiplayer")
+                ->Attribute(AZ::Script::Attributes::Category, "Multiplayer")
+                ->Method("IsClientAnObserver", []() -> bool
+                    {
+                        return cl_observerCameraMode;
+                    });
         }
     }
 

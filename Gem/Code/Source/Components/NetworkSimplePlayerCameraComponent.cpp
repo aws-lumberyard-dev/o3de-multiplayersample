@@ -10,6 +10,7 @@
 #include <Source/Components/NetworkSimplePlayerCameraComponent.h>
 #include <AzCore/Component/TransformBus.h>
 #include <AzFramework/Components/CameraBus.h>
+#include <AzFramework/Input/Buses/Requests/InputSystemCursorRequestBus.h>
 #include <AzFramework/Physics/PhysicsScene.h>
 #include <AzFramework/Physics/Common/PhysicsSceneQueries.h>
 #include <Multiplayer/IMultiplayer.h> 
@@ -27,6 +28,8 @@ namespace MultiplayerSample
     AZ_CVAR(float, cl_cameraFovSprintModifier, 10.0f, nullptr, AZ::ConsoleFunctorFlags::DontReplicate, "Controls how much to adjust camera FOV when sprinting");
     AZ_CVAR(float, cl_cameraZoomSprintModifier, -0.3f, nullptr, AZ::ConsoleFunctorFlags::DontReplicate, "Controls how much to adjust camera zoom when sprinting");
     AZ_CVAR(float, cl_cameraSprintBlendRate, 0.25f, nullptr, AZ::ConsoleFunctorFlags::DontReplicate, "The rate at which to blend into sprint camera");
+    
+    AZ_CVAR(bool, cl_observerCameraMode, false, nullptr, AZ::ConsoleFunctorFlags::Null, "If enabled, the client joins as an observer");
 
     NetworkSimplePlayerCameraComponentController::NetworkSimplePlayerCameraComponentController(NetworkSimplePlayerCameraComponent& parent)
         : NetworkSimplePlayerCameraComponentControllerBase(parent)
@@ -52,13 +55,18 @@ namespace MultiplayerSample
         if (IsNetEntityRoleAutonomous())
         {
             m_aiEnabled = FindComponent<NetworkAiComponent>()->GetEnabled();
-            if (!m_aiEnabled)
+            if (!m_aiEnabled && !cl_observerCameraMode)
             {
                 AZ::EntityId activeCameraId;
                 Camera::CameraSystemRequestBus::BroadcastResult(activeCameraId, &Camera::CameraSystemRequestBus::Events::GetActiveCamera);
                 m_activeCameraEntity = AZ::Interface<AZ::ComponentApplicationRequests>::Get()->FindEntity(activeCameraId);
                 Camera::CameraRequestBus::EventResult(m_originalFov, m_activeCameraEntity->GetId(), &Camera::CameraRequestBus::Events::GetFovDegrees);
                 m_currentFov = m_originalFov;
+            }
+
+            if (cl_observerCameraMode)
+            {
+                AzFramework::InputSystemCursorRequestBus::Broadcast(&AzFramework::InputSystemCursorRequestBus::Events::SetSystemCursorState, AzFramework::SystemCursorState::ConstrainedAndHidden);
             }
         }
 
