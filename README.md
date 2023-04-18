@@ -2,7 +2,7 @@
 
 ![MPS SplashScreen](Documentation/Media/splashscreen.png)
 
-The MultiplayerSample Project is a third-person multiplayer game built on Open 3D Engine (O3DE), where robots battle one another for dominance in an under construction, multi-tiered starbase.
+The MultiplayerSample Project (MPS) is a third-person multiplayer game built on Open 3D Engine (O3DE), where robots battle one another for dominance in an under construction, multi-tiered starbase.
 
 <span style="background-color:#4F3C3C">**NOTE:** For Linux setup, see the guide in [README_LINUX.md](README_LINUX.md)</span>
 
@@ -58,28 +58,28 @@ These instructions use the following installation paths. Be sure to substitute y
 ### Option #1 (Recommended) - Cloning into a directory outside the engine repository directory
 
 1. In a terminal, `cd` to the local directory where you'd like to clone the project, for example:
-
+   
    ```shell
    mkdir C:/my-o3de-projects
    cd C:/my-o3de-projects
    ```
 
 2. Clone the project.
-
+   
    ```shell
    git clone https://github.com/o3de/o3de-multiplayersample.git
    Cloning into 'o3de-multiplayersample'...
    ```
 
 3. Clone the assets. In this example the assets are cloned beside the muliplayersample project.
-
+   
    ```shell
    git clone https://github.com/o3de/o3de-multiplayersample-assets.git
    Cloning into 'o3de-multiplayersample-assets'...
    ```
 
 4. From inside your clone of o3de-multiplayersample-assets, update the submodules. This step adds some required content such as the PopcornFX Gem.
-
+   
    ```shell
    cd o3de-multiplayersample-assets
    git submodule update --init --recursive
@@ -88,28 +88,28 @@ These instructions use the following installation paths. Be sure to substitute y
 ### Option #2 - Cloning into the engine repository directory
 
 1. Clone the project into a directory named 'o3de-multiplayersample' in your existing engine repository directory.
-
+   
    ```shell
    git clone https://github.com/o3de/o3de-multiplayersample.git C:/o3de/o3de-multiplayersample
    Cloning into 'o3de-multiplayersample'...
    ```
 
-1. Clone the asset Gems into a directory named 'o3de-multiplayersample-assets' in your existing engine Gems directory.
-
+2. Clone the asset Gems into a directory named 'o3de-multiplayersample-assets' in your existing engine Gems directory.
+   
    ```shell
    git clone https://github.com/o3de/o3de-multiplayersample-assets.git C:/o3de/gems/o3de-multiplayersample-assets
    Cloning into 'o3de-multiplayersample-assets'...
    ```
 
-1. From inside your clone of o3de-multiplayersample-assets, update the submodules. This step adds some required content such as the PopcornFX Gem.
-
+3. From inside your clone of o3de-multiplayersample-assets, update the submodules. This step adds some required content such as the PopcornFX Gem.
+   
    ```shell
    cd C:/o3de/gems/o3de-multiplayersample-assets
    git submodule update --init --recursive
    ```
 
-1. Modify the local engine git exclude file to ignore the project directory.
-
+4. Modify the local engine git exclude file to ignore the project directory.
+   
    ```shell
    echo o3de-multiplayersample > C:/o3de/.git/info/exclude
    echo o3de-multiplayersample-assets > C:/o3de/.git/info/exclude
@@ -122,19 +122,19 @@ These instructions use the following installation paths. Be sure to substitute y
 <span style="background-color:#4F3C3C">**NOTE:** The following steps only need to be performed once.</span>
 
 1. Register the engine.
-
+   
    ```shell
    C:/o3de/scripts/o3de register --this-engine
    ```
 
-1. Register the asset Gems.
-
+2. Register the asset Gems.
+   
    ```shell
    C:/o3de/scripts/o3de register --all-gems-path C:/my-o3de-projects/o3de-multiplayersample-assets/Gems
    ```
 
-1. Register the project.
-
+3. Register the project.
+   
    ```shell
    C:/o3de/scripts/o3de register -p C:/my-o3de-projects/o3de-multiplayersample
    ```
@@ -147,9 +147,9 @@ If you've already built the O3DE engine, use the O3DE project manager to open an
 
 1. Run `o3de.exe`. If you used the engine build instructions from the [Getting Started](https://www.o3de.org/docs/welcome-guide/) guide, `o3de.exe` can be found at `C:/o3de/build/windows/bin/profile/o3de.exe`.
 
-1. (Optional) If MultiplayerSample is not in the **My Projects** view, then click the **New Project...** drop down and select **Open Existing Project**. Select the o3de-mulitplayersample project. See the [Project Manager User Guide](https://www.o3de.org/docs/user-guide/project-config/project-manager/#projects) for details.
+2. (Optional) If MultiplayerSample is not in the **My Projects** view, then click the **New Project...** drop down and select **Open Existing Project**. Select the o3de-mulitplayersample project. See the [Project Manager User Guide](https://www.o3de.org/docs/user-guide/project-config/project-manager/#projects) for details.
 
-1. You can choose **Build** in Project Manager to build the project, and skip the following **Step 3. Configure and build** steps.
+3. You can choose **Build** in Project Manager to build the project, and skip the following **Step 3. Configure and build** steps.
 
 ## Step 3. Configure and build
 
@@ -158,13 +158,13 @@ If you've already built the O3DE engine, use the O3DE project manager to open an
 This option outputs all the project binaries in the project's build directory (for example `c:/my-o3de-projects/o3de-multiplayersample/build`).
 
 1. Example project-centric configure command.
-
+   
    ```shell
    cmake -S c:/my-o3de-projects/o3de-multiplayersample -B c:/my-o3de-projects/o3de-multiplayersample/build/windows -G "Visual Studio 16" -DLY_3RDPARTY_PATH="c:/o3de-packages"
    ```
 
-1. Example project-centric build command.
-
+2. Example project-centric build command.
+   
    ```shell
    cmake --build c:/my-o3de-projects/o3de-multiplayersample/build/windows --target Editor MultiplayerSample.GameLauncher MultiplayerSample.ServerLauncher --config profile -- /m /nologo
    ```
@@ -174,13 +174,13 @@ This option outputs all the project binaries in the project's build directory (f
 This option will output all the project and engine binaries in the engine's build directory (for example, `c:/o3de/build`).
 
 1. Example engine-centric configure command.
-
+   
    ```shell
    cmake -S C:/o3de -B C:/o3de/build/windows -G "Visual Studio 16" -DLY_3RDPARTY_PATH="C:/o3de-packages" -DLY_PROJECTS="C:/o3de/o3de-multiplayersample"
    ```
 
-1. Example engine-centric build command.
-
+2. Example engine-centric build command.
+   
    ```shell
    cmake --build C:/o3de/build/windows --target Editor MultiplayerSample.GameLauncher MultiplayerSample.ServerLauncher --config profile -- /m /nologo
    ```
@@ -190,19 +190,19 @@ This option will output all the project and engine binaries in the engine's buil
 Under project root, there are two files: `launch_client.cfg` and `launch_server.cfg`.
 
 1. `launch_client.cfg` contains the client connection setting. To connect to a server that is running locally, add the following line:
-
+   
    ```shell
    connect
    ```
-
+   
    To connect to a remote server, add the IP address of the server after the connect statement. For example:
-
+   
    ```shell
    connect 192.168.0.20
    ```
 
 2. `launch_server.cfg` contains the initial level to load:
-
+   
    ```shell
    LoadLevel Levels/NewStarbase/NewStarbase.spawnable
    ```
@@ -295,7 +295,7 @@ You can contribute by [reporting issues and making feature requests](https://git
 ## Documentation
 
 | Link                                                            | Description                       |
-|-----------------------------------------------------------------|-----------------------------------|
+| --------------------------------------------------------------- | --------------------------------- |
 | [README_LINUX](README_LINUX.md)                                 | Linux specific setup instructions |
 | [Gameplay Configuration](Documentation/GamplayConfiguration.md) | How to adjust gameplay settings   |
 
@@ -304,6 +304,15 @@ You can contribute by [reporting issues and making feature requests](https://git
 * [O3DE Networking](https://o3de.org/docs/user-guide/networking/)
 * [Multiplayer Tutorials](https://o3de.org/docs/learning-guide/tutorials/multiplayer/)
 * [Networking/Multiplayer Settings](https://www.o3de.org/docs/user-guide/networking/settings/)
+
+## Fonts
+
+The MPS game assets include two fonts as examples used in the in-game front-end and UI screens.  Information on the licensing and distribution of these fonts can be found in the following locations:
+
+| Font   | License                                                                                                                        |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| Anton  | [o3de-multiplayersample/Fonts/Anton](https://github.com/o3de/o3de-multiplayersample/blob/development/Fonts/Anton/OFL.txt)      |
+| Roboto | [o3de-multiplayersample/Fonts/Roboto](https://github.com/o3de/o3de-multiplayersample/blob/development/Fonts/Roboto/NOTICE.txt) |
 
 ## License
 

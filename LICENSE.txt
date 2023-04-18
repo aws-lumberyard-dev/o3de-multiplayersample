@@ -24,4 +24,25 @@ https://s3-us-west-2.amazonaws.com/ly-legal/LicenseConformance/Qt/Src.zip
 - The AWS Python SDK uses Chardet https://chardet.github.io/, which is 
 subject to the GNU Lesser General Public License version 2.1. A copy of the 
 source code may be found at https://github.com/chardet/chardet.
+
+DOCUMENTATION
+Any additional documentation content excluding code, and including images,
+is licensed under the Creative Commons license Attribution 4.0 International
+(See LICENSE-CC-BY-4.0.txt)
  
+ASSET DATA
+This repository contains assets for use in game projects. These asset
+contents include 3D models, image textures, and other game asset files.
+
+Assets where special licensing terms are not otherwise stated are licensed
+under the Creative Commons license Attribution 4.0 International
+(See LICENSE-CC-BY-4.0.txt) Generally all new asset contributions must be
+made under a permissible Creative-Commons license
+(such as LICENSE-CC0.txt or LICENSE-CC-BY-4.0.txt)
+
+FONTS
+The MPS game assets include two fonts as examples used in the in-game
+front-end and UI screens. Information on the licensing and distribution
+of these fonts can be found in the following locations:
+https://github.com/o3de/o3de-multiplayersample/blob/development/Fonts/Anton/OFL.txt
+https://github.com/o3de/o3de-multiplayersample/blob/development/Fonts/Roboto/NOTICE.txt
