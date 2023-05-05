@@ -11,6 +11,9 @@
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/RTTI/BehaviorContext.h>
 
+#include <AWSCoreBus.h>
+#include <ResourceMapping/AWSResourceMappingBus.h>
+
 #include <Framework/ServiceRequestJob.h>
 
 #pragma optimize("",off)
@@ -155,33 +158,45 @@ namespace MPSGameLift
     {
     }
 
+    void SetApiEndpointAndRegion(MPSGameLift::ServiceAPI::MPSRequestMatchmakingRequestJob::Config* config)
+    {
+        AZStd::string actualRegion;
+        AWSCore::AWSResourceMappingRequestBus::BroadcastResult(actualRegion, &AWSCore::AWSResourceMappingRequests::GetDefaultRegion);
+
+        config->region = actualRegion.c_str();
+        // TODO: Set this up correctly;
+        config->endpointOverride =  AZStd::string::format("https://%s.execute-api.%s.amazonaws.com/%s",
+            "", actualRegion.c_str(), "requestmatch").c_str();
+    }
+
    bool MPSMatchmakingComponent::RequestMatch([[maybe_unused]] const AZStd::string& latencies)
     {
         if (m_ticketId != "")
         {
-            AZ_Warning("MPSMatchmakingComponet", "Ticket already exists %s", m_ticketId.c_str())
+            AZ_Warning("MPSMatchmakingComponent", false, "Ticket already exists %s", m_ticketId.c_str())
             return true;
         }
         MPSGameLift::ServiceAPI::MPSRequestMatchmakingRequestJob::Config* config = ServiceAPI::MPSRequestMatchmakingRequestJob::GetDefaultConfig();
 
-        // TODO: Identify region and chose attribution endpoint
+        // Setup example game service endpoint
         SetApiEndpointAndRegion(config);
 
         ServiceAPI::MPSRequestMatchmakingRequestJob* requestJob = ServiceAPI::MPSRequestMatchmakingRequestJob::Create(
-            [this]([[maybe_unused]] ServiceAPI::MPSRequestMatchmakingRequestJob* successJob)
+            []([[maybe_unused]] ServiceAPI::MPSRequestMatchmakingRequestJob* successJob)
             {
                 AZ_Printf("MPSMatchmakingComponent", "Request for matchmaking made");
-                this->m_ticketId = successJob->GetBody().;
+                // TODO: Grab TicketId from success job
 
             },
             []([[maybe_unused]] ServiceAPI::MPSRequestMatchmakingRequestJob* failJob)
             {
-                AZ_Error("MPSMatchmakingComponent", false, "Metrics send error: %s", failJob->error.message.c_str());
+                AZ_Error("MPSMatchmakingComponent", false, "Unable to request match error: %s", failJob->error.message.c_str());
             },
             config);
 
         requestJob->parameters.latencies = latencies;
         requestJob->Start();
+        return true;
     }
 
     bool MPSMatchmakingComponent::HasMatch(const AZStd::string& ticketId)
