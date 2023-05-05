@@ -10,6 +10,9 @@
 #include <AzCore/Module/Module.h>
 #include <Unified/MPSGameLiftSystemComponent.h>
 
+#include <Utils/MPSLatencyComponent.h>
+#include <Utils/MPSMatchmakingComponent.h>
+
 #if AZ_TRAIT_CLIENT
     #include <MPSGameLiftClientSystemComponent.h>
     #include <Components/UI/UiGameLiftConnectWithPlayerSessionData.h>
@@ -22,6 +25,7 @@
     #include <AzCore/Console/IConsole.h>
 #endif
 
+#pragma optimize("",off)
 namespace MPSGameLift
 {
     class MPSGameLiftModuleInterface
@@ -35,6 +39,8 @@ namespace MPSGameLift
         {
             m_descriptors.insert(m_descriptors.end(), {
                 MPSGameLiftSystemComponent::CreateDescriptor(),
+                MPSLatencyComponent::CreateDescriptor(),
+                MPSMatchmakingComponent::CreateDescriptor(),
                 #if AZ_TRAIT_CLIENT
                     MPSGameLiftClientSystemComponent::CreateDescriptor(),
                     UiGameLiftConnectWithPlayerSessionData::CreateDescriptor(),
@@ -84,3 +90,4 @@ namespace MPSGameLift
         }
     };
 }// namespace MPSGameLift
+#pragma optimize("",on)

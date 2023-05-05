@@ -29,7 +29,6 @@ namespace MPSGameLift
         // EBusTraits overrides
         static constexpr AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
         static constexpr AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::Single;
-        //////////////////////////////////////////////////////////////////////////
     };
 
     using MPSGameLiftRequestBus = AZ::EBus<MPSGameLiftRequests, MPSGameLiftBusTraits>;

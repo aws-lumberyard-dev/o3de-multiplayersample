@@ -44,10 +44,12 @@ namespace MPSGameLift
 
     void MPSGameLiftSystemComponent::GetRequiredServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& required)
     {
+        required.push_back(AZ_CRC_CE("HttpRequestorService"));
     }
 
     void MPSGameLiftSystemComponent::GetDependentServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& dependent)
     {
+        dependent.push_back(AZ_CRC_CE("MPSLatencyComponent"));
     }
 
     MPSGameLiftSystemComponent::MPSGameLiftSystemComponent()

@@ -36,6 +36,7 @@ namespace MPSGameLift
 
     void MPSGameLiftClientSystemComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
+        required.push_back(AZ_CRC_CE("HttpRequestorService"));
         required.push_back(AZ_CRC_CE("AWSGameLiftClientService"));
     }
     
@@ -46,7 +47,8 @@ namespace MPSGameLift
     void MPSGameLiftClientSystemComponent::Activate()
     {
         AWSGameLift::AWSGameLiftRequestBus::Broadcast(&AWSGameLift::AWSGameLiftRequestBus::Events::ConfigureGameLiftClient, "");
-    } 
+    }
+
     void MPSGameLiftClientSystemComponent::Deactivate()
     {
     }

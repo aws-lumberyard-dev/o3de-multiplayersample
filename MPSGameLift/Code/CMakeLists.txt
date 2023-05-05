@@ -56,15 +56,18 @@ ly_add_target(
         PUBLIC
             AZ::AzCore
             AZ::AzFramework
+            Gem::AWSCore
+            Gem::HttpRequestor
             Gem::Multiplayer.Client
             Gem::LyShine
 
         PRIVATE
             Gem::Multiplayer.Client.Static
             Gem::AWSCore.Static
+            Gem::HttpRequestor.Static
             Gem::AWSGameLift.Client.Static
             Gem::LyShine.Static
-
+            3rdParty::AWSNativeSDK::Core
 )
 
 ly_add_target(
@@ -85,6 +88,8 @@ ly_add_target(
             AZ::AzCore
             AZ::AzFramework
             Gem::Multiplayer.Server
+			Gem::AWSCore
+            Gem::HttpRequestor
         PRIVATE
             Gem::Multiplayer.Server.Static
             Gem::AWSGameLift.Server.Static
@@ -109,12 +114,14 @@ ly_add_target(
             AZ::AzFramework
             Gem::Multiplayer
             Gem::LyShine
-
+            Gem::AWSCore
+            Gem::HttpRequestor
         PRIVATE
             Gem::Multiplayer.Unified.Static
             Gem::AWSCore.Static
             Gem::AWSGameLift.Client.Static
             Gem::LyShine.Static
+            Gem::HttpRequestor.Static
 )
 
 # Here add ${gem_name} target, it depends on the Private Object library and Public API interface
@@ -225,6 +232,9 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
                 Gem::Multiplayer.Unified.Static
                 Gem::AWSCore.Static
                 Gem::AWSGameLift.Client.Static
+                AZ::AWSNativeSDKInit
+                Gem::HttpRequestor.Static
+                3rdParty::AWSNativeSDK::Core
                 $<TARGET_OBJECTS:Gem::${gem_name}.Unified.Private.Object>
     )
 
