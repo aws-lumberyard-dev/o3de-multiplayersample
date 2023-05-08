@@ -163,10 +163,11 @@ namespace MPSGameLift
         AZStd::string actualRegion;
         AWSCore::AWSResourceMappingRequestBus::BroadcastResult(actualRegion, &AWSCore::AWSResourceMappingRequests::GetDefaultRegion);
 
+        AZStd::string restApi;
+        AWSCore::AWSResourceMappingRequestBus::BroadcastResult(restApi, &AWSCore::AWSResourceMappingRequests::GetResourceNameId, "MPSMatchamking");
         config->region = actualRegion.c_str();
-        // TODO: Set this up correctly;
         config->endpointOverride =  AZStd::string::format("https://%s.execute-api.%s.amazonaws.com/%s",
-            "", actualRegion.c_str(), "requestmatch").c_str();
+            restApi.c_str(), actualRegion.c_str(), "Prod/requestmatchmaking").c_str();
     }
 
    bool MPSMatchmakingComponent::RequestMatch([[maybe_unused]] const AZStd::string& latencies)
@@ -181,6 +182,7 @@ namespace MPSGameLift
         // Setup example game service endpoint
         SetApiEndpointAndRegion(config);
 
+        // TODO: Need to generate latency string and send in request
         ServiceAPI::MPSRequestMatchmakingRequestJob* requestJob = ServiceAPI::MPSRequestMatchmakingRequestJob::Create(
             []([[maybe_unused]] ServiceAPI::MPSRequestMatchmakingRequestJob* successJob)
             {
