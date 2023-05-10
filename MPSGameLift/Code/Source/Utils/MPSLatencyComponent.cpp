@@ -124,7 +124,7 @@ namespace MPSGameLift
 
     void MPSLatencyComponent::SetLatencyForRegion(const AZStd::string& region, uint32_t latency)
     {
-        m_latencyMap_[region] = latency;
+        m_latencyMap_.insert(AZStd::pair<AZStd::string, uint32_t>(region, latency));
     }
 
     bool MPSLatencyComponent::HasLatencies() const
