@@ -1,6 +1,17 @@
 {
-    "AWSResourceMappings": {},
-    "AccountId": "",
-    "Region": "",
-    "Version": "1.0.0"
+    "AWSResourceMappings": {
+        "AWSClientAuth.CognitoIdentityPoolId": {
+            "Name/ID": "us-east-1:c4fdfade-949e-4080-bfa0-4c456b681e45",
+            "Region": "us-east-1",
+            "Type": "AWS::Cognito::IdentityPool"
+        },
+        "MPSMatchmaking": {
+			"Name/ID": "9x1js2wee2",
+			"Region" : "us-east-1",
+			"Type": "AWS::ApiGateway::RestApi"
+		}
+    },
+    "AccountId": "754497897378",
+    "Region": "us-east-1",
+    "Version": "1.1.0"
 }

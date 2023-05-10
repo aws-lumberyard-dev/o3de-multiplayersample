@@ -40,12 +40,7 @@ namespace MPSGameLift
             : public AWSCore::ServiceRequest
         {
         public:
-            SERVICE_REQUEST(MPSMatchmakingComponent, HttpMethod::HTTP_GET, "/requestmatchmaking");
-
-            bool UseAWSCredentials()
-            {
-                return true;
-            }
+            SERVICE_REQUEST(MPSMatchmakingComponent, HttpMethod::HTTP_GET, "");
 
             //! Request body for the service API request.
             struct Parameters
@@ -88,11 +83,9 @@ namespace MPSGameLift
             return ok;
         }
 
-        bool MPSRequestMatchmakingRequest::Parameters::WriteJson(AWSCore::JsonWriter& writer) const
+        bool MPSRequestMatchmakingRequest::Parameters::WriteJson([[maybe_unused]] AWSCore::JsonWriter& writer) const
         {
-            bool ok = true;
-            ok = ok && writer.Write(latencies);
-            return ok;
+            return true;
         }
     }
 
@@ -158,18 +151,19 @@ namespace MPSGameLift
     {
     }
 
-    void SetApiEndpointAndRegion(MPSGameLift::ServiceAPI::MPSRequestMatchmakingRequestJob::Config* config)
+    void SetApiEndpointAndRegion(MPSGameLift::ServiceAPI::MPSRequestMatchmakingRequestJob::Config* config, const AZStd::string& latencies)
     {
         AZStd::string actualRegion;
         AWSCore::AWSResourceMappingRequestBus::BroadcastResult(actualRegion, &AWSCore::AWSResourceMappingRequests::GetDefaultRegion);
 
+        AZStd::string restApi;
+        AWSCore::AWSResourceMappingRequestBus::BroadcastResult(restApi, &AWSCore::AWSResourceMappingRequests::GetResourceNameId, "MPSMatchmaking");
         config->region = actualRegion.c_str();
-        // TODO: Set this up correctly;
-        config->endpointOverride =  AZStd::string::format("https://%s.execute-api.%s.amazonaws.com/%s",
-            "", actualRegion.c_str(), "requestmatch").c_str();
+        config->endpointOverride = AZStd::string::format("https://%s.execute-api.%s.amazonaws.com/%s?latencies=%s",
+            restApi.c_str(), actualRegion.c_str(), "Prod/requestmatchmaking", latencies.c_str()).c_str();
     }
 
-   bool MPSMatchmakingComponent::RequestMatch([[maybe_unused]] const AZStd::string& latencies)
+   bool MPSMatchmakingComponent::RequestMatch(const AZStd::string& latencies)
     {
         if (m_ticketId != "")
         {
@@ -179,14 +173,13 @@ namespace MPSGameLift
         MPSGameLift::ServiceAPI::MPSRequestMatchmakingRequestJob::Config* config = ServiceAPI::MPSRequestMatchmakingRequestJob::GetDefaultConfig();
 
         // Setup example game service endpoint
-        SetApiEndpointAndRegion(config);
+        SetApiEndpointAndRegion(config, latencies);
 
         ServiceAPI::MPSRequestMatchmakingRequestJob* requestJob = ServiceAPI::MPSRequestMatchmakingRequestJob::Create(
             []([[maybe_unused]] ServiceAPI::MPSRequestMatchmakingRequestJob* successJob)
             {
-                AZ_Printf("MPSMatchmakingComponent", "Request for matchmaking made");
                 // TODO: Grab TicketId from success job
-
+                AZ_Printf("MPSMatchmakingComponent", "Request for matchmaking made: %s", successJob->result.result.c_str());
             },
             []([[maybe_unused]] ServiceAPI::MPSRequestMatchmakingRequestJob* failJob)
             {
@@ -194,7 +187,6 @@ namespace MPSGameLift
             },
             config);
 
-        requestJob->parameters.latencies = latencies;
         requestJob->Start();
         return true;
     }

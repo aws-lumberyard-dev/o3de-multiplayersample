@@ -11,11 +11,18 @@ namespace MPSGameLift
     public:
         AZ_RTTI(MPSGameLift::MPSLatencyComponentRequests, "{B257E80A-FCEF-4245-B5DD-0E475AB01959}");
 
-        // Put your public request methods here.
+        // Request latency checks for all set regions
         virtual void RequestLatencies() = 0;
+
+        // Returns true if we measured all expected latencies
         virtual bool HasLatencies() const = 0;
+
+        // Gets the measured latency for a given AWS region
         virtual uint32_t GetLatencyForRegion(const AZStd::string& region) const = 0;
 
+        // Return latency for region as a string, in format (region_latency)
+        virtual AZStd::string GetLatencyString(const AZStd::string & region) const = 0;
+   
         // Put notification events here. Examples:
         // void RegisterEvent(AZ::EventHandler<...> notifyHandler);
         // AZ::Event<...> m_notifyEvent1;
@@ -25,21 +32,30 @@ namespace MPSGameLift
     };
     using MPSLatencyComponentRequestBus = AZ::EBus<MPSLatencyComponentRequests>;
 
+    // Result data structure for a check on a matchmaking request
     struct MatchmakingResults
     {
         AZStd::string address;
         uint32_t port = 0;
+        AZStd::string playerId;
         bool found = false;
     };
 
+    // Supports matchmaking request calls to a serverless backend
     class MPSMatchmakingComponentRequests
         : public AZ::ComponentBus
     {
     public:
         AZ_RTTI(MPSGameLift::MPSMatchmakingComponentRequests, "{371687E5-9626-4201-91E3-0FD1F79CB8B6}");
 
+        // Request a match for the player, providing player latencies for defined regions
         virtual bool RequestMatch(const AZStd::string& latencies) = 0;
+
+        // Gets the current ticket id if any
         virtual AZStd::string GetTicketId() const = 0;
+
+        // Checks if a match has been made
+        // TODO: Needs to return the matchmaking results
         virtual bool HasMatch(const AZStd::string& ticketId) = 0;
     };
     using MPSMatchmakingComponentRequestBus = AZ::EBus<MPSMatchmakingComponentRequests>;

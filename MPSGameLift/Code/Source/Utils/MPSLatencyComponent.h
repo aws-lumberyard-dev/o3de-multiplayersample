@@ -63,7 +63,8 @@ namespace MPSGameLift
         void RequestLatencies() override;
         bool HasLatencies() const override;
         uint32_t GetLatencyForRegion(const AZStd::string& region) const override;
-
+        AZStd::string GetLatencyString(const AZStd::string & region) const override;
+   
     protected:
         /*
         * Puts this component into an active state.

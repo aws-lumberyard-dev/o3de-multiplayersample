@@ -124,7 +124,7 @@ namespace MPSGameLift
 
     void MPSLatencyComponent::SetLatencyForRegion(const AZStd::string& region, uint32_t latency)
     {
-        m_latencyMap_[region] = latency;
+        m_latencyMap_.insert(AZStd::pair<AZStd::string, uint32_t>(region, latency));
     }
 
     bool MPSLatencyComponent::HasLatencies() const
@@ -134,7 +134,7 @@ namespace MPSGameLift
         {
             if (iter->second == 0)
             {
-                // latency not set
+                // latency not set for region so fail check
                 ok = false;
                 break;
             }
@@ -142,6 +142,11 @@ namespace MPSGameLift
         return ok;
     }
 
+    AZStd::string MPSLatencyComponent::GetLatencyString(const AZStd::string & region) const
+    {
+        const uint32_t latency = GetLatencyForRegion(region);
+        return AZStd::string::format("%s_%d", region.c_str(), latency);
+    }
 
     uint32_t MPSLatencyComponent::GetLatencyForRegion(const AZStd::string& region) const
     {
@@ -150,7 +155,7 @@ namespace MPSGameLift
             return pos->second;
         }
         else {
-            return 150;
+            return 150;     // TODO: Decide if we want to return default
         }
     }
 } // namespace MPSGameLift
