@@ -144,6 +144,8 @@ ly_add_target(
             Gem::AWSCore.Static
             Gem::AWSGameLift.Client.Static
             Gem::${gem_name}.Client.Private.Object
+    RUNTIME_DEPENDENCIES
+        Gem::AWSGameLift.Clients
 )
 
 ly_add_target(
@@ -163,6 +165,8 @@ ly_add_target(
         PRIVATE
             Gem::Multiplayer.Server.Static
             Gem::${gem_name}.Server.Private.Object
+    RUNTIME_DEPENDENCIES
+        Gem::AWSGameLift.Servers
 )
 
 ly_add_target(
@@ -181,6 +185,11 @@ ly_add_target(
             Gem::${gem_name}.API
         PRIVATE
             Gem::${gem_name}.Unified.Private.Object
+            Gem::Multiplayer.Unified.Static
+            Gem::AWSCore.Static
+            Gem::AWSGameLift.Client.Static  # Unified launchers are considered clients to GameLift
+    RUNTIME_DEPENDENCIES
+        Gem::AWSGameLift.Clients
 )
 
 # By default, we will specify that the above target ${gem_name} would be used by
