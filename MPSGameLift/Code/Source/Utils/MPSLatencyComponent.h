@@ -92,7 +92,7 @@ namespace MPSGameLift
         void SetLatencyForRegion(const AZStd::string& region, uint32_t latency);
 
     private:
-        AZStd::vector<AZStd::string> m_regions_ = {"us-west-2", "us-east-1"};
-        AZStd::unordered_map<AZStd::string, uint32_t> m_latencyMap_;
+        AZStd::vector<AZStd::string> m_regions = {"us-west-2", "us-east-1"};
+        AZStd::unordered_map<AZStd::string, uint32_t> m_latencyMap;
     };
 } // namespace MPSGameLift

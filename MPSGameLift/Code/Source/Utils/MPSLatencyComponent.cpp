@@ -28,7 +28,7 @@ namespace MPSGameLift
         {
             serializeContext->Class<MPSLatencyComponent, AZ::Component>()
                 ->Version(1)
-                ->Field("Regions", &MPSLatencyComponent::m_regions_)
+                ->Field("Regions", &MPSLatencyComponent::m_regions)
             ;
 
             if (AZ::EditContext* editContext = serializeContext->GetEditContext())
@@ -38,7 +38,7 @@ namespace MPSGameLift
                     ->Attribute(AZ::Edit::Attributes::Category, "ComponentCategory")
                     ->Attribute(AZ::Edit::Attributes::Icon, "Icons/Components/Component_Placeholder.svg")
                     ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("Game"))
-                ->DataElement(AZ::Edit::UIHandlers::Default, &MPSLatencyComponent::m_regions_, "AWS Regions", "List of AWS Regions")
+                ->DataElement(AZ::Edit::UIHandlers::Default, &MPSLatencyComponent::m_regions, "AWS Regions", "List of AWS Regions")
                     ;
             }
         }
@@ -124,22 +124,20 @@ namespace MPSGameLift
 
     void MPSLatencyComponent::SetLatencyForRegion(const AZStd::string& region, uint32_t latency)
     {
-        m_latencyMap_.insert(AZStd::pair<AZStd::string, uint32_t>(region, latency));
+        m_latencyMap.insert(AZStd::pair<AZStd::string, uint32_t>(region, latency));
     }
 
     bool MPSLatencyComponent::HasLatencies() const
     {
-        bool ok = true;
-        for (auto iter = m_latencyMap_.begin(); iter != m_latencyMap_.end(); ++iter)
+        for (auto iter = m_latencyMap.begin(); iter != m_latencyMap.end(); ++iter)
         {
             if (iter->second == 0)
             {
                 // latency not set for region so fail check
-                ok = false;
-                break;
+                return false;
             }
         }
-        return ok;
+        return true;
     }
 
     AZStd::string MPSLatencyComponent::GetLatencyString(const AZStd::string & region) const
@@ -150,12 +148,13 @@ namespace MPSGameLift
 
     uint32_t MPSLatencyComponent::GetLatencyForRegion(const AZStd::string& region) const
     {
-        if (const auto pos = m_latencyMap_.find(region); pos != m_latencyMap_.end())
+        if (const auto latencyKeyValue = m_latencyMap.find(region); latencyKeyValue != m_latencyMap.end())
         {
-            return pos->second;
+            return latencyKeyValue->second;
         }
-        else {
-            return 150;     // TODO: Decide if we want to return default
+        else 
+        {
+            return 150; // TODO: Decide if we want to return default
         }
     }
 } // namespace MPSGameLift

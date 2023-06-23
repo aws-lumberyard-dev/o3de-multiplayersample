@@ -88,7 +88,7 @@ ly_add_target(
             AZ::AzCore
             AZ::AzFramework
             Gem::Multiplayer.Server
-			Gem::AWSCore
+            Gem::AWSCore
             Gem::HttpRequestor
         PRIVATE
             Gem::Multiplayer.Server.Static

@@ -78,9 +78,7 @@ namespace MPSGameLift
 
         bool MPSRequestMatchmakingRequest::Parameters::BuildRequest(AWSCore::RequestBuilder& request)
         {
-            bool ok = true;
-            ok = ok && request.WriteJsonBodyParameter(*this);
-            return ok;
+            return request.WriteJsonBodyParameter(*this);
         }
 
         bool MPSRequestMatchmakingRequest::Parameters::WriteJson([[maybe_unused]] AWSCore::JsonWriter& writer) const
@@ -199,10 +197,5 @@ namespace MPSGameLift
         }
         return false;
     }
-
-
-
-
-
 }
 #pragma optimize("",on)
