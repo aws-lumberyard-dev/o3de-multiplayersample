@@ -47,7 +47,6 @@ namespace MPSGameLift
     void MPSGameLiftServerSystemComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
         required.push_back(AZ_CRC_CE("MultiplayerService"));
-        required.push_back(AZ_CRC_CE("HttpRequestorService"));
         required.push_back(AZ_CRC_CE("AWSGameLiftServerService"));
     }
 

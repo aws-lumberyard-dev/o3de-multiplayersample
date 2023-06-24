@@ -37,7 +37,6 @@ namespace MPSGameLift
 
     void MPSGameLiftClientSystemComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
-        required.push_back(AZ_CRC_CE("HttpRequestorService"));
         required.push_back(AZ_CRC_CE("AWSGameLiftClientService"));
     }
     
@@ -47,7 +46,7 @@ namespace MPSGameLift
 
     void MPSGameLiftClientSystemComponent::Activate()
     {
-        auto loadLevelCommand = AZStd::string::format("LoadLevel %s", "mpsgamelift/prefabs/GameLiftConnectJsonMenu.spawnable");
+        auto loadLevelCommand = AZStd::string::format("LoadLevel %s", "mpsgamelift/prefabs/MatchmakingLobby.spawnable");
         AZ::Interface<AZ::IConsole>::Get()->PerformCommand(loadLevelCommand.c_str());        
     } 
 
