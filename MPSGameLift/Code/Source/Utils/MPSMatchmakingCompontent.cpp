@@ -35,7 +35,7 @@ namespace MPSGameLift
 
             if (AZ::EditContext* editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<MPSMatchmakingComponent>("MPSLatencyComponent", "[Description of functionality provided by this component]")
+                editContext->Class<MPSMatchmakingComponent>("MPSMatchmakingComponent", "[Description of functionality provided by this component]")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::Category, "ComponentCategory")
                     ->Attribute(AZ::Edit::Attributes::Icon, "Icons/Components/Component_Placeholder.svg")
@@ -50,14 +50,7 @@ namespace MPSGameLift
             behaviorContext->Class<MPSMatchmakingComponent>("MPSMatchmakingComponent Group")
                 ->Attribute(AZ::Script::Attributes::Category, "MPSGameLift Gem")
                 ->Attribute(AZ::Script::Attributes::Scope, AZ::Script::Attributes::ScopeFlags::Common)
-            ;
-        
-            behaviorContext->EBus<MPSLatencyComponentRequestBus>("MPSMatchmakingComponentRequests")
-                ->Attribute(AZ::Script::Attributes::Category, "MPSGameLift Gem")
-                ->Event("RequestLatencies", &MPSLatencyComponentRequestBus::Events::RequestLatencies)
-                ->Event("HasLatencies", &MPSLatencyComponentRequestBus::Events::HasLatencies)
-                ->Event("GetLatencyForRegion", &MPSLatencyComponentRequestBus::Events::GetLatencyForRegion)
-                ;
+            ;        
         }
     }
 

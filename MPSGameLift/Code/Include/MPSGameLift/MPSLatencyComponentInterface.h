@@ -5,33 +5,6 @@
 
 namespace MPSGameLift
 {
-    class MPSLatencyComponentRequests
-        : public AZ::ComponentBus
-    {
-    public:
-        AZ_RTTI(MPSGameLift::MPSLatencyComponentRequests, "{B257E80A-FCEF-4245-B5DD-0E475AB01959}");
-
-        // Request latency checks for all set regions
-        virtual void RequestLatencies() = 0;
-
-        // Returns true if we measured all expected latencies
-        virtual bool HasLatencies() const = 0;
-
-        // Gets the measured latency for a given AWS region
-        virtual uint32_t GetLatencyForRegion(const AZStd::string& region) const = 0;
-
-        // Return latency for region as a string, in format (region_latency)
-        virtual AZStd::string GetLatencyString(const AZStd::string & region) const = 0;
-   
-        // Put notification events here. Examples:
-        // void RegisterEvent(AZ::EventHandler<...> notifyHandler);
-        // AZ::Event<...> m_notifyEvent1;
-
-        using LatencyAvailableEvent = AZ::Event<bool>;
-        LatencyAvailableEvent m_latenciesAvailable;
-    };
-    using MPSLatencyComponentRequestBus = AZ::EBus<MPSLatencyComponentRequests>;
-
     // Result data structure for a check on a matchmaking request
     struct MatchmakingResults
     {
