@@ -25,7 +25,6 @@ namespace MPSGameLift
 
     void LatencySystemComponent::Activate()
     {
-        RequestLatencies();
     }
 
     void LatencySystemComponent::Deactivate()
@@ -98,11 +97,17 @@ namespace MPSGameLift
             AZ_Info("LatencySystemComponent", "regionEndpoint %s", regionEndpoint.c_str());
 
             HttpRequestor::HttpRequestorRequestBus::Broadcast(&HttpRequestor::HttpRequestorRequests::AddTextRequest, regionEndpoint, Aws::Http::HttpMethod::HTTP_GET,
-                [region](const AZStd::string& response, Aws::Http::HttpResponseCode responseCode, AZStd::chrono::milliseconds roundTripTime)
+                [region](const AZStd::string& response, Aws::Http::HttpResponseCode responseCode)
                 {
+
+                    AZStd::chrono::milliseconds roundTripTime;
+                    HttpRequestor::HttpRequestorRequestBus::BroadcastResult(roundTripTime, &HttpRequestor::HttpRequestorRequests::GetLastRoundTripTime);
+
+
                     if (responseCode == Aws::Http::HttpResponseCode::OK) 
                     {
-                        AZ_Info("LatencySystemComponent", "%s call succeed in %lld ms. Response: %s", region, roundTripTime.count(), response.c_str());
+                        AZ_Info("LatencySystemComponent", "%s call succeed in %lld ms. Response: %s", 
+                            region, roundTripTime.count(), response.c_str());
                     }
                     else
                     {
