@@ -8,8 +8,8 @@ set(FILES
     Source/MPSGameLiftModuleInterface.h
     Source/Utils/MPSMatchmakingComponent.cpp
     Source/Utils/MPSMatchmakingComponent.h
-    Source/Utils/LatencySystemComponent.h
-    Source/Utils/LatencySystemComponent.cpp
+    Source/Utils/RegionalLatencySystemComponent.h
+    Source/Utils/RegionalLatencySystemComponent.cpp
     Source/Unified/MPSGameLiftSystemComponent.cpp
     Source/Unified/MPSGameLiftSystemComponent.h
 )

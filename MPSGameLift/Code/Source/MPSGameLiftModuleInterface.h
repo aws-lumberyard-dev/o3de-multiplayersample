@@ -10,7 +10,7 @@
 #include <AzCore/Module/Module.h>
 #include <Unified/MPSGameLiftSystemComponent.h>
 
-#include <Utils/LatencySystemComponent.h>
+#include <Utils/RegionalLatencySystemComponent.h>
 #include <Utils/MPSMatchmakingComponent.h>
 
 #if AZ_TRAIT_CLIENT
@@ -65,7 +65,7 @@ namespace MPSGameLift
 
             m_descriptors.insert(m_descriptors.end(), {
                 MPSGameLiftSystemComponent::CreateDescriptor(),
-                LatencySystemComponent::CreateDescriptor(),
+                RegionalLatencySystemComponent::CreateDescriptor(),
                 MPSMatchmakingComponent::CreateDescriptor(),
                 #if AZ_TRAIT_CLIENT
                     MPSGameLiftClientSystemComponent::CreateDescriptor(),

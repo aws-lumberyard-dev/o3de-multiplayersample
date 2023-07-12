@@ -26,7 +26,7 @@ namespace MPSGameLift
             // This happens through the [MyComponent]::Reflect() function.
             m_descriptors.insert(m_descriptors.end(), {
                 MPSGameLiftEditorSystemComponent::CreateDescriptor(),
-                LatencySystemComponent::CreateDescriptor()
+                RegionalLatencySystemComponent::CreateDescriptor()
             });
         }
 
@@ -38,7 +38,7 @@ namespace MPSGameLift
         {
             return AZ::ComponentTypeList {
                 azrtti_typeid<MPSGameLiftEditorSystemComponent>(),
-                azrtti_typeid<LatencySystemComponent>()
+                azrtti_typeid<RegionalLatencySystemComponent>()
             };
         }
     };

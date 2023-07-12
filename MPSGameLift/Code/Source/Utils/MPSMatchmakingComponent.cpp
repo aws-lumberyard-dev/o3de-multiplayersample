@@ -131,25 +131,7 @@ namespace MPSGameLift
         }
     }
 
-    void MPSMatchmakingComponent::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)
-    {
-        provided.push_back(AZ_CRC_CE("MPSMatchmakingService"));
-    }
-
-    void MPSMatchmakingComponent::GetIncompatibleServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& incompatible)
-    {
-        incompatible.push_back(AZ_CRC_CE("MPSMatchmakingService"));
-    }
-
-    void MPSMatchmakingComponent::GetRequiredServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& required)
-    {
-    }
-
-    void MPSMatchmakingComponent::GetDependentServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& dependent)
-    {
-    }
-
-    void SetApiEndpointAndRegion(MPSGameLift::ServiceAPI::MPSRequestMatchmakingRequestJob::Config* config, const AZStd::string& latencies)
+    void SetApiEndpointAndRegion(ServiceAPI::MPSRequestMatchmakingRequestJob::Config* config, const AZStd::string& latencies)
     {
         AZStd::string actualRegion;
         AWSCore::AWSResourceMappingRequestBus::BroadcastResult(actualRegion, &AWSCore::AWSResourceMappingRequests::GetDefaultRegion);
@@ -163,12 +145,12 @@ namespace MPSGameLift
 
    bool MPSMatchmakingComponent::RequestMatch(const AZStd::string& latencies)
     {
-        if (m_ticketId != "")
+        if (!m_ticketId.empty())
         {
             AZ_Warning("MPSMatchmakingComponent", false, "Ticket already exists %s", m_ticketId.c_str())
             return true;
         }
-        MPSGameLift::ServiceAPI::MPSRequestMatchmakingRequestJob::Config* config = ServiceAPI::MPSRequestMatchmakingRequestJob::GetDefaultConfig();
+        ServiceAPI::MPSRequestMatchmakingRequestJob::Config* config = ServiceAPI::MPSRequestMatchmakingRequestJob::GetDefaultConfig();
 
         // Setup example game service endpoint
         SetApiEndpointAndRegion(config, latencies);
@@ -191,7 +173,7 @@ namespace MPSGameLift
 
     bool MPSMatchmakingComponent::HasMatch(const AZStd::string& ticketId)
     {
-        if (ticketId == "")
+        if (ticketId.empty())
         {
             return false;
         }
