@@ -4,10 +4,28 @@
 #include <MPSGameLift/IRegionalLatencyFinder.h>
 
 #include <AzCore/Component/Component.h>
+#include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/std/containers/vector.h>
 
 namespace MPSGameLift
 {
+    class BehaviorRegionalLatencyFinderBusHandler
+        : public RegionalLatencyFinderNotificationBus::Handler
+        , public AZ::BehaviorEBusHandler
+    {
+    public: 
+        AZ_EBUS_BEHAVIOR_BINDER
+        (
+            BehaviorRegionalLatencyFinderBusHandler, "{BC890DD0-4430-4497-864D-8F694B208EAF}", AZ::SystemAllocator,
+            OnRequestLatenciesComplete
+        );
+
+        void OnRequestLatenciesComplete() override
+        {
+            Call(FN_OnRequestLatenciesComplete);
+        }
+    };
+
     class RegionalLatencySystemComponent final
         : public AZ::Component
         , public IRegionalLatencyFinder
@@ -29,7 +47,6 @@ namespace MPSGameLift
 
         /* IRegionalLatencyFinder overrides... */
         void RequestLatencies() override;
-        bool HasLatencies() const override;
         AZStd::chrono::milliseconds GetLatencyForRegion(const AZStd::string& region) const override;
    
     protected:
@@ -37,6 +54,8 @@ namespace MPSGameLift
         void Deactivate() override;
 
     private:
+        AZStd::atomic_int m_responsesPending = 0;
+        mutable AZStd::mutex m_mapMutex;
         AZStd::unordered_map<AZStd::string, AZStd::chrono::milliseconds> m_latencyMap;
     };
 } // namespace MPSGameLift

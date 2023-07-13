@@ -9,7 +9,6 @@
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/RTTI/BehaviorContext.h>
 
-#pragma optimize("",off)
 namespace MPSGameLift
 {
     RegionalLatencySystemComponent::RegionalLatencySystemComponent()
@@ -42,6 +41,10 @@ namespace MPSGameLift
 
         if (AZ::BehaviorContext* behaviorContext = azrtti_cast<AZ::BehaviorContext*>(context))
         {
+            behaviorContext->EBus<RegionalLatencyFinderNotificationBus>("RegionalLatencyFinderNotificationBus")->
+                Handler<MPSGameLift::BehaviorRegionalLatencyFinderBusHandler>();
+
+
             behaviorContext->Class<RegionalLatencySystemComponent>("RegionalLatencySystemComponent")
                 ->Attribute(AZ::Script::Attributes::Category, "MPSGameLift Gem")
                 ->Attribute(AZ::Script::Attributes::Scope, AZ::Script::Attributes::ScopeFlags::Common)
@@ -52,15 +55,6 @@ namespace MPSGameLift
                         {
                             latencyFinder->RequestLatencies();
                         }
-                    })
-                ->Method("HasLatencies", []()
-                    {
-                        if (const auto latencyFinder = AZ::Interface<IRegionalLatencyFinder>::Get())
-                        {
-                            return latencyFinder->HasLatencies();
-                        }
-
-                        return false;
                     })
                 ->Method("GetLatencyForRegionMs", [](const AZStd::string& region) -> uint32_t
                     {
@@ -77,53 +71,63 @@ namespace MPSGameLift
 
     void RegionalLatencySystemComponent::RequestLatencies()
     {
-        for(auto region : Regions)
+        // Response callbacks are received on a separate thread. 
+        // Users can call RequestLatencies from main thread multiple times before all the requests
+        // have returned a response. For simplicity, don't make more requests if requests are still waiting for a response.
+        if (m_responsesPending.load() > 0)
+        {
+            AZ_Warning("RegionalLatencySystemComponent", false, 
+                "Denying RequestLatencies. "
+                "Latencies are already being received; "
+                "listen for RegionalLatencyFinderNotifications::OnRequestLatenciesComplete to get a notification once all region latencies have been received.");
+            return;
+        }
+
+        // Start pinging region endpoints
+        m_responsesPending.store(aznumeric_cast<int>(AZStd::size(Regions)));
+
+        for (auto region : Regions)
         {
             AZStd::string regionEndpoint = AZStd::string::format(RegionalEndpointUrlFormat, region);
-            AZ_Info("RegionalLatencySystemComponent", "regionEndpoint %s", regionEndpoint.c_str());
 
             HttpRequestor::HttpRequestorRequestBus::Broadcast(&HttpRequestor::HttpRequestorRequests::AddTextRequest, regionEndpoint, Aws::Http::HttpMethod::HTTP_GET,
-                [this, region](const AZStd::string& response, Aws::Http::HttpResponseCode responseCode)
+                [this, region]([[maybe_unused]]const AZStd::string& response, Aws::Http::HttpResponseCode responseCode)
                 {
-                    AZStd::chrono::milliseconds roundTripTime;
-                    HttpRequestor::HttpRequestorRequestBus::BroadcastResult(roundTripTime, &HttpRequestor::HttpRequestorRequests::GetLastRoundTripTime);
-
-                    m_latencyMap.insert({ region, roundTripTime });
-
-                    if (responseCode == Aws::Http::HttpResponseCode::OK) 
+                    if (responseCode == Aws::Http::HttpResponseCode::OK)
                     {
-                        AZ_Info("RegionalLatencySystemComponent", "%s call succeed in %lld ms. Response: %s", 
-                            region, roundTripTime.count(), response.c_str());
+                        AZStd::chrono::milliseconds roundTripTime;
+                        HttpRequestor::HttpRequestorRequestBus::BroadcastResult(roundTripTime, &HttpRequestor::HttpRequestorRequests::GetLastRoundTripTime);
+
+                        AZStd::lock_guard<AZStd::mutex> lock(m_mapMutex);
+                        m_latencyMap[region] = roundTripTime;
                     }
                     else
                     {
-                        AZ_Info("RegionalLatencySystemComponent", "Failed");
+                        AZ_Error("RegionalLatencySystemComponent", false, "Failed to receive response for region: %s.", region);
+                    }
+
+                    // Check if all requests have responded
+                    m_responsesPending.fetch_sub(1);
+                    if (m_responsesPending.load() == 0)
+                    {
+                        RegionalLatencyFinderNotificationBus::Broadcast(&RegionalLatencyFinderNotifications::OnRequestLatenciesComplete);
                     }
                 });
         }
     }
 
-    bool RegionalLatencySystemComponent::HasLatencies() const
-    {
-        for (const auto& iter : m_latencyMap)
-        {
-            if (iter.second == AZStd::chrono::milliseconds(0))
-            {
-                // latency not set for region so fail check
-                return false;
-            }
-        }
-        return true;
-    }
-
     AZStd::chrono::milliseconds RegionalLatencySystemComponent::GetLatencyForRegion(const AZStd::string& region) const
     {
-        if (const auto latencyKeyValue = m_latencyMap.find(region); latencyKeyValue != m_latencyMap.end())
         {
-            return latencyKeyValue->second;
+            AZStd::lock_guard<AZStd::mutex> lock(m_mapMutex);
+            if (const auto latencyKeyValue = m_latencyMap.find(region); latencyKeyValue != m_latencyMap.end())
+            {
+                return latencyKeyValue->second;
+            }
         }
 
+        AZ_Warning("RegionalLatencySystemComponent", false, "GetLatencyForRegion failed for region %s. Did you forget to first call RequestLatencies?", region.c_str());
         return {};
     }
 } // namespace MPSGameLift
-#pragma optimize("",on)
+

@@ -20,14 +20,21 @@ namespace MPSGameLift
         // Request latency checks for all set regions
         virtual void RequestLatencies() = 0;
 
-        // Returns true if we measured all expected latencies
-        virtual bool HasLatencies() const = 0;
-
         // Gets the measured latency for a given AWS region
         virtual AZStd::chrono::milliseconds GetLatencyForRegion(const AZStd::string& region) const = 0;
 
         using LatencyAvailableEvent = AZ::Event<bool>;
         LatencyAvailableEvent m_latenciesAvailable;
     };
+
+    class RegionalLatencyFinderNotifications
+        : public AZ::ComponentBus
+    {
+    public:
+        using MutexType = AZStd::recursive_mutex;
+
+        virtual void OnRequestLatenciesComplete() {}
+    };
+    typedef AZ::EBus<RegionalLatencyFinderNotifications> RegionalLatencyFinderNotificationBus;
 
 } //namespace MPSGameLift
