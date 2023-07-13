@@ -1,7 +1,10 @@
+/*
+ * Copyright (c) Contributors to the Open 3D Engine Project. For complete copyright and license terms please see the LICENSE at the root of this distribution.
+ *
+ * SPDX-License-Identifier: Apache-2.0 OR MIT
+ *
+ */
 #pragma once
-
-#include <AzCore/EBus/Event.h>
-#include <AzCore/Component/ComponentBus.h>
 
 namespace MPSGameLift
 {
@@ -15,11 +18,11 @@ namespace MPSGameLift
     };
 
     // Supports matchmaking request calls to a serverless backend
-    class MPSMatchmakingComponentRequests
-        : public AZ::ComponentBus
+    class IMatchmaking
     {
     public:
-        AZ_RTTI(MPSGameLift::MPSMatchmakingComponentRequests, "{371687E5-9626-4201-91E3-0FD1F79CB8B6}");
+        AZ_RTTI(IMatchmaking, "{371687E5-9626-4201-91E3-0FD1F79CB8B6}");
+        virtual ~IMatchmaking() = default;
 
         // Request a match for the player, providing player latencies for defined regions
         virtual bool RequestMatch(const AZStd::string& latencies) = 0;
@@ -31,6 +34,4 @@ namespace MPSGameLift
         // TODO: Needs to return the matchmaking results
         virtual bool HasMatch(const AZStd::string& ticketId) = 0;
     };
-    using MPSMatchmakingComponentRequestBus = AZ::EBus<MPSMatchmakingComponentRequests>;
-
 } // namespace MPSGameLift

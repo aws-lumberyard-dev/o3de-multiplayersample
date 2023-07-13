@@ -5,7 +5,7 @@
  *
  */
 
-#include <Utils/MPSMatchmakingComponent.h>
+#include "MatchmakingSystemComponent.h"
 
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/Serialization/EditContext.h>
@@ -33,14 +33,14 @@ namespace MPSGameLift
         };
 
         // Service RequestJobs
-        AWS_FEATURE_GEM_SERVICE(MPSMatchmakingComponent);
+        AWS_FEATURE_GEM_SERVICE(MatchmakingSystemComponent);
 
         //! GET request to place a matchmaking request "/requestmatchmaking".
         class MPSRequestMatchmakingRequest
             : public AWSCore::ServiceRequest
         {
         public:
-            SERVICE_REQUEST(MPSMatchmakingComponent, HttpMethod::HTTP_GET, "");
+            SERVICE_REQUEST(MatchmakingSystemComponent, HttpMethod::HTTP_GET, "");
 
             //! Request body for the service API request.
             struct Parameters
@@ -87,27 +87,27 @@ namespace MPSGameLift
         }
     }
 
-    void MPSMatchmakingComponent::Activate()
+    void MatchmakingSystemComponent::Activate()
     {
-        MPSMatchmakingComponentRequestBus::Handler::BusConnect(GetEntityId());
+        AZ::Interface<IMatchmaking>::Register(this);
     }
 
-    void MPSMatchmakingComponent::Deactivate()
+    void MatchmakingSystemComponent::Deactivate()
     {
-        MPSMatchmakingComponentRequestBus::Handler::BusDisconnect(GetEntityId());
+        AZ::Interface<IMatchmaking>::Unregister(this);
     }
 
-    void MPSMatchmakingComponent::Reflect(AZ::ReflectContext* context)
+    void MatchmakingSystemComponent::Reflect(AZ::ReflectContext* context)
     {
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<MPSMatchmakingComponent, AZ::Component>()
+            serializeContext->Class<MatchmakingSystemComponent, AZ::Component>()
                 ->Version(1)
                 ;
 
             if (AZ::EditContext* editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<MPSMatchmakingComponent>("MPSMatchmakingComponent", "[Description of functionality provided by this component]")
+                editContext->Class<MatchmakingSystemComponent>("MatchmakingSystemComponent", "[Description of functionality provided by this component]")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::Category, "ComponentCategory")
                     ->Attribute(AZ::Edit::Attributes::Icon, "Icons/Components/Component_Placeholder.svg")
@@ -118,15 +118,25 @@ namespace MPSGameLift
 
         if (AZ::BehaviorContext* behaviorContext = azrtti_cast<AZ::BehaviorContext*>(context))
         {
-            behaviorContext->Class<MPSMatchmakingComponent>("MPSMatchmakingComponent Group")
+            behaviorContext->Class<MatchmakingSystemComponent>("MatchmakingSystemComponent")
                 ->Attribute(AZ::Script::Attributes::Category, "MPSGameLift Gem")
                 ->Attribute(AZ::Script::Attributes::Scope, AZ::Script::Attributes::ScopeFlags::Common)
-            ;
-        
-            behaviorContext->EBus<MPSMatchmakingComponentRequestBus>("MPSMatchmakingComponentRequests")
-                ->Attribute(AZ::Script::Attributes::Category, "MPSGameLift Gem")
-                ->Event("RequestMatch", &MPSMatchmakingComponentRequestBus::Events::RequestMatch)
-                ->Event("HasMatch", &MPSMatchmakingComponentRequestBus::Events::HasMatch)
+                ->Method("RequestMatch", [](const AZStd::string& latencies)
+                    {
+                        if (const auto matchmaking = AZ::Interface<IMatchmaking>::Get())
+                        {
+                            return matchmaking->RequestMatch(latencies);
+                        }
+                        return false;
+                    })
+                ->Method("HasMatch", [](const AZStd::string& ticketId)
+                    {
+                        if (const auto matchmaking = AZ::Interface<IMatchmaking>::Get())
+                        {
+                            return matchmaking->HasMatch(ticketId);
+                        }
+                        return false;
+                    })
                 ;
         }
     }
@@ -143,11 +153,11 @@ namespace MPSGameLift
             restApi.c_str(), actualRegion.c_str(), "Prod/requestmatchmaking", latencies.c_str()).c_str();
     }
 
-   bool MPSMatchmakingComponent::RequestMatch(const AZStd::string& latencies)
+   bool MatchmakingSystemComponent::RequestMatch(const AZStd::string& latencies)
     {
         if (!m_ticketId.empty())
         {
-            AZ_Warning("MPSMatchmakingComponent", false, "Ticket already exists %s", m_ticketId.c_str())
+            AZ_Warning("MatchmakingSystemComponent", false, "Ticket already exists %s", m_ticketId.c_str())
             return true;
         }
         ServiceAPI::MPSRequestMatchmakingRequestJob::Config* config = ServiceAPI::MPSRequestMatchmakingRequestJob::GetDefaultConfig();
@@ -159,11 +169,11 @@ namespace MPSGameLift
             []([[maybe_unused]] ServiceAPI::MPSRequestMatchmakingRequestJob* successJob)
             {
                 // TODO: Grab TicketId from success job
-                AZ_Printf("MPSMatchmakingComponent", "Request for matchmaking made: %s", successJob->result.result.c_str());
+                AZ_Printf("MatchmakingSystemComponent", "Request for matchmaking made: %s", successJob->result.result.c_str());
             },
             []([[maybe_unused]] ServiceAPI::MPSRequestMatchmakingRequestJob* failJob)
             {
-                AZ_Error("MPSMatchmakingComponent", false, "Unable to request match error: %s", failJob->error.message.c_str());
+                AZ_Error("MatchmakingSystemComponent", false, "Unable to request match error: %s", failJob->error.message.c_str());
             },
             config);
 
@@ -171,7 +181,7 @@ namespace MPSGameLift
         return true;
     }
 
-    bool MPSMatchmakingComponent::HasMatch(const AZStd::string& ticketId)
+    bool MatchmakingSystemComponent::HasMatch(const AZStd::string& ticketId)
     {
         if (ticketId.empty())
         {

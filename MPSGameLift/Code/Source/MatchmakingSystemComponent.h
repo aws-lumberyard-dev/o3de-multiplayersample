@@ -8,20 +8,19 @@
 #pragma once
 
 #include <AzCore/Component/Component.h>
-#include <AzCore/std/containers/vector.h>
-#include <MPSGameLift/MPSLatencyComponentInterface.h>
+#include <MPSGameLift/IMatchmaking.h>
 
 namespace MPSGameLift
 {
-    class MPSMatchmakingComponent
+    class MatchmakingSystemComponent final
         : public AZ::Component
-        , public MPSMatchmakingComponentRequestBus::Handler
+        , public IMatchmaking
     {
     public:
-        AZ_COMPONENT(MPSMatchmakingComponent, "{BF5F9343-63B5-4703-89ED-9CDBF4FE6004}");
+        AZ_COMPONENT(MatchmakingSystemComponent, "{BF5F9343-63B5-4703-89ED-9CDBF4FE6004}");
         static void Reflect(AZ::ReflectContext* context);
 
-        // MPSMatchmakingComponentRequestBus::Handler overrides...
+        // IMatchmaking overrides...
         bool RequestMatch(const AZStd::string& latencies) override;
         AZStd::string GetTicketId() const override {return m_ticketId;}
         bool HasMatch(const AZStd::string& ticketId) override;

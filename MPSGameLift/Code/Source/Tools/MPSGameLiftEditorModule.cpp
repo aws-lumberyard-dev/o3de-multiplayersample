@@ -37,6 +37,7 @@ namespace MPSGameLift
         AZ::ComponentTypeList GetRequiredSystemComponents() const override
         {
             return AZ::ComponentTypeList {
+                azrtti_typeid<MatchmakingSystemComponent>(),
                 azrtti_typeid<MPSGameLiftEditorSystemComponent>(),
                 azrtti_typeid<RegionalLatencySystemComponent>()
             };
