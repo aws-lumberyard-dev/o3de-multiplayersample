@@ -121,7 +121,9 @@ ly_add_target(
             Gem::AWSCore.Static
             Gem::AWSGameLift.Client.Static
             Gem::LyShine.Static
-            Gem::HttpRequestor.Static
+	    Gem::HttpRequestor.Static
+    RUNTIME_DEPENDENCIES
+        Gem::AWSGameLift.Clients
 )
 
 # Here add ${gem_name} target, it depends on the Private Object library and Public API interface

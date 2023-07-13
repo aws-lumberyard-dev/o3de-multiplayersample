@@ -28,5 +28,6 @@
         "PopcornFX",
         "AWSGameLift",
         "MPSGameLift"
-    ]
+    ],
+    "engine_version": "2.1.0"
 }

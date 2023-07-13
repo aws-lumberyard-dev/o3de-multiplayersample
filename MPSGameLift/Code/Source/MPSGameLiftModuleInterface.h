@@ -29,7 +29,6 @@
     #include <AzCore/Platform.h>
 #endif
 
-#pragma optimize("",off)
 namespace MPSGameLift
 {
     class MPSGameLiftModuleInterface
@@ -116,4 +115,3 @@ namespace MPSGameLift
         }
     };
 }// namespace MPSGameLift
-#pragma optimize("",on)
