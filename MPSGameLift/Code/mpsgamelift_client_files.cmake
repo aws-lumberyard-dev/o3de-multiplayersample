@@ -12,4 +12,6 @@ set(FILES
     Source/MPSGameLiftClientSystemComponent.h
     Source/Components/UI/UiGameLiftConnectWithPlayerSessionData.cpp
     Source/Components/UI/UiGameLiftConnectWithPlayerSessionData.h
+    Source/RegionalLatencySystemComponent.cpp
+    Source/RegionalLatencySystemComponent.h
 )
