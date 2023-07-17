@@ -47,11 +47,6 @@ namespace MPSGameLift
         : public AZ::EBusTraits
     {
     public:
-        // HTTP Request callbacks occur outside of main thread.
-        // Ensure notifications are thread safe.
-        using MutexType = AZStd::recursive_mutex;
-
-
         // A notification when IRegionalLatencyFinder::RequestLatencies has finished recording the latency from each regional endpoint.
         virtual void OnRequestLatenciesComplete([[maybe_unused]] const RegionalLatencies& latencies) {}
     };

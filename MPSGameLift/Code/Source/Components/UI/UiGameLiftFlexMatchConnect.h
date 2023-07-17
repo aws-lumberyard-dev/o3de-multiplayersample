@@ -10,7 +10,7 @@
 
 #include <AzCore/Component/Component.h>
 #include <Multiplayer/IMultiplayer.h>
-#include <MPSGameLift/RegionalLatencyFinderNotificationBus.h>
+#include <MPSGameLift/IRegionalLatencyFinder.h>
 
 #include <Multiplayer/Session/ISessionHandlingRequests.h>
 

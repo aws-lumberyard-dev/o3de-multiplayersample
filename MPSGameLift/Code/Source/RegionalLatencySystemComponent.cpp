@@ -80,7 +80,7 @@ namespace MPSGameLift
                     m_responsesPending.fetch_sub(1);
                     if (m_responsesPending.load() == 0)
                     {
-                        RegionalLatencyFinderNotificationBus::Broadcast(&RegionalLatencyFinderNotifications::OnRequestLatenciesComplete, m_regionalLatencies);
+                        m_broadcastLatencyCompleteMainThread.Enqueue(AZ::Time::ZeroTimeMs);
                     }
                 });
         }
