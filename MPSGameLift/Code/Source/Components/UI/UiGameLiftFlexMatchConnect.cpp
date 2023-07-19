@@ -61,8 +61,6 @@ namespace MPSGameLift
 
     void UiGameLiftFlexMatchConnect::Activate()
     {
-        RegionalLatencyFinderNotificationBus::Handler::BusConnect();
-
         UiCursorBus::Broadcast(&UiCursorInterface::IncrementVisibleCounter);
 
         // Listen for button presses
@@ -75,13 +73,13 @@ namespace MPSGameLift
 
         // Listen for disconnect events to know if connecting to the host server failed
         AZ::Interface<Multiplayer::IMultiplayer>::Get()->AddEndpointDisconnectedHandler(m_onConnectToHostFailed);
+        AZ::Interface<IRegionalLatencyFinder>::Get()->AddRequestLatenciesCompleteEventHandler(m_requestLatenciesComplete);
     }
 
     void UiGameLiftFlexMatchConnect::Deactivate()
     {
         m_onConnectToHostFailed.Disconnect();
         UiCursorBus::Broadcast(&UiCursorInterface::DecrementVisibleCounter);
-        RegionalLatencyFinderNotificationBus::Handler::BusDisconnect();
     }
 
     void UiGameLiftFlexMatchConnect::OnButtonClicked(AZ::EntityId buttonEntityId) const

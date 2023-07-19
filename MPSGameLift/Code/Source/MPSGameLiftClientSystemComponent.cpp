@@ -12,6 +12,7 @@
 #include <Request/AWSGameLiftJoinSessionRequest.h>
 #include <Request/AWSGameLiftRequestBus.h>
 #include <Request/AWSGameLiftSessionRequestBus.h>
+#include <MPSGameLift/IMatchmaking.h>
 
 namespace MPSGameLift
 {
@@ -38,6 +39,7 @@ namespace MPSGameLift
     void MPSGameLiftClientSystemComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
         required.push_back(AZ_CRC_CE("AWSGameLiftClientService"));
+        required.push_back(AZ_CRC_CE("MPSGameLiftMatchmaking"));
     }
     
     void MPSGameLiftClientSystemComponent::Init()
@@ -46,11 +48,22 @@ namespace MPSGameLift
 
     void MPSGameLiftClientSystemComponent::Activate()
     {
-        auto loadLevelCommand = AZStd::string::format("LoadLevel %s", "mpsgamelift/prefabs/GameLiftFlexMatchConnect.spawnable");
-        AZ::Interface<AZ::IConsole>::Get()->PerformCommand(loadLevelCommand.c_str());        
+        AWSClientAuth::AWSCognitoAuthorizationNotificationBus::Handler::BusConnect();
+        AWSClientAuth::AWSCognitoAuthorizationRequestBus::Broadcast(&AWSClientAuth::IAWSCognitoAuthorizationRequests::Initialize);
+        AWSClientAuth::AWSCognitoAuthorizationRequestBus::Broadcast(&AWSClientAuth::IAWSCognitoAuthorizationRequests::RequestAWSCredentialsAsync);
     } 
 
     void MPSGameLiftClientSystemComponent::Deactivate()
+    {
+        AWSClientAuth::AWSCognitoAuthorizationNotificationBus::Handler::BusDisconnect();
+    }
+
+    void MPSGameLiftClientSystemComponent::OnRequestAWSCredentialsSuccess([[maybe_unused]]const AWSClientAuth::ClientAuthAWSCredentials& awsCredentials)
+    {
+        AZ::Interface<IMatchmaking>::Get()->RequestMatch("");
+    }
+
+    void MPSGameLiftClientSystemComponent::OnRequestAWSCredentialsFail([[maybe_unused]] const AZStd::string& error)
     {
     }
 

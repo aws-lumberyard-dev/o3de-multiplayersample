@@ -19,6 +19,7 @@ namespace MPSGameLift
     public:
         AZ_COMPONENT(MatchmakingSystemComponent, "{BF5F9343-63B5-4703-89ED-9CDBF4FE6004}");
         static void Reflect(AZ::ReflectContext* context);
+        static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided);
 
         // IMatchmaking overrides...
         bool RequestMatch(const AZStd::string& latencies) override;

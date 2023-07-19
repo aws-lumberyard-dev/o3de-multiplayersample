@@ -141,6 +141,11 @@ namespace MPSGameLift
         }
     }
 
+    void MatchmakingSystemComponent::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)
+    {
+        provided.push_back(AZ_CRC_CE("MPSGameLiftMatchmaking"));
+    }
+
     void SetApiEndpointAndRegion(ServiceAPI::MPSRequestMatchmakingRequestJob::Config* config, const AZStd::string& latencies)
     {
         AZStd::string actualRegion;

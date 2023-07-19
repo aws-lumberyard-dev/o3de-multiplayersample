@@ -9,11 +9,13 @@
 
 #include <AzCore/Component/Component.h>
 #include <AzCore/Console/IConsole.h>
+#include <Authorization/AWSCognitoAuthorizationBus.h>
 
 namespace MPSGameLift
 {
     class MPSGameLiftClientSystemComponent
         : public AZ::Component
+        , AWSClientAuth::AWSCognitoAuthorizationNotificationBus::Handler
     {
     public:
         AZ_COMPONENT(MPSGameLiftClientSystemComponent, "{939D9813-2DCA-4625-B4E1-E63A6A652A26}");
@@ -34,6 +36,10 @@ namespace MPSGameLift
         // Internally, GameLift will use the game session id to generate new player session id and pass it back to this client as a ticket for connecting to the host server on GameLift.
         void JoinSession(const AZ::ConsoleCommandContainer& consoleFunctionParameters);
         AZ_CONSOLEFUNC(MPSGameLiftClientSystemComponent, JoinSession, AZ::ConsoleFunctorFlags::DontReplicate, "Join an existing game session");
+
+        // AWSClientAuth::AWSCognitoAuthorizationNotificationBus::Handler overrides...
+        void OnRequestAWSCredentialsSuccess(const AWSClientAuth::ClientAuthAWSCredentials& awsCredentials) override;
+        void OnRequestAWSCredentialsFail(const AZStd::string& error) override;
 
     private:
         void JoinSessionInternal(AZStd::string_view gameSessionId, const AZ::Uuid& playerId);

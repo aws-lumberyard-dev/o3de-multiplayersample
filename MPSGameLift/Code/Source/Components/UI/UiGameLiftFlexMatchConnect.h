@@ -22,7 +22,6 @@ namespace MPSGameLift
     */
     class UiGameLiftFlexMatchConnect
         : public AZ::Component
-        , RegionalLatencyFinderNotificationBus::Handler
     {
     public:
         AZ_COMPONENT(MPSGameLift::UiGameLiftFlexMatchConnect, "{EFB9D394-8134-400F-B751-42BA81CD08A7}");
@@ -39,11 +38,13 @@ namespace MPSGameLift
     private:
 
         // RegionalLatencyFinderNotificationBus::Handler overrides...
-        void OnRequestLatenciesComplete(const RegionalLatencies& regionLatencies ) override;
+        void OnRequestLatenciesComplete(const RegionalLatencies& regionLatencies);
 
         // Listen for disconnect events to know if connecting to the host server failed
         void OnConnectToHostFailed();
         Multiplayer::EndpointDisconnectedEvent::Handler m_onConnectToHostFailed{[this]([[maybe_unused]] Multiplayer::MultiplayerAgentType agent) { OnConnectToHostFailed(); }};
+
+        RequestLatenciesCompleteEvent::Handler m_requestLatenciesComplete{ [this](const RegionalLatencies& regionLatencies) { OnRequestLatenciesComplete(regionLatencies); }};
 
         void OnButtonClicked(AZ::EntityId buttonEntityId) const;
 
