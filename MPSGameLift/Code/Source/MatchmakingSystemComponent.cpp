@@ -16,76 +16,153 @@
 
 #include <Framework/ServiceRequestJob.h>
 
-#pragma optimize("",off)
+
 namespace MPSGameLift
 {
     namespace ServiceAPI
     {
-        //! Struct for storing the success response.
-        struct MPSRequestMatchmakingSuccessResponse
+        struct PlayerSkill
         {
-            //! Identify the expected property type and provide a location where the property value can be stored.
-            //! @param key Name of the property.
-            //! @param reader JSON reader to read the property.
-            bool OnJsonKey(const char* key, AWSCore::JsonReader& reader);
+            bool OnJsonKey(const char* key, AWSCore::JsonReader& reader)
+            {
+                if (strcmp(key, "N") == 0)
+                {
+                    return reader.Accept(skill);
+                }
+                return reader.Ignore();
+            }
 
-            AZStd::string result; //!< Processing result for the input record.
+            int skill;
+        };
+
+        struct PlayerAttributes
+        {
+            bool OnJsonKey(const char* key, AWSCore::JsonReader& reader)
+            {
+                if (strcmp(key, "skill") == 0)
+                {
+                    return reader.Accept(skill);
+                }
+                return reader.Ignore();
+            }
+
+            PlayerSkill skill;
+        };
+
+        struct Latencies
+        {
+            bool OnJsonKey(const char* key, AWSCore::JsonReader& reader)
+            {
+                return reader.Accept(latencies[key]);
+            }
+
+            AZStd::unordered_map<AZStd::string, int> latencies;
+        };
+
+        struct Player
+        {
+            bool OnJsonKey(const char* key, AWSCore::JsonReader& reader)
+            {
+                if (strcmp(key, "LatencyInMs") == 0)
+                {
+                    return reader.Accept(latencies);
+                }
+                if (strcmp(key, "PlayerId") == 0)
+                {
+                    return reader.Accept(playerId);
+                }
+                if (strcmp(key, "Team") == 0)
+                {
+                    return reader.Accept(team);
+                }
+                if (strcmp(key, "PlayerAttributes") == 0)
+                {
+                    return reader.Accept(playerAttributes);
+                }
+                return reader.Ignore();
+            }
+
+            AZStd::string playerId;
+            AZStd::string team;
+            Latencies latencies;
+            PlayerAttributes playerAttributes;
+        };
+
+
+        //! Struct for storing the success response.
+        struct RequestMatchmakingResponse
+        {
+            bool OnJsonKey(const char* key, AWSCore::JsonReader& reader)
+            {
+                if (strcmp(key, "TicketId") == 0)
+                {
+                    return reader.Accept(ticketId);
+                }
+                if (strcmp(key, "Players") == 0)
+                {
+                    return reader.Accept(players);
+                }
+
+                return reader.Ignore();
+            }
+
+            AZStd::string ticketId;
+            AZStd::vector<Player> players;
+        };
+
+        //! Struct for storing the error.
+        struct RequestMatchmakingError
+        {
+            bool OnJsonKey(const char* key, AWSCore::JsonReader& reader)
+            {
+                if (strcmp(key, "message") == 0)
+                {
+                    return reader.Accept(message);
+                }
+
+                if (strcmp(key, "type") == 0)
+                {
+                    return reader.Accept(type);
+                }
+
+                return reader.Ignore();
+            }
+
+            //! Do not rename the following members since they are expected by the AWSCore dependency.
+            AZStd::string message; //!< Error message.
+            AZStd::string type; //!< Error type.
         };
 
         // Service RequestJobs
-        AWS_FEATURE_GEM_SERVICE(MatchmakingSystemComponent);
+        AWS_FEATURE_GEM_SERVICE(MPSGameLift);
 
         //! GET request to place a matchmaking request "/requestmatchmaking".
-        class MPSRequestMatchmakingRequest
+        class RequestMatchmaking
             : public AWSCore::ServiceRequest
         {
         public:
-            SERVICE_REQUEST(MatchmakingSystemComponent, HttpMethod::HTTP_GET, "");
+            SERVICE_REQUEST(MPSGameLift, HttpMethod::HTTP_GET, "");
 
-            //! Request body for the service API request.
             struct Parameters
             {
-                //! Build the service API request.
-                //! @request Builder for generating the request.
-                //! @return Whether the request is built successfully.
-                bool BuildRequest(AWSCore::RequestBuilder& request);
+                bool BuildRequest(AWSCore::RequestBuilder& request)
+                {
+                    return request.WriteJsonBodyParameter(*this);
+                }
 
-                //! Write to the service API request body.
-                //! @param writer JSON writer for the serialization.
-                //! @return Whether the serialization is successful.
-                bool WriteJson(AWSCore::JsonWriter& writer) const;
-
-                AZStd::string latencies;
+                bool WriteJson([[maybe_unused]]AWSCore::JsonWriter& writer) const
+                {
+                    return true;
+                }
             };
 
-            MPSRequestMatchmakingSuccessResponse result;
+            RequestMatchmakingResponse result;
+            RequestMatchmakingError error;
             Parameters parameters; //! Request parameter.
         };
 
-        using MPSRequestMatchmakingRequestJob = AWSCore::ServiceRequestJob<MPSRequestMatchmakingRequest>;
-
-
-        constexpr char MPSMatchmakingRequestResultResponseKey[] = "statusCode";
-
-        bool MPSRequestMatchmakingSuccessResponse::OnJsonKey(const char* key, AWSCore::JsonReader& reader)
-        {
-            if (strcmp(key, MPSMatchmakingRequestResultResponseKey) == 0)
-            {
-                return reader.Accept(result);
-            }
-            return reader.Ignore();
-        }
-
-        bool MPSRequestMatchmakingRequest::Parameters::BuildRequest(AWSCore::RequestBuilder& request)
-        {
-            return request.WriteJsonBodyParameter(*this);
-        }
-
-        bool MPSRequestMatchmakingRequest::Parameters::WriteJson([[maybe_unused]] AWSCore::JsonWriter& writer) const
-        {
-            return true;
-        }
-    }
+        using MPSRequestMatchmakingRequestJob = AWSCore::ServiceRequestJob<RequestMatchmaking>;
+    }  // ServiceAPI
 
     void MatchmakingSystemComponent::Activate()
     {
@@ -158,7 +235,7 @@ namespace MPSGameLift
             restApi.c_str(), actualRegion.c_str(), "Prod/requestmatchmaking", latencies.c_str()).c_str();
     }
 
-   bool MatchmakingSystemComponent::RequestMatch(const AZStd::string& latencies)
+   bool MatchmakingSystemComponent::RequestMatch([[maybe_unused]]const AZStd::string& latencies)
     {
         if (!m_ticketId.empty())
         {
@@ -168,13 +245,12 @@ namespace MPSGameLift
         ServiceAPI::MPSRequestMatchmakingRequestJob::Config* config = ServiceAPI::MPSRequestMatchmakingRequestJob::GetDefaultConfig();
 
         // Setup example game service endpoint
-        SetApiEndpointAndRegion(config, latencies);
+        SetApiEndpointAndRegion(config, "us-east-1_150");
 
         ServiceAPI::MPSRequestMatchmakingRequestJob* requestJob = ServiceAPI::MPSRequestMatchmakingRequestJob::Create(
-            []([[maybe_unused]] ServiceAPI::MPSRequestMatchmakingRequestJob* successJob)
+            [this](ServiceAPI::MPSRequestMatchmakingRequestJob* successJob)
             {
-                // TODO: Grab TicketId from success job
-                AZ_Printf("MatchmakingSystemComponent", "Request for matchmaking made: %s", successJob->result.result.c_str());
+                m_ticketId = successJob->result.ticketId;
             },
             []([[maybe_unused]] ServiceAPI::MPSRequestMatchmakingRequestJob* failJob)
             {
@@ -195,4 +271,3 @@ namespace MPSGameLift
         return false;
     }
 }
-#pragma optimize("",on)
