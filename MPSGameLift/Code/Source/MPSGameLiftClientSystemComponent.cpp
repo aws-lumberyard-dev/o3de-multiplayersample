@@ -46,8 +46,8 @@ namespace MPSGameLift
 
     void MPSGameLiftClientSystemComponent::Activate()
     {
-        auto loadLevelCommand = AZStd::string::format("LoadLevel %s", "mpsgamelift/prefabs/GameLiftConnectJsonMenu.spawnable");
-        AZ::Interface<AZ::IConsole>::Get()->PerformCommand(loadLevelCommand.c_str());        
+        auto loadLevelCommand = AZStd::string::format("LoadLevel %s", "mpsgamelift/prefabs/GameLiftFlexmatchConnect.spawnable");
+        AZ::Interface<AZ::IConsole>::Get()->PerformCommand(loadLevelCommand.c_str());
     } 
 
     void MPSGameLiftClientSystemComponent::Deactivate()

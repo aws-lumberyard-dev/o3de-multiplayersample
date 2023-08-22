@@ -25,7 +25,8 @@
         "level_art_mps",
         "particlefx_mps",
         "pbr_material_pack_mps",
-        "PopcornFX"
+        "PopcornFX",
+        "MPSGameLift"
     ],
     "engine_version": "2.1.0"
 }
