@@ -79,7 +79,7 @@
                                                 },
                                                 "isNullPointer": false,
                                                 "$type": "{03AAAB3F-5C47-5A66-9EBC-D5FA4DB353C9} AZStd::string",
-                                                "value": "LoadLevel StartMenu",
+                                                "value": "LoadLevel MPSGameLift/Prefabs/GameLiftFlexMatchConnect.spawnable",
                                                 "label": "Command"
                                             }
                                         ],
