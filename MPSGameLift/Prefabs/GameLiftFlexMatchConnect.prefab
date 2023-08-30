@@ -54,6 +54,21 @@
             "Id": "Entity_[825454950578]",
             "Name": "GameLiftFlexMatchConnect",
             "Components": {
+                "AudioProxyComponent": {
+                    "$type": "GenericComponentWrapper",
+                    "Id": 11518063667259698813,
+                    "m_template": {
+                        "$type": "AudioProxyComponent"
+                    }
+                },
+                "EditorAudioTriggerComponent": {
+                    "$type": "EditorAudioTriggerComponent",
+                    "Id": 6632683281168005902,
+                    "Play Trigger": {
+                        "controlName": "play_sx_player_pain"
+                    },
+                    "Plays Immediately": true
+                },
                 "EditorDisabledCompositionComponent": {
                     "$type": "EditorDisabledCompositionComponent",
                     "Id": 10319139520415408813
