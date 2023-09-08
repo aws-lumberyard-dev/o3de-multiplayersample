@@ -82,37 +82,48 @@ namespace MPSGameLift
     {
         AzFramework::LevelLoadBlockerBus::Handler::BusDisconnect();
 
-        if (!m_loadedLevelName.empty())
-        {
-            AZ_Info("MPSGameLiftServerSystemComponent", "Session requested by Amazon GameLift. Attempting to load level: '%s'", m_loadedLevelName.c_str());
+        /*
+        * @todo For the playtest the server will load the level and host before the game session is started,
+        * so that it's warm and ready for players.
+        */
 
-            auto loadLevelCommand = AZStd::string::format("LoadLevel %s", m_loadedLevelName.c_str());
-            AZ::Interface<AZ::IConsole>::Get()->PerformCommand(loadLevelCommand.c_str());
-        }
-        else
-        {
-            AZ_Info(
-                "MPSGameLiftServerSystemComponent",
-                "Session requested by Amazon GameLift. Make sure to load into a multiplayer level before players join.");
-        }
+        //if (!m_loadedLevelName.empty())
+        //{
+        //    AZ_Info("MPSGameLiftServerSystemComponent", "Session requested by Amazon GameLift. Attempting to load level: '%s'", m_loadedLevelName.c_str());
+
+        //    auto loadLevelCommand = AZStd::string::format("LoadLevel %s", m_loadedLevelName.c_str());
+        //    AZ::Interface<AZ::IConsole>::Get()->PerformCommand(loadLevelCommand.c_str());
+        //}
+        //else
+        //{
+        //    AZ_Info(
+        //        "MPSGameLiftServerSystemComponent",
+        //        "Session requested by Amazon GameLift. Make sure to load into a multiplayer level before players join.");
+        //}
 
         // Start a timer to shutdown this server if no players join.
         // This scheduled event will be stopped if m_connectionAquiredEventHandler is triggered.
         m_gameSessionNoPlayerShutdown.Enqueue(AZ::SecondsToTimeMs(sv_gameSessionNoPlayerShutdownTimeoutSeconds));
     }
 
-    bool MPSGameLiftServerSystemComponent::ShouldBlockLevelLoading(const char* levelName)
+    bool MPSGameLiftServerSystemComponent::ShouldBlockLevelLoading([[maybe_unused]]const char* levelName)
     {
-        m_loadedLevelName = levelName;
-        if (levelName)
-        {
-            AZ_Info("MPSGameLiftServerSystemComponent", "Interrupted load of level: '%s'", levelName);
-        }
-        else
-        {
-            AZ_Info("MPSGameLiftServerSystemComponent", "Interrupted level load, but no level provided!");
-        }
-        
-        return true;
+        /*
+        * @todo For the playtest allow the server to host and load the level as soon as the instance starts up
+        * so that it's warm and ready for players.
+        */
+
+        return false;
+        //m_loadedLevelName = levelName;
+        //if (levelName)
+        //{
+        //    AZ_Info("MPSGameLiftServerSystemComponent", "Interrupted load of level: '%s'", levelName);
+        //}
+        //else
+        //{
+        //    AZ_Info("MPSGameLiftServerSystemComponent", "Interrupted level load, but no level provided!");
+        //}
+        //
+        //return true;
     }
 }
