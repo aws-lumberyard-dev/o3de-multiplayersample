@@ -274,7 +274,12 @@ namespace MultiplayerSample
 
         // If we're still on the ground, then zero out our velocity from external forces
         // This prevents us from sliding along the ground after we land
+        // Only zero out external velocity if player is heading downward (landing)
+        // Example: Don't zero out external velocity if player just stepped on a jump-pad and is flying up;
+        //    even if technically still colliding with the ground.
         PhysX::CharacterGameplayRequestBus::EventResult(onGround, GetEntityId(), &PhysX::CharacterGameplayRequestBus::Events::IsOnGround);
+        constexpr float downwardVelocityThreadhold = 0.1f;
+        onGround = onGround && (GetVelocityFromExternalSources().GetZ() <= downwardVelocityThreadhold);
         if (onGround)
         {
             SetVelocityFromExternalSources(AZ::Vector3::CreateZero());
