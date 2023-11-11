@@ -11,6 +11,7 @@
 			"Type": "AWS::ApiGateway::RestApi"
 		}
     },
+    "AccountId": "754497897378",
     "Region": "us-east-1",
     "Version": "1.1.0"
 }
