@@ -278,8 +278,7 @@ namespace MultiplayerSample
         // Example: Don't zero out external velocity if player just stepped on a jump-pad and is flying up;
         //    even if technically still colliding with the ground.
         PhysX::CharacterGameplayRequestBus::EventResult(onGround, GetEntityId(), &PhysX::CharacterGameplayRequestBus::Events::IsOnGround);
-        constexpr float downwardVelocityThreadhold = 0.1f;
-        onGround = onGround && (GetVelocityFromExternalSources().GetZ() <= downwardVelocityThreadhold);
+        onGround = onGround && (GetVelocityFromExternalSources().GetZ() <= 0.0f);
         if (onGround)
         {
             SetVelocityFromExternalSources(AZ::Vector3::CreateZero());
